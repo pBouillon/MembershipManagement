@@ -1,4 +1,4 @@
-package eu.telecomnancy.membershipmanagement.api.controllers.commons;
+package eu.telecomnancy.membershipmanagement.api.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
