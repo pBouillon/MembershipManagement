@@ -22,13 +22,24 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.apache.derby:derby'
-	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+
+	// Apache Derby
+	runtimeOnly 'org.apache.derby:derby'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// RabbitMQ
 	testImplementation 'org.springframework.amqp:spring-rabbit-test'
+
+	// Swagger
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
 }
 
 test {
