@@ -2,17 +2,23 @@ package eu.telecomnancy.membershipmanagement.api.controllers.commons;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.Collections;
 
 /**
  * Swagger configuration class
  */
 @Configuration
-@EnableSwagger2
+@Import(SpringDataRestConfiguration.class)
 public class SpringFoxConfig {
 
     /**
@@ -26,7 +32,28 @@ public class SpringFoxConfig {
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .apiInfo(apiInfo());
+    }
+
+    /**
+     * Specify the Swagger UI information do be displayed
+     *
+     * @return The associated Java Bean
+     */
+    private ApiInfo apiInfo() {
+        return new ApiInfo(
+                "Membership management REST API",
+                "REST API to manage teams, users and their membership",
+                "API TOS",
+                "about:blank",
+                new Contact(
+                        "Pierre Bouillon & Victor Varnier",
+                        "https://gitlab.telecomnancy.univ-lorraine.fr/sdisapp2021/membership-management",
+                        "membership-management@telecomnancy.eu"),
+                "License of API",
+                "about:blank",
+                Collections.emptyList());
     }
 
 }
