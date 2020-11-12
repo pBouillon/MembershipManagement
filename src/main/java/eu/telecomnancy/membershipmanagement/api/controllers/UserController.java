@@ -6,24 +6,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller for: api/users/
- *
  * API controller for the User resource
  */
 @RestController
 @RequestMapping(
-        path = "/api/users",
+        path = "/api",
         produces = "application/json")
 public class UserController {
 
     /**
-     * Endpoint for: GET /
+     * Endpoint for: GET /users
      *
      * Retrieve all users of the system
      *
      * @return A JSON payload containing all the users
      */
-    @GetMapping(path = "/")
+    @GetMapping(path = "/users")
     public ResponseEntity<Object> Get() {
         return ResponseEntity.ok()
                 // Create anonymous class in order to have a properly serialized JSON as a result
