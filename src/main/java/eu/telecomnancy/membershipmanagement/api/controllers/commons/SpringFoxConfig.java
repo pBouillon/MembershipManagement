@@ -20,6 +20,9 @@ import java.util.Collections;
 @Import(SpringDataRestConfiguration.class)
 public class SpringFoxConfig {
 
+    /**
+     * Package in which the controllers are defined
+     */
     private final static String controllersPackage = "eu.telecomnancy.membershipmanagement.api.controllers";
 
     /**
