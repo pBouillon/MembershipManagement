@@ -10,7 +10,6 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
@@ -21,6 +20,8 @@ import java.util.Collections;
 @Import(SpringDataRestConfiguration.class)
 public class SpringFoxConfig {
 
+    private final static String controllersPackage = "eu.telecomnancy.membershipmanagement.api.controllers";
+
     /**
      * Expose controllers and endpoints to be displayed by Swagger
      *
@@ -30,7 +31,7 @@ public class SpringFoxConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage(controllersPackage))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
