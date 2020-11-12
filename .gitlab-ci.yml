@@ -1,0 +1,11 @@
+image: java:15
+
+stages:
+  - build
+
+before_script:
+  - chmod +x gradlew
+
+build:
+  stage: build
+  script: ./gradlew clean build
