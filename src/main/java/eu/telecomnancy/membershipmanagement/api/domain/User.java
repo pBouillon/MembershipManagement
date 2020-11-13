@@ -11,12 +11,12 @@ import java.io.Serializable;
 /**
  * Represent a user in the system
  */
-@Entity
+@Entity(name = "users")
 @Data @NoArgsConstructor
-public class Person implements Serializable {
+public class User implements Serializable {
 
     /**
-     * Person id used for the persistence
+     * User id used for the persistence
      */
     @Id
     @GeneratedValue
@@ -40,11 +40,11 @@ public class Person implements Serializable {
     /**
      * Create a user from its information
      *
-     * @param age Person's age
-     * @param firstname Person's firstname
-     * @param name Person's name
+     * @param age User's age
+     * @param firstname User's firstname
+     * @param name User's name
      */
-    public Person(int age, String firstname, String name) {
+    public User(int age, String firstname, String name) {
         this.age = age;
         this.firstname = firstname;
         this.name = name;
