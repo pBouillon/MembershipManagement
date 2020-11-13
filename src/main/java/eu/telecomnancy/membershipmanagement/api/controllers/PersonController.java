@@ -25,7 +25,7 @@ public class PersonController {
     /**
      * Controller-specific tag used to document the swagger endpoints
      */
-    public static final String CONTROLLER_TAG = "Person";
+    static final String CONTROLLER_TAG = "Person";
 
     /**
      * Service to handle user-related operations
