@@ -1,7 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers;
 
-import eu.telecomnancy.membershipmanagement.api.domain.User;
-import eu.telecomnancy.membershipmanagement.api.services.UserService;
+import eu.telecomnancy.membershipmanagement.api.domain.Person;
+import eu.telecomnancy.membershipmanagement.api.services.PersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,49 +13,49 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * API controller for the User resource
+ * API controller for the Person resource
  */
 @RestController
 @RequestMapping(
         path = "/api",
         produces = "application/json")
-@Api(value = "User", tags = { UserController.CONTROLLER_TAG })
-public class UserController {
+@Api(value = "Person", tags = { PersonController.CONTROLLER_TAG })
+public class PersonController {
 
     /**
      * Controller-specific tag used to document the swagger endpoints
      */
-    public static final String CONTROLLER_TAG = "User";
+    public static final String CONTROLLER_TAG = "Person";
 
     /**
      * Service to handle user-related operations
      */
-    private final UserService userService;
+    private final PersonService personService;
 
     /**
      * Default controller constructor
      *
-     * @param userService Service to handle user-related operations
+     * @param personService Service to handle user-related operations
      */
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public PersonController(PersonService personService) {
+        this.personService = personService;
     }
 
     /**
-     * Endpoint for: GET /users
+     * Endpoint for: GET /people
      *
-     * Retrieve all users of the system
+     * Retrieve all people tracked by the system
      *
      * @return A JSON payload containing all the users
      */
-    @GetMapping(path = "/users")
-    @ApiOperation(value="Retrieve all users of the system", tags = { CONTROLLER_TAG })
-    public ResponseEntity<Object> Get() {
-        List<User> users = userService.getUsers();
+    @GetMapping(path = "/people")
+    @ApiOperation(value="Retrieve all persons tracked by the system", tags = { CONTROLLER_TAG })
+    public ResponseEntity<List<Person>> Get() {
+        List<Person> people = personService.getPeople();
 
         return ResponseEntity.ok()
-                .body(users);
+                .body(people);
     }
 
 }
