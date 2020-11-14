@@ -15,6 +15,9 @@ import java.util.List;
  */
 public interface IUserQueryService {
 
+    // TODO doc
+    User getUser(User toFind);
+
     /**
      * Retrieve all users of the application
      *

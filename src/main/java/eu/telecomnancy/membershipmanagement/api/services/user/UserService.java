@@ -54,6 +54,15 @@ public class UserService implements IUserCommandService, IUserQueryService {
      * {@inheritDoc}
      */
     @Override
+    public User getUser(User toFind) {
+        // TODO Check for non-existing ID
+        return userRepository.getOne(toFind.getId());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public User createUser(CreateUserCommand createUserCommand) {
         User created = userRepository.save(
                 mapper.toUser(createUserCommand));
