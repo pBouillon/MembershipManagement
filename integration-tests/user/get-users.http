@@ -1,5 +1,5 @@
-### GET all people
-GET {{ base_uri }}/api/people/ HTTP/1.1
+### GET all users
+GET {{ base_uri }}/api/users/ HTTP/1.1
 Accept: application/json
 
 > {%
