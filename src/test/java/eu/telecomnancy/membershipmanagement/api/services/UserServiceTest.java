@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.services;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,13 +32,20 @@ public class UserServiceTest {
     @Mock
     UserRepository userRepository;
 
+    /**
+     * Autowired mapper for unit testing purpose
+     */
+    @SuppressWarnings("SpringJavaAutowiredMembersInspection")
+    @Autowired
+    UserMapper mapper;
+
     @Test
     public void givenAnEmptyDatabase_WhenQueryingAllUsers_ThenNoneShouldBeRetrieved() {
         // Arrange
         Mockito.when(userRepository.findAll())
                 .thenReturn(new ArrayList<>());
 
-        UserService userService = new UserService(userRepository);
+        UserService userService = new UserService(userRepository, mapper);
 
         // Act
         List<User> users = userService.getUsers();
@@ -56,7 +65,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findAll())
                 .thenReturn(storedUsers);
 
-        UserService userService = new UserService(userRepository);
+        UserService userService = new UserService(userRepository, mapper);
 
         // Act
         List<User> users = userService.getUsers();
