@@ -2,6 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.dto.UserDto;
+import eu.telecomnancy.membershipmanagement.api.controllers.queries.GetUserQuery;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import org.mapstruct.Mapper;
 
@@ -37,4 +38,5 @@ public interface UserMapper {
      */
     User toUser(CreateUserCommand command);
 
+    User toUser(GetUserQuery query);
 }
