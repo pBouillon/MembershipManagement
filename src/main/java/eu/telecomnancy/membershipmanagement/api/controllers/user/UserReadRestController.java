@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.user;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.queries.GetUserQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.controllers.dto.UserDto;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
@@ -9,10 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -62,6 +60,25 @@ public class UserReadRestController extends UserRestController {
 
         return ResponseEntity.ok()
                 .body(mapper.toDtoList(users));
+    }
+
+    /**
+     * Endpoint for: GET /users/:id
+     *
+     * Retrieve an existing user by its id
+     *
+     * @return A JSON payload containing the user
+     */
+    @GetMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value="Retrieve an existing user by its id")
+    public ResponseEntity<UserDto> GetUser(@PathVariable long id) {
+        GetUserQuery query = new GetUserQuery(id);
+        
+        User user = userService.getUser(mapper.toUser(query));
+
+        return ResponseEntity.ok()
+                .body(mapper.toDto(user));
     }
 
 }
