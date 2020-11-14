@@ -15,6 +15,14 @@ import java.io.Serializable;
 @Data @NoArgsConstructor
 public class User implements Serializable {
 
+    public static final int AGE_MAX = 110;
+
+    public static final int AGE_MIN = 0;
+
+    public static final int NAME_MAX_LENGTH = 50;
+
+    public static final int NAME_MIN_LENGTH = 2;
+
     /**
      * User id used for the persistence
      */

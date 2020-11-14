@@ -10,9 +10,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 /**
@@ -59,7 +61,7 @@ public class UserWriteRestController extends UserRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value="Create a new user with no team")
     public ResponseEntity<UserDto> Post(
-            @RequestBody CreateUserCommand createUserCommand) {
+            @Valid @RequestBody CreateUserCommand createUserCommand) {
         // Create the new user and retrieve the newly created one
         User created = userService.createUser(createUserCommand);
 
