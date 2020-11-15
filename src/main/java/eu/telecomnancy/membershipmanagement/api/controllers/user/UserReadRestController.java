@@ -1,7 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.user;
 
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.controllers.dto.UserDto;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserQueryService;
 import io.swagger.annotations.Api;
@@ -57,7 +57,7 @@ public class UserReadRestController extends UserRestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="Retrieve all users tracked by the system")
-    public ResponseEntity<List<UserDto>> Get() {
+    public ResponseEntity<List<UserDto>> get() {
         List<User> users = userService.getUsers();
 
         return ResponseEntity.ok()

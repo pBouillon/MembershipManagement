@@ -42,18 +42,6 @@ public class UserService implements IUserCommandService, IUserQueryService {
      * {@inheritDoc}
      */
     @Override
-    public List<User> getUsers() {
-        List<User> users = userRepository.findAll();
-
-        log.info("UserService.getUsers : retrieved {} users", users.size());
-
-        return users;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public User createUser(CreateUserCommand createUserCommand) {
         User created = userRepository.save(
                 mapper.toUser(createUserCommand));
@@ -61,6 +49,18 @@ public class UserService implements IUserCommandService, IUserQueryService {
         log.info("Created new user {}", created);
 
         return created;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<User> getUsers() {
+        List<User> users = userRepository.findAll();
+
+        log.info("UserService.getUsers : retrieved {} users", users.size());
+
+        return users;
     }
 
 }
