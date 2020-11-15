@@ -3,6 +3,7 @@ package eu.telecomnancy.membershipmanagement.api.services.user;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
+import org.springframework.data.util.Pair;
 
 /**
  * Command part of the UserService
@@ -24,9 +25,10 @@ public interface IUserCommandService {
      *
      * @param userId Id of the targeted user
      * @param command Payload holding the data to replace the existing ones
-     * @return The new state of the user (created or replaced)
+     * @return A pair containing the new state of the user (created or replaced) as key
+     * and true if he as been created; false otherwise
      */
-    User createOrReplaceUser(long userId, UpdateUserCommand command);
+    Pair<User, Boolean> createOrReplaceUser(long userId, UpdateUserCommand command);
 
     /**
      * Store a new {@link User} in the database from the provided command
