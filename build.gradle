@@ -29,6 +29,9 @@ dependencies {
 	// Apache Derby
 	runtimeOnly 'org.apache.derby:derby'
 
+	// Hibernate Validator
+	implementation 'org.hibernate.validator:hibernate-validator:6.1.6.Final'
+
 	// JUnit
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
