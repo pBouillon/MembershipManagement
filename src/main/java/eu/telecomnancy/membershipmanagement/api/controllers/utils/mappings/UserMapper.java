@@ -1,9 +1,11 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.dto.UserDto;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -36,5 +38,19 @@ public interface UserMapper {
      * @return The associated User
      */
     User toUser(CreateUserCommand command);
+
+    /**
+     * TODO
+     * @param command
+     * @return
+     */
+    CreateUserCommand toCreateUserCommand(UpdateUserCommand command);
+
+    /**
+     * TODO
+     * @param command
+     * @param user
+     */
+    void updateFromCommand(UpdateUserCommand command, @MappingTarget User user);
 
 }

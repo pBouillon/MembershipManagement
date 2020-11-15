@@ -10,12 +10,18 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Command to create a new user
+ * Command to create or update a new user
  *
  * @see eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService
  */
 @Getter @Setter @ToString
-public class CreateUserCommand {
+public class UpdateUserCommand {
+
+    /**
+     * Id of the targeted user
+     */
+    @Range(min = 0)
+    private long id;
 
     /**
      * Age of the user
