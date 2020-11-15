@@ -91,6 +91,7 @@ public class UserServiceTest {
 
         long targetUserId = 0;
         UpdateUserCommand command = new UpdateUserCommand();
+        command.setId(targetUserId);
 
         // Act
         Pair<User, Boolean> result = userService.createOrReplaceUser(targetUserId, command);
@@ -113,6 +114,7 @@ public class UserServiceTest {
 
         long targetUserId = 0;
         UpdateUserCommand command = new UpdateUserCommand();
+        command.setId(targetUserId);
 
         // Act
         Pair<User, Boolean> result = userService.createOrReplaceUser(targetUserId, command);
@@ -122,7 +124,8 @@ public class UserServiceTest {
         assertTrue(isCreated);
     }
 
-    @Test void givenMismatchingId_WhenAttemptingToUpdateTheUser_AnExceptionMustBeThrown() {
+    @Test
+    void givenMismatchingId_WhenAttemptingToUpdateTheUser_AnExceptionMustBeThrown() {
         // Arrange
         UserService userService = new UserService(userRepository, mapper);
 
