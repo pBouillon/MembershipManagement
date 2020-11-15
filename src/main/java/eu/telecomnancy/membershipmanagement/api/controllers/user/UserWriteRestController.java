@@ -100,7 +100,7 @@ public class UserWriteRestController extends UserRestController {
     public ResponseEntity<?> put(
             @ApiParam(value = "Id of the targeted user")
             @PathVariable long id,
-            @ApiParam(value = "Payload from which the user details will be created or replaced")
+            @ApiParam(value = "Payload from which the user details will be replaced")
             @Valid @RequestBody UpdateUserCommand updateUserCommand) {
         // Retrieve the new user and its creation status
         User user;
