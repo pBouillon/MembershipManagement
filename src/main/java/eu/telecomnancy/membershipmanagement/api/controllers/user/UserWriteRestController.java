@@ -8,6 +8,7 @@ import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +62,7 @@ public class UserWriteRestController extends UserRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value="Create a new user with no team")
     public ResponseEntity<UserDto> post(
+            @ApiParam(value = "Payload from which creating the user")
             @Valid @RequestBody CreateUserCommand createUserCommand) {
         // Create the new user and retrieve the newly created one
         User created = userService.createUser(createUserCommand);
@@ -90,7 +92,9 @@ public class UserWriteRestController extends UserRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="Create or replace an existing user by its id")
     public ResponseEntity<UserDto> put(
+            @ApiParam(value = "Id of the targeted user")
             @PathVariable long id,
+            @ApiParam(value = "Payload from which the user details will be created or replaced")
             @Valid @RequestBody UpdateUserCommand updateUserCommand) {
         User updated = userService.createOrReplaceUser(id, updateUserCommand);
 

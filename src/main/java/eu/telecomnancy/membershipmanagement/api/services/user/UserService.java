@@ -46,11 +46,8 @@ public class UserService implements IUserCommandService, IUserQueryService {
     public User createOrReplaceUser(long userId, UpdateUserCommand command) {
         // Ensure that the ids are matching
         if (userId != command.getId()) {
-            IllegalArgumentException exception = new IllegalArgumentException("Id does not match");
-
             log.error("Attempted to update the user with values {} with a mismatching id {}", command, userId);
-
-            throw exception;
+            throw new IllegalArgumentException("Id does not match");
         }
 
         // Create the user if he does not exists, replace him otherwise
@@ -67,7 +64,7 @@ public class UserService implements IUserCommandService, IUserQueryService {
         User created = userRepository.save(
                 mapper.toUser(createUserCommand));
 
-        log.info("Created new user {}", created);
+        log.info("New user created {}", created);
 
         return created;
     }
