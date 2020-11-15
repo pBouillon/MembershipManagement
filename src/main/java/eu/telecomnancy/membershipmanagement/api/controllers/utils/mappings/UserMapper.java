@@ -40,9 +40,6 @@ public interface UserMapper {
      */
     User toUser(CreateUserCommand command);
 
-    //TODO Doc
-    User toUser(GetUserQuery query);
-
     /**
      * Convert a {@link UpdateUserCommand} to a {@link CreateUserCommand}
      *

@@ -7,6 +7,7 @@ import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserQueryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,15 +68,18 @@ public class UserReadRestController extends UserRestController {
      *
      * Retrieve an existing user by its id
      *
+     * @param id Id of the user to retrieve
      * @return A JSON payload containing the user
      */
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="Retrieve an existing user by its id")
-    public ResponseEntity<UserDto> GetUser(@PathVariable long id) {
+    public ResponseEntity<UserDto> GetUser(
+            @ApiParam(value = "Id of the user to retrieve")
+            @PathVariable long id) {
         GetUserQuery query = new GetUserQuery(id);
-        
-        User user = userService.getUser(mapper.toUser(query));
+
+        User user = userService.getUser(query);
 
         return ResponseEntity.ok()
                 .body(mapper.toDto(user));
