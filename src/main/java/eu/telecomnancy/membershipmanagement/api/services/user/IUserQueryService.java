@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.services.user;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.queries.GetUserQuery;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 
 import java.util.List;
@@ -15,8 +16,13 @@ import java.util.List;
  */
 public interface IUserQueryService {
 
-    // TODO doc
-    User getUser(User toFind);
+    /**
+     * Retrieve an user by its id
+     *
+     * @param getUserQuery Payload from which performing the search to retrieve a user
+     * @return The user associated with the id
+     */
+    User getUser(GetUserQuery getUserQuery);
 
     /**
      * Retrieve all users of the application

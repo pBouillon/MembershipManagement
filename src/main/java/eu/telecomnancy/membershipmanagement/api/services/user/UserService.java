@@ -2,10 +2,13 @@ package eu.telecomnancy.membershipmanagement.api.services.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.queries.GetUserQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.MembershipManagementException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.MismatchingUserIdException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.UserNotFoundException;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,15 +68,6 @@ public class UserService implements IUserCommandService, IUserQueryService {
      * {@inheritDoc}
      */
     @Override
-    public User getUser(User toFind) {
-        // TODO Check for non-existing ID
-        return userRepository.getOne(toFind.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public User createUser(CreateUserCommand createUserCommand) {
         User created = userRepository.save(
                 mapper.toUser(createUserCommand));
@@ -81,6 +75,26 @@ public class UserService implements IUserCommandService, IUserQueryService {
         log.info("New user created {}", created);
 
         return created;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SneakyThrows
+    @Override
+    public User getUser(GetUserQuery getUserQuery) {
+        long userId = getUserQuery.getId();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    MembershipManagementException ex = new UserNotFoundException(userId);
+                    log.error("Unable to find the user at given id", ex);
+                    return ex;
+                });
+
+        log.info("User retrieved : {}", user);
+
+        return user;
     }
 
     /**
