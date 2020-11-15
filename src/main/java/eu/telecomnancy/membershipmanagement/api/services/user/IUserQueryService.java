@@ -4,6 +4,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.queries.GetUserQuery
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Query part of the UserService
@@ -20,9 +21,9 @@ public interface IUserQueryService {
      * Retrieve an user by its id
      *
      * @param getUserQuery Payload from which performing the search to retrieve a user
-     * @return The user associated with the id
+     * @return An optional user if he exists, no content if not
      */
-    User getUser(GetUserQuery getUserQuery);
+    Optional<User> getUser(GetUserQuery getUserQuery);
 
     /**
      * Retrieve all users of the application

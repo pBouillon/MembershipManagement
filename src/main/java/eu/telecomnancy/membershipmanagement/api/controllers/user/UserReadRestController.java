@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * API controller for the User resource
@@ -74,15 +75,16 @@ public class UserReadRestController extends UserRestController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="Retrieve an existing user by its id")
-    public ResponseEntity<UserDto> GetUser(
+    public ResponseEntity<User> GetUser(
             @ApiParam(value = "Id of the user to retrieve")
             @PathVariable long id) {
         GetUserQuery query = new GetUserQuery(id);
 
-        User user = userService.getUser(query);
+        Optional<User> optionalUser = userService.getUser(query);
 
-        return ResponseEntity.ok()
-                .body(mapper.toDto(user));
+        return optionalUser
+                .map(user -> ResponseEntity.ok().body(user))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

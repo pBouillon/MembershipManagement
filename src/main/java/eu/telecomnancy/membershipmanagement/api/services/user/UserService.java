@@ -6,9 +6,8 @@ import eu.telecomnancy.membershipmanagement.api.controllers.queries.GetUserQuery
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.MembershipManagementException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.IllegalIdException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.MismatchingUserIdException;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.UserNotFoundException;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service to handle user-related operations
@@ -82,19 +82,16 @@ public class UserService implements IUserCommandService, IUserQueryService {
      */
     @SneakyThrows
     @Override
-    public User getUser(GetUserQuery getUserQuery) {
+    public Optional<User> getUser(GetUserQuery getUserQuery) {
         long userId = getUserQuery.getId();
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> {
-                    MembershipManagementException ex = new UserNotFoundException(userId);
-                    log.error("Unable to find the user at given id", ex);
-                    return ex;
-                });
+        // Ensure that the id is superior to 0
+        if (userId < 1) {
+            log.error("Attempted to get a user with a negative or null value {}", userId);
+            throw new IllegalIdException(userId);
+        }
 
-        log.info("User retrieved : {}", user);
-
-        return user;
+        return userRepository.findById(userId);
     }
 
     /**
