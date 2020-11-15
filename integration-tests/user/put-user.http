@@ -1,0 +1,83 @@
+### PUT a new user with a mismatching id should throw an error
+PUT {{ base_uri }}/api/users/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": 2,
+  "age": 23,
+  "name": "Pierre",
+  "firstname": "Bouillon"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+
+  client.assert(
+      response.status === 400,
+      "Response status is not 400");
+
+});
+%}
+
+### PUT a new user should result in its creation
+PUT {{ base_uri }}/api/users/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "age": 23,
+  "name": "Pierre",
+  "firstname": "Bouillon"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+
+  client.assert(
+      response.status === 201,
+      "Response status is not 201");
+
+});
+%}
+
+### PUT the same user should result in its update
+PUT {{ base_uri }}/api/users/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "age": 23,
+  "name": "Pierre",
+  "firstname": "Bouillon"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+
+  client.assert(
+      response.status === 200,
+      "Response status is not 200");
+
+});
+%}
+
+### PUT again the same user should not alter the response
+PUT {{ base_uri }}/api/users/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "age": 23,
+  "name": "Pierre",
+  "firstname": "Bouillon"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+
+  client.assert(
+      response.status === 200,
+      "Response status is not 200");
+
+});
+%}

@@ -1,7 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.exception;
 
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.MembershipManagementException;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,6 +18,24 @@ import java.util.Map;
 @Log4j2
 @RestControllerAdvice
 public class RestExceptionHandler {
+
+    /**
+     * Handle application custom exceptions
+     *
+     * @param exception Application exception
+     * @return The formatted 400 associated
+     */
+    @ResponseBody
+    @ExceptionHandler(value = MembershipManagementException.class)
+    public ResponseEntity<?> handleException(MembershipManagementException exception) {
+        log.error(
+                "{} : {}",
+                exception.getClass().getSimpleName(),
+                exception.getMessage());
+
+        return ResponseEntity.badRequest()
+                .body(exception.getReason());
+    }
 
     /**
      * Handle Hibernate validation exceptions
@@ -40,12 +58,12 @@ public class RestExceptionHandler {
                 });
 
         //noinspection ConstantConditions
-        log.warn(
+        log.error(
                 "Intercepted validation errors for {} with messages : {}",
                 exception.getBindingResult().getTarget().getClass(),
                 errors);
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity.badRequest()
                 .body(errors);
     }
 

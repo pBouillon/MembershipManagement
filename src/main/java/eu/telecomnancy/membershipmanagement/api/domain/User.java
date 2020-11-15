@@ -15,12 +15,24 @@ import java.io.Serializable;
 @Data @NoArgsConstructor
 public class User implements Serializable {
 
+    /**
+     * Maximum age of the user accepted by the system
+     */
     public static final int AGE_MAX = 110;
 
+    /**
+     * Minimal age of the user accepted by the system
+     */
     public static final int AGE_MIN = 0;
 
+    /**
+     * Maximum name length of the user accepted by the system
+     */
     public static final int NAME_MAX_LENGTH = 50;
 
+    /**
+     * Minimum name length of the user accepted by the system
+     */
     public static final int NAME_MIN_LENGTH = 2;
 
     /**
