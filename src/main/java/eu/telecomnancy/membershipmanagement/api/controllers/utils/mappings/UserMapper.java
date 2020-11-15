@@ -40,16 +40,21 @@ public interface UserMapper {
     User toUser(CreateUserCommand command);
 
     /**
-     * TODO
-     * @param command
-     * @return
+     * Convert a {@link UpdateUserCommand} to a {@link CreateUserCommand}
+     *
+     * Used to create instead of replacing a {@link User}
+     * in the {@link eu.telecomnancy.membershipmanagement.api.services.user.UserService}
+     *
+     * @param command Command to be converted
+     * @return The associated command
      */
     CreateUserCommand toCreateUserCommand(UpdateUserCommand command);
 
     /**
-     * TODO
-     * @param command
-     * @param user
+     * Replace the content of a {@link User} by the values held by the {@link UpdateUserCommand}
+     *
+     * @param command Payload holding the new values used to replace the existing ones
+     * @param user User to be replaced
      */
     void updateFromCommand(UpdateUserCommand command, @MappingTarget User user);
 

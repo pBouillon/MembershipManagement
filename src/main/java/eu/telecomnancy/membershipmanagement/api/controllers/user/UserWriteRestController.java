@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.dto.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
@@ -59,7 +60,7 @@ public class UserWriteRestController extends UserRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value="Create a new user with no team")
-    public ResponseEntity<UserDto> Post(
+    public ResponseEntity<UserDto> post(
             @Valid @RequestBody CreateUserCommand createUserCommand) {
         // Create the new user and retrieve the newly created one
         User created = userService.createUser(createUserCommand);
@@ -75,6 +76,26 @@ public class UserWriteRestController extends UserRestController {
         // Return the result with its location
         return ResponseEntity.created(location)
                 .body(mapper.toDto(created));
+    }
+
+    /**
+     * Endpoint for: PUT /users/:id
+     *
+     * Create or replace the user with the specified identifier
+     * See: https://tools.ietf.org/html/rfc2616#page-55
+     *
+     * @return The created or updated resource
+     */
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value="Create or replace an existing user by its id")
+    public ResponseEntity<UserDto> put(
+            @PathVariable long id,
+            @Valid @RequestBody UpdateUserCommand updateUserCommand) {
+        User updated = userService.createOrReplaceUser(id, updateUserCommand);
+
+        return ResponseEntity.ok(
+                mapper.toDto(updated));
     }
 
 }

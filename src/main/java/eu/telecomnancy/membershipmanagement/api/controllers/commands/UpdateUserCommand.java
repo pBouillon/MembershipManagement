@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Command to create or update a new user
+ * Command to create or replace a new user
  *
  * @see eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService
  */
