@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.services.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
@@ -42,6 +43,26 @@ public class UserService implements IUserCommandService, IUserQueryService {
      * {@inheritDoc}
      */
     @Override
+    public User createOrReplaceUser(long userId, UpdateUserCommand command) {
+        // Ensure that the ids are matching
+        if (userId != command.getId()) {
+            IllegalArgumentException exception = new IllegalArgumentException("Id does not match");
+
+            log.error("Attempted to update the user with values {} with a mismatching id {}", command, userId);
+
+            throw exception;
+        }
+
+        // Create the user if he does not exists, replace him otherwise
+        return ! userRepository.existsById(userId)
+                ? createUser(mapper.toCreateUserCommand(command))
+                : updateUser(userId, command);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public User createUser(CreateUserCommand createUserCommand) {
         User created = userRepository.save(
                 mapper.toUser(createUserCommand));
@@ -58,9 +79,22 @@ public class UserService implements IUserCommandService, IUserQueryService {
     public List<User> getUsers() {
         List<User> users = userRepository.findAll();
 
-        log.info("UserService.getUsers : retrieved {} users", users.size());
+        log.info("Retrieved {} users", users.size());
 
         return users;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User updateUser(long userId, UpdateUserCommand command) {
+        User target = userRepository.getOne(userId);
+
+        log.info("Update the user {} to {}", target, command);
+        mapper.updateFromCommand(command, target);
+
+        return userRepository.save(target);
     }
 
 }
