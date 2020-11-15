@@ -4,6 +4,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserC
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +12,6 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,6 +56,42 @@ public class UserServiceTest {
     }
 
     @Test
+    void givenAnyId_WhenUpdatingAnExistingUser_ThenNoExceptionShouldBeThrown() {
+        // Arrange
+        Mockito.when(userRepository.existsById(anyLong()))
+                .thenReturn(true);
+
+        Mockito.when(userRepository.save(any(User.class)))
+                .thenReturn(new User());
+
+        UserService userService = new UserService(userRepository, mapper);
+
+        long targetUserId = 0;
+        UpdateUserCommand command = new UpdateUserCommand();
+
+        // Act + Assert
+        assertDoesNotThrow(()
+                -> userService.updateUser(targetUserId, command));
+    }
+
+    @Test
+    void givenAnyId_WhenUpdatingANonExistingUser_ThenAnUnknownUserExceptionShouldBeThrown() {
+        // Arrange
+        Mockito.when(userRepository.existsById(anyLong()))
+                .thenReturn(false);
+
+        UserService userService = new UserService(userRepository, mapper);
+
+        long targetUserId = 0;
+        UpdateUserCommand command = new UpdateUserCommand();
+
+        // Act + Assert
+        assertThrows(
+                UnknownUserException.class,
+                () -> userService.updateUser(targetUserId, command));
+    }
+
+    @Test
     public void givenAPopulatedDatabase_WhenQueryingAllUsers_ThenAllShouldBeRetrieved() {
         // Arrange
         List<User> storedUsers = Arrays.asList(
@@ -73,68 +109,6 @@ public class UserServiceTest {
 
         // Assert
         assertEquals(users, storedUsers);
-    }
-
-    @Test
-    void givenMatchingId_WhenUpdatingAnExistingUser_ThenTheReturnedCreatedFlagShouldBeFalse() {
-        // Arrange
-        Mockito.when(userRepository.existsById(anyLong()))
-                .thenReturn(true);
-
-        Mockito.when(userRepository.getOne(anyLong()))
-                .thenReturn(new User());
-
-        Mockito.when(userRepository.save(any(User.class)))
-                .thenReturn(new User());
-
-        UserService userService = new UserService(userRepository, mapper);
-
-        long targetUserId = 0;
-        UpdateUserCommand command = new UpdateUserCommand();
-
-        // Act
-        Pair<User, Boolean> result = userService.createOrReplaceUser(targetUserId, command);
-
-        // Assert
-        boolean isCreated = result.getSecond();
-        assertFalse(isCreated);
-    }
-
-    @Test
-    void givenMatchingId_WhenUpdatingANonExistingUser_ThenTheReturnedCreatedFlagShouldBeTrue() {
-        // Arrange
-        Mockito.when(userRepository.existsById(anyLong()))
-                .thenReturn(false);
-
-        Mockito.when(userRepository.save(any(User.class)))
-                .thenReturn(new User());
-
-        UserService userService = new UserService(userRepository, mapper);
-
-        long targetUserId = 0;
-        UpdateUserCommand command = new UpdateUserCommand();
-
-        // Act
-        Pair<User, Boolean> result = userService.createOrReplaceUser(targetUserId, command);
-
-        // Assert
-        boolean isCreated = result.getSecond();
-        assertTrue(isCreated);
-    }
-
-    @Test void givenMismatchingId_WhenAttemptingToUpdateTheUser_AnExceptionMustBeThrown() {
-        // Arrange
-        UserService userService = new UserService(userRepository, mapper);
-
-        long targetUserId = 1;
-
-        UpdateUserCommand command = new UpdateUserCommand();
-        command.setId(targetUserId + 1);
-
-        // Act + Assert
-        assertThrows(
-                RuntimeException.class,
-                () -> userService.updateUser(targetUserId, command));
     }
 
 }

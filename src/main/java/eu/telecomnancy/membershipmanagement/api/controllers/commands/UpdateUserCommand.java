@@ -18,12 +18,6 @@ import javax.validation.constraints.Size;
 public class UpdateUserCommand {
 
     /**
-     * Id of the targeted user
-     */
-    @Range(min = 0)
-    private long id;
-
-    /**
      * Age of the user
      */
     @Range(min = User.AGE_MIN, max = User.AGE_MAX)
