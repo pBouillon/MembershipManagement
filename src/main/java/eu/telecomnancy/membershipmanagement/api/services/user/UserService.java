@@ -5,6 +5,8 @@ import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserC
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.MismatchingUserIdException;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -44,12 +46,13 @@ public class UserService implements IUserCommandService, IUserQueryService {
      * {@inheritDoc}
      * @return
      */
+    @SneakyThrows
     @Override
     public Pair<User, Boolean> createOrReplaceUser(long userId, UpdateUserCommand command) {
         // Ensure that the ids are matching
         if (userId != command.getId()) {
             log.error("Attempted to update the user with values {} with the mismatching id {}", command, userId);
-            throw new RuntimeException("Id does not match");
+            throw new MismatchingUserIdException(userId, command.getId());
         }
 
         // Create the user if he does not exists, replace him otherwise
