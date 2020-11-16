@@ -1,4 +1,4 @@
-package eu.telecomnancy.membershipmanagement.api.controllers.queries;
+package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.queries;
 
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserQueryService;
 import lombok.AllArgsConstructor;
