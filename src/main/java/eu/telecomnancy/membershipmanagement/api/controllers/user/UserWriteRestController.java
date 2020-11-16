@@ -8,7 +8,6 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserM
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
-import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -62,8 +61,7 @@ public class UserWriteRestController extends UserRestController {
      * @return No content
      */
     @DeleteMapping(path = "/{id}",
-            consumes = MediaType.ALL_VALUE,
-            produces = MediaType.ALL_VALUE)
+            consumes = MediaType.ALL_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete a user")
     public ResponseEntity<?> delete(
@@ -73,7 +71,7 @@ public class UserWriteRestController extends UserRestController {
             userService.deleteUser(id);
         } catch (UnknownUserException ex) {
             // Return HTTP 404 NOT FOUND if the user is not known by the system
-            ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
 
         // Return HTTP 204 NO CONTENT on a successful deletion
