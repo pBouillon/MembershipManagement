@@ -7,7 +7,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.queries.G
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service to handle user-related operations
+ * Service to handle {@link User}-related operations
  */
 @Log4j2
 @Service

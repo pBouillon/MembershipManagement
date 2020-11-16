@@ -6,7 +6,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

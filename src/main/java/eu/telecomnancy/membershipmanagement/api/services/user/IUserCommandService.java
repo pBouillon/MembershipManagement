@@ -4,7 +4,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 
 /**
  * Command part of the UserService
