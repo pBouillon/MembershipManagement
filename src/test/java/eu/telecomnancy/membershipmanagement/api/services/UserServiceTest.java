@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.services;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.commands.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
@@ -56,10 +57,52 @@ public class UserServiceTest {
     }
 
     @Test
+    void givenAnyId_WhenPatchingAnExistingUser_ThenNoExceptionShouldBeThrown() {
+        // Arrange
+        Mockito.when(userRepository.existsById(anyLong()))
+                .thenReturn(true);
+
+        Mockito.when(userRepository.getOne(anyLong()))
+                .thenReturn(new User());
+
+        Mockito.when(userRepository.save(any(User.class)))
+                .thenReturn(new User());
+
+        UserService userService = new UserService(userRepository, mapper);
+
+        long targetUserId = 0;
+        PatchUserCommand command = new PatchUserCommand();
+
+        // Act + Assert
+        assertDoesNotThrow(()
+                -> userService.patchUser(targetUserId, command));
+    }
+
+    @Test
+    void givenAnyId_WhenPatchingANonExistingUser_ThenAnUnknownUserExceptionShouldBeThrown() {
+        // Arrange
+        Mockito.when(userRepository.existsById(anyLong()))
+                .thenReturn(false);
+
+        UserService userService = new UserService(userRepository, mapper);
+
+        long targetUserId = 0;
+        PatchUserCommand command = new PatchUserCommand();
+
+        // Act + Assert
+        assertThrows(
+                UnknownUserException.class,
+                () -> userService.patchUser(targetUserId, command));
+    }
+
+    @Test
     void givenAnyId_WhenUpdatingAnExistingUser_ThenNoExceptionShouldBeThrown() {
         // Arrange
         Mockito.when(userRepository.existsById(anyLong()))
                 .thenReturn(true);
+
+        Mockito.when(userRepository.getOne(anyLong()))
+                .thenReturn(new User());
 
         Mockito.when(userRepository.save(any(User.class)))
                 .thenReturn(new User());
