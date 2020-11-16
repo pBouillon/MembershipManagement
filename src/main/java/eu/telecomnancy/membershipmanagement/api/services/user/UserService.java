@@ -7,8 +7,6 @@ import eu.telecomnancy.membershipmanagement.api.controllers.queries.GetUserQuery
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.IllegalIdException;
-import lombok.SneakyThrows;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,18 +76,16 @@ public class UserService implements IUserCommandService, IUserQueryService {
     /**
      * {@inheritDoc}
      */
-    @SneakyThrows
     @Override
     public Optional<User> getUser(GetUserQuery getUserQuery) {
         long userId = getUserQuery.getId();
+        Optional<User> optionalUser = userRepository.findById(userId);
 
-        // Ensure that the id is superior to 0
-        if (userId < 1) {
-            log.error("Attempted to get a user with a negative or null value {}", userId);
-            throw new IllegalIdException(userId);
-        }
+        optionalUser.ifPresentOrElse(
+                user -> log.info("Retrieved user {} from id {}", user, userId),
+                () -> log.warn("Unable to retrieve a user with id {}", userId));
 
-        return userRepository.findById(userId);
+        return optionalUser;
     }
 
     /**
