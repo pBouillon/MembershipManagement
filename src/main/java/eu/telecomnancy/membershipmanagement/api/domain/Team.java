@@ -45,6 +45,11 @@ public class Team {
         this.name = name;
     }
 
+    /**
+     * Check whether or not the team is complete
+     *
+     * @return true if the team is complete; false otherwise
+     */
     public boolean isTeamComplete() {
         return members.size() == MAX_MEMBERS;
     }
