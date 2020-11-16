@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.commands.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.dto.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
@@ -52,6 +53,41 @@ public class UserWriteRestController extends UserRestController {
     }
 
     /**
+     * Endpoint for: PATCH /users/:id
+     *
+     * Partially update a user with the specified identifier if it exists
+     *
+     * @return The JSON of the updated user as {@link UserDto}
+     */
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Partially update a user",
+            notes = """
+                    The PATCH can be perform surgically by specifying only the fields that you would like to update.
+
+                    Missing fields will be ignored""",
+            response = UserDto.class)
+    public ResponseEntity<?> patch(
+            @ApiParam(value = "Id of the targeted user")
+            @PathVariable long id,
+            @ApiParam(value = "Fields to update")
+            @Valid @RequestBody PatchUserCommand patchUserCommand) {
+        // Retrieve the new user and its creation status
+        User user;
+
+        try {
+            user = userService.patchUser(id, patchUserCommand);
+        } catch (UnknownUserException ex) {
+            // Return HTTP 404 NOT FOUND if the user is not known by the system
+            return ResponseEntity.notFound().build();
+        }
+
+        // Return HTTP 200 OK if the user has been updated
+        return ResponseEntity.ok(mapper.toDto(user));
+    }
+
+
+    /**
      * Endpoint for: POST /users
      *
      * Create a new user with no team
@@ -68,23 +104,15 @@ public class UserWriteRestController extends UserRestController {
         // Create the new user and retrieve the newly created one
         User created = userService.createUser(createUserCommand);
 
-        // Return the result with its location
-        return ResponseEntity.created(getUserLocation(created))
-                .body(mapper.toDto(created));
-    }
-
-    /**
-     * Create the user location
-     *
-     * @param user User to locate
-     * @return The URI inthe API in which the resource is accessible
-     */
-    private URI getUserLocation(User user) {
-        return ServletUriComponentsBuilder
+        URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(user.getId())
+                .buildAndExpand(created.getId())
                 .toUri();
+
+        // Return the result with its location
+        return ResponseEntity.created(location)
+                .body(mapper.toDto(created));
     }
 
     /**
@@ -96,7 +124,8 @@ public class UserWriteRestController extends UserRestController {
      */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="Replace an existing user by its id")
+    @ApiOperation(value="Replace an existing user by its id",
+            response = UserDto.class)
     public ResponseEntity<?> put(
             @ApiParam(value = "Id of the targeted user")
             @PathVariable long id,
@@ -108,6 +137,7 @@ public class UserWriteRestController extends UserRestController {
         try {
             user = userService.updateUser(id, updateUserCommand);
         } catch (UnknownUserException ex) {
+            // Return HTTP 404 NOT FOUND if the user is not known by the system
             return ResponseEntity.notFound().build();
         }
 

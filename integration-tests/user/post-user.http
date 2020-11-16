@@ -4,19 +4,11 @@ Content-Type: application/json
 
 {
   "age": 24,
-  "name": "Pierre",
-  "firstname": "Bouillon"
+  "name": "Bouillon",
+  "firstname": "Pierre"
 }
 
-> {%
-client.test("Request executed successfully", function() {
-
-  client.assert(
-      response.status === 201,
-      "Response status is not 201");
-
-});
-%}
+> {% client.assert(response.status === 201); %}
 
 ### POST a new user with the same values
 POST {{ base_uri }}/api/users/ HTTP/1.1
@@ -24,19 +16,11 @@ Content-Type: application/json
 
 {
   "age": 24,
-  "name": "Pierre",
-  "firstname": "Bouillon"
+  "name": "Bouillon",
+  "firstname": "Pierre"
 }
 
-> {%
-client.test("Request executed successfully", function() {
-
-  client.assert(
-      response.status === 201,
-      "Response status is not 201");
-
-});
-%}
+> {% client.assert(response.status === 201); %}
 
 ### POST a new user with an invalid age (< min)
 POST {{ base_uri }}/api/users/ HTTP/1.1
@@ -44,19 +28,11 @@ Content-Type: application/json
 
 {
   "age": -1,
-  "name": "Pierre",
-  "firstname": "Bouillon"
+  "name": "Bouillon",
+  "firstname": "Pierre"
 }
 
-> {%
-client.test("Request successfully rejected", function() {
-
-  client.assert(
-      response.status === 400,
-      "Response status is not 400");
-
-});
-%}
+> {% client.assert(response.status === 400); %}
 
 ### POST a new user with an invalid age (> max)
 POST {{ base_uri }}/api/users/ HTTP/1.1
@@ -64,19 +40,11 @@ Content-Type: application/json
 
 {
   "age": 111,
-  "name": "Pierre",
-  "firstname": "Bouillon"
+  "name": "Bouillon",
+  "firstname": "Pierre"
 }
 
-> {%
-client.test("Request successfully rejected", function() {
-
-  client.assert(
-      response.status === 400,
-      "Response status is not 400");
-
-});
-%}
+> {% client.assert(response.status === 400); %}
 
 ### POST a new user with an empty name
 POST {{ base_uri }}/api/users/ HTTP/1.1
@@ -85,18 +53,10 @@ Content-Type: application/json
 {
   "age": 24,
   "name": "",
-  "firstname": "Bouillon"
+  "firstname": "Pierre"
 }
 
-> {%
-client.test("Request successfully rejected", function() {
-
-  client.assert(
-      response.status === 400,
-      "Response status is not 400");
-
-});
-%}
+> {% client.assert(response.status === 400); %}
 
 ### POST a new user with a blank name
 POST {{ base_uri }}/api/users/ HTTP/1.1
@@ -105,18 +65,10 @@ Content-Type: application/json
 {
   "age": 24,
   "name": "             ",
-  "firstname": "Bouillon"
+  "firstname": "Pierre"
 }
 
-> {%
-client.test("Request successfully rejected", function() {
-
-  client.assert(
-      response.status === 400,
-      "Response status is not 400");
-
-});
-%}
+> {% client.assert(response.status === 400); %}
 
 ### POST a new user with a name too long
 POST {{ base_uri }}/api/users/ HTTP/1.1
@@ -125,18 +77,10 @@ Content-Type: application/json
 {
   "age": 24,
   "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "firstname": "Bouillon"
+  "firstname": "Pierre"
 }
 
-> {%
-client.test("Request successfully rejected", function() {
-
-  client.assert(
-      response.status === 400,
-      "Response status is not 400");
-
-});
-%}
+> {% client.assert(response.status === 400); %}
 
 ### POST a new user with an empty firstname
 POST {{ base_uri }}/api/users/ HTTP/1.1
@@ -144,19 +88,11 @@ Content-Type: application/json
 
 {
   "age": 24,
-  "name": "Victor",
+  "name": "Varnier",
   "firstname": ""
 }
 
-> {%
-client.test("Request successfully rejected", function() {
-
-  client.assert(
-      response.status === 400,
-      "Response status is not 400");
-
-});
-%}
+> {% client.assert(response.status === 400); %}
 
 ### POST a new user with a blank firstname
 POST {{ base_uri }}/api/users/ HTTP/1.1
@@ -164,19 +100,11 @@ Content-Type: application/json
 
 {
   "age": 24,
-  "name": "Victor",
+  "name": "Varnier",
   "firstname": "          "
 }
 
-> {%
-client.test("Request successfully rejected", function() {
-
-  client.assert(
-      response.status === 400,
-      "Response status is not 400");
-
-});
-%}
+> {% client.assert(response.status === 400); %}
 
 ### POST a new user with a firstname too long
 POST {{ base_uri }}/api/users/ HTTP/1.1
@@ -184,25 +112,8 @@ Content-Type: application/json
 
 {
   "age": 24,
-  "name": "Victor",
+  "name": "Varnier",
   "firstname": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 }
 
-> {%
-client.test("Request successfully rejected", function() {
-
-  client.assert(
-      response.status === 400,
-      "Response status is not 400");
-
-});
-%}
-
-
-
-
-
-
-
-
-
+> {% client.assert(response.status === 400); %}
