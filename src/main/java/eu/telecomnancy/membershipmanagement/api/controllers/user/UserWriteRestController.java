@@ -52,16 +52,38 @@ public class UserWriteRestController extends UserRestController {
         this.userService = userService;
     }
 
+    /**
+     * Endpoint for: PATCH /users/:id
+     *
+     * Partially update a user with the specified identifier if it exists
+     *
+     * @return The JSON of the updated user as {@link UserDto}
+     */
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Partially update a user")
-    public ResponseEntity<UserDto> patch(
+    @ApiOperation(value = "Partially update a user",
+            notes = """
+                    The PATCH can be perform surgically by specifying only the fields that you would like to update.
+
+                    Missing fields will be ignored""",
+            response = UserDto.class)
+    public ResponseEntity<?> patch(
             @ApiParam(value = "Id of the targeted user")
             @PathVariable long id,
-            @ApiParam(value = "Fields to update, only non-null fields will be replaced")
+            @ApiParam(value = "Fields to update")
             @Valid @RequestBody PatchUserCommand patchUserCommand) {
-        // TODO: patch logic
-        return ResponseEntity.ok().body(new UserDto());
+        // Retrieve the new user and its creation status
+        User user;
+
+        try {
+            user = userService.patchUser(id, patchUserCommand);
+        } catch (UnknownUserException ex) {
+            // Return HTTP 404 NOT FOUND if the user is not known by the system
+            return ResponseEntity.notFound().build();
+        }
+
+        // Return HTTP 200 OK if the user has been updated
+        return ResponseEntity.ok(mapper.toDto(user));
     }
 
 
@@ -102,7 +124,8 @@ public class UserWriteRestController extends UserRestController {
      */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="Replace an existing user by its id")
+    @ApiOperation(value="Replace an existing user by its id",
+            response = UserDto.class)
     public ResponseEntity<?> put(
             @ApiParam(value = "Id of the targeted user")
             @PathVariable long id,
@@ -114,6 +137,7 @@ public class UserWriteRestController extends UserRestController {
         try {
             user = userService.updateUser(id, updateUserCommand);
         } catch (UnknownUserException ex) {
+            // Return HTTP 404 NOT FOUND if the user is not known by the system
             return ResponseEntity.notFound().build();
         }
 
