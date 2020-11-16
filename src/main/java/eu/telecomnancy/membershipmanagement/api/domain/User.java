@@ -45,7 +45,7 @@ public class User implements Serializable {
     /**
      * Age of the user
      */
-    private int age;
+    private Integer age;
 
     /**
      * Firstname of the user

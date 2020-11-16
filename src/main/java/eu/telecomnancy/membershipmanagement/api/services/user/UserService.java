@@ -1,17 +1,17 @@
 package eu.telecomnancy.membershipmanagement.api.services.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.commands.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.queries.GetUserQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.IllegalIdException;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.MismatchingUserIdException;
 import lombok.SneakyThrows;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,25 +47,6 @@ public class UserService implements IUserCommandService, IUserQueryService {
 
     /**
      * {@inheritDoc}
-     * @return
-     */
-    @SneakyThrows
-    @Override
-    public Pair<User, Boolean> createOrReplaceUser(long userId, UpdateUserCommand command) {
-        // Ensure that the ids are matching
-        if (userId != command.getId()) {
-            log.error("Attempted to update the user with values {} with the mismatching id {}", command, userId);
-            throw new MismatchingUserIdException(userId, command.getId());
-        }
-
-        // Create the user if he does not exists, replace him otherwise
-        return ! userRepository.existsById(userId)
-                ? Pair.of(createUser(mapper.toCreateUserCommand(command)), true)
-                : Pair.of(updateUser(userId, command), false);
-    }
-
-    /**
-     * {@inheritDoc}
      */
     @Override
     public User createUser(CreateUserCommand createUserCommand) {
@@ -75,6 +56,23 @@ public class UserService implements IUserCommandService, IUserQueryService {
         log.info("New user created {}", created);
 
         return created;
+    }
+
+    /**
+     * Check whether or not a user exists at the given id
+     *
+     * @param userId If of the user to check
+     * @throws UnknownUserException If there is no user for the provided id
+     */
+    private void ensureUserIsExisting(long userId)
+            throws UnknownUserException {
+        if (userRepository.existsById(userId)) {
+            return;
+        }
+
+        // If the user does not exists, throw an exception
+        log.error("Unknown user of id {}", userId);
+        throw new UnknownUserException(userId);
     }
 
     /**
@@ -110,12 +108,46 @@ public class UserService implements IUserCommandService, IUserQueryService {
      * {@inheritDoc}
      */
     @Override
-    public User updateUser(long userId, UpdateUserCommand command) {
+    public User patchUser(long userId, PatchUserCommand command)
+            throws UnknownUserException {
+        // If the user does not exists, throw an exception
+        ensureUserIsExisting(userId);
+
+        // Retrieve the user to update
         User target = userRepository.getOne(userId);
 
+        // Perform the update
+        log.info("Patch the user {} with {}", target, command);
+
+        mapper.updateFromUser(
+                mapper.toUser(command), target);
+
+        log.info("Patched user: {}", target);
+
+        // Return the saved instance
+        return userRepository.save(target);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User updateUser(long userId, UpdateUserCommand command)
+            throws UnknownUserException {
+        // If the user does not exists, throw an exception
+        ensureUserIsExisting(userId);
+
+        // Retrieve the user to update
+        User target = userRepository.getOne(userId);
+
+        // Perform the update
         log.info("Update the user {} to {}", target, command);
+
         mapper.updateFromCommand(command, target);
 
+        log.info("Updated user: {}", target);
+
+        // Return the saved instance
         return userRepository.save(target);
     }
 

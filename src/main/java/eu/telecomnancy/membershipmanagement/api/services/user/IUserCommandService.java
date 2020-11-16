@@ -1,9 +1,10 @@
 package eu.telecomnancy.membershipmanagement.api.services.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.commands.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
-import org.springframework.data.util.Pair;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
 
 /**
  * Command part of the UserService
@@ -20,15 +21,16 @@ import org.springframework.data.util.Pair;
 public interface IUserCommandService {
 
     /**
-     * Create or replace a {@link User} by its id
-     * If no user exists at the provided id, create it; otherwise, replace it
+     * Partially update a {@link User} given a specific payload
+     * All concrete values containing data will be used for replacement and empty ones will be noop
      *
      * @param userId Id of the targeted user
-     * @param command Payload holding the data to replace the existing ones
-     * @return A pair containing the new state of the user (created or replaced) as key
-     * and true if he as been created; false otherwise
+     * @param command Payload holding the data to perform the patch
+     * @return The user with the updated values
+     * @throws UnknownUserException If the given id does not correspond to any stored {@link User}
      */
-    Pair<User, Boolean> createOrReplaceUser(long userId, UpdateUserCommand command);
+    User patchUser(long userId, PatchUserCommand command)
+            throws UnknownUserException;
 
     /**
      * Store a new {@link User} in the database from the provided command
@@ -44,7 +46,9 @@ public interface IUserCommandService {
      * @param userId Id of the targeted user
      * @param command Payload holding the data to replace the existing ones
      * @return The user with the updated values
+     * @throws UnknownUserException If the given id does not correspond to any stored {@link User}
      */
-    User updateUser(long userId, UpdateUserCommand command);
+    User updateUser(long userId, UpdateUserCommand command)
+            throws UnknownUserException;
 
 }
