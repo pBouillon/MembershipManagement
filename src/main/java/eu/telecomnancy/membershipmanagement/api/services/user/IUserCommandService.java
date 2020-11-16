@@ -21,6 +21,15 @@ import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserE
 public interface IUserCommandService {
 
     /**
+     * Delete a {@link User}
+     *
+     * @param userId Id of the user to delete
+     * @throws UnknownUserException If the given id does not correspond to any stored {@link User}
+     */
+    void deleteUser(long userId)
+        throws UnknownUserException;
+
+    /**
      * Partially update a {@link User} given a specific payload
      * All concrete values containing data will be used for replacement and empty ones will be noop
      *
