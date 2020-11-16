@@ -4,7 +4,6 @@ import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserC
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.dto.UserDto;
-import eu.telecomnancy.membershipmanagement.api.controllers.queries.GetUserQuery;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import org.mapstruct.*;
 

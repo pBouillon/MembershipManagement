@@ -2,29 +2,14 @@
 GET {{ base_uri }}/api/users/-5 HTTP/1.1
 Accept: application/json
 
-> {%
-client.test("Request executed successfully", function() {
+> {% client.assert(response.status === 404); %}
 
-  client.assert(
-      response.status === 400,
-      "Response status is not 200");
-
-});
-%}
 
 ### Get an user that doesn't exist
-GET {{ base_uri }}/api/users/1 HTTP/1.1
+GET {{ base_uri }}/api/users/{{ id }} HTTP/1.1
 Accept: application/json
 
-> {%
-client.test("Request executed successfully", function() {
-
-  client.assert(
-      response.status === 404,
-      "Response status is not 200");
-
-});
-%}
+> {% client.assert(response.status === 404); %}
 
 ### POST a new user (Note: this test is composed of the POST and GET tests hereunder)
 POST {{ base_uri }}/api/users/ HTTP/1.1
@@ -37,15 +22,7 @@ Content-Type: application/json
 }
 
 ### GET a created user
-GET {{ base_uri }}/api/users/1 HTTP/1.1
+GET {{ base_uri }}/api/users/{{ id }} HTTP/1.1
 Accept: application/json
 
-> {%
-client.test("Request executed successfully", function() {
-
-  client.assert(
-      response.status === 200,
-      "Response status is 200");
-
-});
-%}
+> {% client.assert(response.status === 200); %}

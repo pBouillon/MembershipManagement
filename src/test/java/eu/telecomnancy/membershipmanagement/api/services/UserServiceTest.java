@@ -111,7 +111,6 @@ public class UserServiceTest {
 
         long targetUserId = 0;
         UpdateUserCommand command = new UpdateUserCommand();
-        command.setId(targetUserId);
 
         // Act + Assert
         assertDoesNotThrow(()
@@ -128,7 +127,6 @@ public class UserServiceTest {
 
         long targetUserId = 0;
         UpdateUserCommand command = new UpdateUserCommand();
-        command.setId(targetUserId);
 
         // Act + Assert
         assertThrows(

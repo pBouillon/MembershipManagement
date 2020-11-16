@@ -75,7 +75,7 @@ public class UserReadRestController extends UserRestController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="Retrieve an existing user by its id")
-    public ResponseEntity<User> GetUser(
+    public ResponseEntity<User> getUser(
             @ApiParam(value = "Id of the user to retrieve")
             @PathVariable long id) {
         GetUserQuery query = new GetUserQuery(id);
