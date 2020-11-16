@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.services.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.commands.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
@@ -20,14 +21,15 @@ import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserE
 public interface IUserCommandService {
 
     /**
-     * Given his id, replace the details of an existing {@link User}
+     * Partially update a {@link User} given a specific payload
+     * All concrete values containing data will be used for replacement and empty ones will be noop
      *
      * @param userId Id of the targeted user
-     * @param command Payload holding the data to replace the existing ones
+     * @param command Payload holding the data to perform the patch
      * @return The user with the updated values
      * @throws UnknownUserException If the given id does not correspond to any stored {@link User}
      */
-    User updateUser(long userId, UpdateUserCommand command)
+    User patchUser(long userId, PatchUserCommand command)
             throws UnknownUserException;
 
     /**
@@ -37,5 +39,16 @@ public interface IUserCommandService {
      * @return The user newly created
      */
     User createUser(CreateUserCommand command);
+
+    /**
+     * Given his id, replace the details of an existing {@link User}
+     *
+     * @param userId Id of the targeted user
+     * @param command Payload holding the data to replace the existing ones
+     * @return The user with the updated values
+     * @throws UnknownUserException If the given id does not correspond to any stored {@link User}
+     */
+    User updateUser(long userId, UpdateUserCommand command)
+            throws UnknownUserException;
 
 }
