@@ -57,6 +57,21 @@ public class UserServiceTest {
     }
 
     @Test
+    void givenAnyId_WhenDeletingANonExistingUser_ThenAnUnknownUserExceptionShouldBeThrown() {
+        // Arrange
+        Mockito.when(userRepository.existsById(anyLong()))
+                .thenReturn(false);
+
+        long targetUserId = 0;
+        UserService userService = new UserService(userRepository, mapper);
+
+        // Act + Assert
+        assertThrows(
+                UnknownUserException.class,
+                () -> userService.deleteUser(targetUserId));
+    }
+
+    @Test
     void givenAnyId_WhenPatchingAnExistingUser_ThenNoExceptionShouldBeThrown() {
         // Arrange
         Mockito.when(userRepository.existsById(anyLong()))
