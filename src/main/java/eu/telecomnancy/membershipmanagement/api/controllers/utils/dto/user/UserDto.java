@@ -1,4 +1,4 @@
-package eu.telecomnancy.membershipmanagement.api.controllers.utils.dto;
+package eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;

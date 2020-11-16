@@ -28,14 +28,14 @@ public class UserService implements IUserCommandService, IUserQueryService {
     protected final UserMapper mapper;
 
     /**
-     * Repository to access the `User` entity in the database
+     * Repository to access the {@link User} entity in the database
      */
     private final UserRepository userRepository;
 
     /**
      * Create a new instance of the UserService
      *
-     * @param userRepository Repository to access the `User` entity in the database
+     * @param userRepository Repository to access the {@link User} entity in the database
      */
     @Autowired
     public UserService(UserRepository userRepository, UserMapper mapper) {
