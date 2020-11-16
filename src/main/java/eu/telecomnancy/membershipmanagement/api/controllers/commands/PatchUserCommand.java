@@ -6,12 +6,12 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Optional;
 
 /**
  * Command to partially update a new user
+ * Since the update can be partial, all fields may or may not contain any value
  *
  * @see eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService
  */
@@ -28,15 +28,13 @@ public class PatchUserCommand {
     /**
      * Firstname of the user
      */
-    private Optional<@NotBlank
-                @Size(min = User.NAME_MIN_LENGTH, max = User.NAME_MAX_LENGTH) String> firstname
+    private Optional<@Size(min = User.NAME_MIN_LENGTH, max = User.NAME_MAX_LENGTH) String> firstname
             = Optional.empty();
 
     /**
      * Name of the user
      */
-    private Optional<@NotBlank
-                @Size(min = User.NAME_MIN_LENGTH, max = User.NAME_MAX_LENGTH) String> name
+    private Optional<@Size(min = User.NAME_MIN_LENGTH, max = User.NAME_MAX_LENGTH) String> name
             = Optional.empty();
 
 }
