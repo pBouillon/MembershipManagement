@@ -6,6 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+import java.util.List;
+
 /**
  * Team and TeamDto mapper utility
  */
@@ -21,5 +23,13 @@ public interface TeamMapper {
      */
     @Mapping(target = "complete", expression = "java( team.isTeamComplete() )")
     TeamDto toDto(Team team);
+
+    /**
+     * Convert {@link Team} entities to a list of {@link TeamDto}
+     *
+     * @param teams Entities to be converted
+     * @return A list containing the associated DTOs
+     */
+    List<TeamDto> toDtoList(List<Team> teams);
 
 }
