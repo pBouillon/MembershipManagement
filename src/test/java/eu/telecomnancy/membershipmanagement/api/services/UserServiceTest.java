@@ -5,7 +5,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
