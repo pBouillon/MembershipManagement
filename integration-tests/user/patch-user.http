@@ -1,0 +1,114 @@
+### PATCH a non-existing user
+PATCH {{base_uri}}/api/users/{{id}}
+Accept: application/json
+Content-Type: application/json
+
+{ }
+
+> {% client.assert(response.status === 404); %}
+
+### Create the user
+POST {{ base_uri }}/api/users/ HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "age": 24,
+  "name": "Bouillon",
+  "firstname": "Pierre"
+}
+
+### PATCH this user with no values
+PATCH {{base_uri}}/api/users/{{id}}
+Accept: application/json
+Content-Type: application/json
+
+{ }
+
+> {% client.assert(response.status === 200); %}
+
+### PATCH this user with only the age
+PATCH {{base_uri}}/api/users/{{id}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "age": 23
+}
+
+> {% client.assert(response.status === 200); %}
+
+### PATCH this user with only the name
+PATCH {{base_uri}}/api/users/{{id}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Varnier"
+}
+
+> {% client.assert(response.status === 200); %}
+
+
+### PATCH this user with only the firstname
+PATCH {{base_uri}}/api/users/{{id}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "firstname": "Victor"
+}
+
+> {% client.assert(response.status === 200); %}
+
+
+### PATCH this user with the age and the name
+PATCH {{base_uri}}/api/users/{{id}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "age": 23,
+  "name": "Varnier"
+}
+
+> {% client.assert(response.status === 200); %}
+
+
+### PATCH this user with the age and the firstname
+PATCH {{base_uri}}/api/users/{{id}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "age": 24,
+  "firstname": "Victor"
+}
+
+> {% client.assert(response.status === 200); %}
+
+
+### PATCH this user with the name and the firstname
+PATCH {{base_uri}}/api/users/{{id}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Varnier",
+  "firstname": "Victor"
+}
+
+> {% client.assert(response.status === 200); %}
+
+### PATCH this user with all the fields
+PATCH {{base_uri}}/api/users/{{id}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "age": 23,
+  "name": "Varnier",
+  "firstname": "Victor"
+}
+
+> {% client.assert(response.status === 200); %}
