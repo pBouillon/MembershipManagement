@@ -8,11 +8,13 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserM
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
+import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -29,8 +31,8 @@ import java.net.URI;
 @RestController
 @RequestMapping(
         path = "/api/users",
-        produces = "application/json",
-        consumes = "application/json")
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
 @Api(value = "User", tags = { UserRestController.CONTROLLER_TAG })
 public class UserWriteRestController extends UserRestController {
 
@@ -50,6 +52,32 @@ public class UserWriteRestController extends UserRestController {
         super(mapper);
 
         this.userService = userService;
+    }
+
+    /**
+     * Endpoint for: DELETE /users/:id
+     *
+     * Delete a user with the specified identifier if it exists
+     *
+     * @return No content
+     */
+    @DeleteMapping(path = "/{id}",
+            consumes = MediaType.ALL_VALUE,
+            produces = MediaType.ALL_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "Delete a user")
+    public ResponseEntity<?> delete(
+            @ApiParam(value = "Id of the targeted user")
+            @PathVariable long id) {
+        try {
+            userService.deleteUser(id);
+        } catch (UnknownUserException ex) {
+            // Return HTTP 404 NOT FOUND if the user is not known by the system
+            ResponseEntity.notFound().build();
+        }
+
+        // Return HTTP 204 NO CONTENT on a successful deletion
+        return ResponseEntity.noContent().build();
     }
 
     /**
