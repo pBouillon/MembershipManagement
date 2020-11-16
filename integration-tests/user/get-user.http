@@ -1,0 +1,28 @@
+### GET an user with an invalid id
+GET {{ base_uri }}/api/users/-5 HTTP/1.1
+Accept: application/json
+
+> {% client.assert(response.status === 404); %}
+
+
+### Get an user that doesn't exist
+GET {{ base_uri }}/api/users/{{ id }} HTTP/1.1
+Accept: application/json
+
+> {% client.assert(response.status === 404); %}
+
+### POST a new user (Note: this test is composed of the POST and GET tests hereunder)
+POST {{ base_uri }}/api/users/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "age": 24,
+  "name": "Pierre",
+  "firstname": "Bouillon"
+}
+
+### GET a created user
+GET {{ base_uri }}/api/users/{{ id }} HTTP/1.1
+Accept: application/json
+
+> {% client.assert(response.status === 200); %}

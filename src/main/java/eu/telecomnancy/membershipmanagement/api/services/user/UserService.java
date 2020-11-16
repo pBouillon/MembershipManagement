@@ -3,6 +3,7 @@ package eu.telecomnancy.membershipmanagement.api.services.user;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.queries.GetUserQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service to handle user-related operations
@@ -69,6 +71,21 @@ public class UserService implements IUserCommandService, IUserQueryService {
         // If the user does not exists, throw an exception
         log.error("Unknown user of id {}", userId);
         throw new UnknownUserException(userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<User> getUser(GetUserQuery getUserQuery) {
+        long userId = getUserQuery.getId();
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        optionalUser.ifPresentOrElse(
+                user -> log.info("Retrieved user {} from id {}", user, userId),
+                () -> log.warn("Unable to retrieve a user with id {}", userId));
+
+        return optionalUser;
     }
 
     /**
