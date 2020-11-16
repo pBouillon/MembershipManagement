@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.commands.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.commands.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.dto.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
@@ -49,6 +50,18 @@ public class UserWriteRestController extends UserRestController {
         super(mapper);
 
         this.userService = userService;
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Partially update a user")
+    public ResponseEntity<UserDto> patch(
+            @ApiParam(value = "Id of the targeted user")
+            @PathVariable long id,
+            @ApiParam(value = "Fields to update, only non-null fields will be replaced")
+            @Valid @RequestBody PatchUserCommand patchUserCommand) {
+        // TODO: patch logic
+        return ResponseEntity.ok().body(new UserDto());
     }
 
 
