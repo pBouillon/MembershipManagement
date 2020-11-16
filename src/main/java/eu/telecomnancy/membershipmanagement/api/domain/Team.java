@@ -3,9 +3,8 @@ package eu.telecomnancy.membershipmanagement.api.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Represent a team in the system
@@ -13,6 +12,11 @@ import javax.persistence.Id;
 @Entity
 @Data @NoArgsConstructor
 public class Team {
+
+    /**
+     * Maximum number of members in the team
+     */
+    public static final int MAX_MEMBERS = 8;
 
     /**
      * Team id used for the persistence
@@ -27,12 +31,22 @@ public class Team {
     private String name;
 
     /**
+     * Members of the team
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<User> members;
+
+    /**
      * Create a team from its information
      *
      * @param name Team's name
      */
     public Team(String name) {
         this.name = name;
+    }
+
+    public boolean isTeamComplete() {
+        return members.size() == MAX_MEMBERS;
     }
 
 }

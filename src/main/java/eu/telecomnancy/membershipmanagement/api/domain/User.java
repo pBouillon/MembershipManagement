@@ -3,9 +3,7 @@ package eu.telecomnancy.membershipmanagement.api.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -56,6 +54,12 @@ public class User implements Serializable {
      * Name of the user
      */
     private String name;
+
+    /**
+     * User's team
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Team team;
 
     /**
      * Create a user from its information
