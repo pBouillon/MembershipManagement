@@ -51,6 +51,7 @@ public class UserWriteRestController extends UserRestController {
         this.userService = userService;
     }
 
+
     /**
      * Endpoint for: POST /users
      *
@@ -68,23 +69,15 @@ public class UserWriteRestController extends UserRestController {
         // Create the new user and retrieve the newly created one
         User created = userService.createUser(createUserCommand);
 
-        // Return the result with its location
-        return ResponseEntity.created(getUserLocation(created))
-                .body(mapper.toDto(created));
-    }
-
-    /**
-     * Create the user location
-     *
-     * @param user User to locate
-     * @return The URI inthe API in which the resource is accessible
-     */
-    private URI getUserLocation(User user) {
-        return ServletUriComponentsBuilder
+        URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(user.getId())
+                .buildAndExpand(created.getId())
                 .toUri();
+
+        // Return the result with its location
+        return ResponseEntity.created(location)
+                .body(mapper.toDto(created));
     }
 
     /**
