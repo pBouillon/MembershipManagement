@@ -57,9 +57,24 @@ public class UserService implements IUserCommandService, IUserQueryService {
     }
 
     /**
+     * Delete a user at the given id
+     *
+     * @param userId Id of the user to delete
+     * @throws UnknownUserException If there is no user for the provided id
+     */
+    public void deleteUser(long userId)
+            throws UnknownUserException {
+        ensureUserIsExisting(userId);
+
+        userRepository.deleteById(userId);
+
+        log.info("User of id {} successfully deleted", userId);
+    }
+
+    /**
      * Check whether or not a user exists at the given id
      *
-     * @param userId If of the user to check
+     * @param userId Id of the user to check
      * @throws UnknownUserException If there is no user for the provided id
      */
     private void ensureUserIsExisting(long userId)

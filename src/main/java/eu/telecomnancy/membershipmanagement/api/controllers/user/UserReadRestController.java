@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping(
         path = "/api/users",
-        produces = "application/json")
+        produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(value = "User", tags = { UserRestController.CONTROLLER_TAG })
 public class UserReadRestController extends UserRestController {
 
