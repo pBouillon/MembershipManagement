@@ -4,6 +4,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.Crea
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
@@ -91,8 +92,8 @@ public class TeamWriteRestController extends TeamRestController {
     @PostMapping("/{id}/members")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create a new member in the team from an existing user",
-            response = TeamDto.class)
-    public ResponseEntity<TeamDto> postMember(
+            response = TeamMembersDto.class)
+    public ResponseEntity<TeamMembersDto> postMember(
             @ApiParam(value = "Id of the team in which the user will be added as a member")
             @PathVariable long id,
             @ApiParam(value = "Payload from which the user will be added as a member")
@@ -109,7 +110,7 @@ public class TeamWriteRestController extends TeamRestController {
 
         // Return the result with its location
         return ResponseEntity.created(location)
-                .body(mapper.toDto(team));
+                .body(mapper.toMembersDto(team));
     }
 
     /**
