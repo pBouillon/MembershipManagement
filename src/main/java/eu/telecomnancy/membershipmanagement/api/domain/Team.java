@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class Team {
      * Members of the team
      */
     @OneToMany(fetch = FetchType.LAZY)
-    private List<User> members;
+    private List<User> members = new ArrayList<>();
 
     /**
      * Create a team from its information
