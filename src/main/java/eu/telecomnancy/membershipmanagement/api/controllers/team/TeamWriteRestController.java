@@ -64,8 +64,7 @@ public class TeamWriteRestController extends TeamRestController {
             @ApiParam(value = "Payload from which creating the team")
             @Valid @RequestBody CreateTeamCommand createTeamCommand) {
         // Create the new team and retrieve the newly created one
-        // TODO: service call
-        Team created = new Team();
+        Team created = teamService.createTeam(createTeamCommand);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

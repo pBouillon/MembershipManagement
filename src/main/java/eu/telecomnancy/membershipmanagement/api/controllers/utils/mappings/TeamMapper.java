@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import org.mapstruct.Mapper;
@@ -31,5 +32,13 @@ public interface TeamMapper {
      * @return A list containing the associated DTOs
      */
     List<TeamDto> toDtoList(List<Team> teams);
+
+    /**
+     * Convert a {@link CreateTeamCommand} to a {@link Team}
+     *
+     * @param command Command to be converted
+     * @return The associated User
+     */
+    Team toTeam(CreateTeamCommand command);
 
 }
