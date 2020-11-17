@@ -19,6 +19,16 @@ public class Team {
     public static final int MAX_MEMBERS = 8;
 
     /**
+     * Maximum name length of the team accepted by the system
+     */
+    public static final int NAME_MAX_LENGTH = 50;
+
+    /**
+     * Maximum name length of the team accepted by the system
+     */
+    public static final int NAME_MIN_LENGTH = 3;
+
+    /**
      * Team id used for the persistence
      */
     @Id

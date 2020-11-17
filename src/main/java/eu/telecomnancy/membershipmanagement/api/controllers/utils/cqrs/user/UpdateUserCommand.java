@@ -1,4 +1,4 @@
-package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands;
+package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import lombok.Getter;
@@ -10,12 +10,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Command to create a new user
+ * Command to create or replace a new user
  *
  * @see eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService
  */
 @Getter @Setter @ToString
-public class CreateUserCommand {
+public class UpdateUserCommand {
 
     /**
      * Age of the user

@@ -1,6 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.user;
 
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.queries.GetUserQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.GetUserQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.User;

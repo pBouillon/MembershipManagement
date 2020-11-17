@@ -1,4 +1,4 @@
-package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands;
+package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import lombok.Getter;

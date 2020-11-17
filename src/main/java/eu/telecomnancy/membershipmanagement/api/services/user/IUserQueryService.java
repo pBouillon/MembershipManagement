@@ -1,6 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.services.user;
 
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.queries.GetUserQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.GetUserQuery;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 
 import java.util.List;
