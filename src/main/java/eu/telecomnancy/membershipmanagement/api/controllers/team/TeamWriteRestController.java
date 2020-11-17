@@ -1,7 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
@@ -95,19 +95,18 @@ public class TeamWriteRestController extends TeamRestController {
             @ApiParam(value = "Id of the targeted team")
             @PathVariable long id,
             @ApiParam(value = "Payload from which the team details will be replaced")
-            @Valid @RequestBody UpdateUserCommand updateTeamCommand) {
+            @Valid @RequestBody UpdateTeamCommand updateTeamCommand) {
         // Retrieve the team
         Team team;
 
         try {
-            // TODO: service call
-            team = new Team();
+            team = teamService.updateTeam(id, updateTeamCommand);
         } catch (UnknownUserException ex) {
-            // Return HTTP 404 NOT FOUND if the user is not known by the system
+            // Return HTTP 404 NOT FOUND if the team is not known by the system
             return ResponseEntity.notFound().build();
         }
 
-        // Return HTTP 200 OK if the user has been updated
+        // Return HTTP 200 OK if the team has been updated
         return ResponseEntity.ok(mapper.toDto(team));
     }
 

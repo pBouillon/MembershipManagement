@@ -6,6 +6,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamD
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
@@ -49,5 +50,13 @@ public interface TeamMapper {
      * @return The associated User
      */
     Team toTeam(UpdateTeamCommand command);
+
+    /**
+     * Replace the content of a {@link Team} by the values held by the {@link UpdateTeamCommand}
+     *
+     * @param command Payload holding the new values used to replace the existing ones
+     * @param team Team to be replaced
+     */
+    void updateFromCommand(UpdateTeamCommand command, @MappingTarget Team team);
 
 }
