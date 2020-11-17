@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.DeleteUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
@@ -67,8 +68,9 @@ public class UserWriteRestController extends UserRestController {
     public ResponseEntity<?> delete(
             @ApiParam(value = "Id of the targeted user")
             @PathVariable long id) {
+        DeleteUserCommand command = new DeleteUserCommand(id);
         try {
-            userService.deleteUser(id);
+            userService.deleteUser(command);
         } catch (UnknownUserException ex) {
             // Return HTTP 404 NOT FOUND if the user is not known by the system
             return ResponseEntity.notFound().build();

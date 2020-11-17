@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.services.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.DeleteUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
@@ -23,10 +24,10 @@ public interface IUserCommandService {
     /**
      * Delete a {@link User}
      *
-     * @param userId Id of the user to delete
+     * @param command Payload holding the data to delete
      * @throws UnknownUserException If the given id does not correspond to any stored {@link User}
      */
-    void deleteUser(long userId)
+    void deleteUser(DeleteUserCommand command)
         throws UnknownUserException;
 
     /**

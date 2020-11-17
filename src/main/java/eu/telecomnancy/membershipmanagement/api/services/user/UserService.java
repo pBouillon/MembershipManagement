@@ -1,9 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.services.user;
 
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.CreateUserCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.PatchUserCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.GetUserQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.*;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
@@ -57,13 +54,11 @@ public class UserService implements IUserCommandService, IUserQueryService {
     }
 
     /**
-     * Delete a user at the given id
-     *
-     * @param userId Id of the user to delete
-     * @throws UnknownUserException If there is no user for the provided id
+     * {@inheritDoc}
      */
-    public void deleteUser(long userId)
+    public void deleteUser(DeleteUserCommand deleteUserCommand)
             throws UnknownUserException {
+        long userId = deleteUserCommand.getId();
         ensureUserIsExisting(userId);
 
         userRepository.deleteById(userId);

@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.services;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.DeleteUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
@@ -64,11 +65,12 @@ public class UserServiceTest {
 
         long targetUserId = 0;
         UserService userService = new UserService(userRepository, mapper);
+        DeleteUserCommand command = new DeleteUserCommand(targetUserId);
 
         // Act + Assert
         assertThrows(
                 UnknownUserException.class,
-                () -> userService.deleteUser(targetUserId));
+                () -> userService.deleteUser(command));
     }
 
     @Test
