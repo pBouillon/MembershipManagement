@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.services.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
@@ -26,6 +27,15 @@ public interface ITeamCommandService {
      * @return The team newly created
      */
     Team createTeam(CreateTeamCommand command);
+
+    /**
+     * Create a new team member from an existing user
+     *
+     * @param teamId Id of the team in which the member will be created
+     * @param command Payload containing the data on the member to create
+     * @return The team in its new state
+     */
+    Team createTeamMember(long teamId, CreateTeamMemberCommand command);
 
     /**
      * Given his id, replace the details of an existing {@link Team}

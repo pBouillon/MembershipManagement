@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.services.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
@@ -52,6 +53,15 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
          log.info("New team created {}", created);
 
          return created;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Team createTeamMember(long teamId, CreateTeamMemberCommand command) {
+        // TODO: creation logic
+        return new Team();
     }
 
     /**
