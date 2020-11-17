@@ -1,9 +1,9 @@
 package eu.telecomnancy.membershipmanagement.api.services.user;
 
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.CreateUserCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.PatchUserCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.UpdateUserCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.queries.GetUserQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.PatchUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.GetUserQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.User;

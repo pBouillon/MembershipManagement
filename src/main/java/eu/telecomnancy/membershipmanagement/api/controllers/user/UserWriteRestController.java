@@ -1,8 +1,8 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.user;
 
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.CreateUserCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.PatchUserCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.commands.UpdateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.CreateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.PatchUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
@@ -118,7 +118,7 @@ public class UserWriteRestController extends UserRestController {
      *
      * Create a new user with no team
      *
-     * @param createUserCommand A JSON payload containing all the users
+     * @param createUserCommand A JSON payload containing the new user's data
      * @return A JSON payload containing all the users
      */
     @PostMapping

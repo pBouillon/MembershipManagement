@@ -1,5 +1,8 @@
 package eu.telecomnancy.membershipmanagement.api.services.team;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
+import eu.telecomnancy.membershipmanagement.api.domain.Team;
+
 /**
  * Command part of the TeamService
  * Specify the write-only commands
@@ -12,4 +15,14 @@ package eu.telecomnancy.membershipmanagement.api.services.team;
  *
  * @see TeamService
  */
-public interface ITeamCommandService { }
+public interface ITeamCommandService {
+
+    /**
+     * Store a new {@link Team} in the database from the provided command
+     *
+     * @param command Payload to create the team
+     * @return The team newly created
+     */
+    Team createTeam(CreateTeamCommand command);
+
+}

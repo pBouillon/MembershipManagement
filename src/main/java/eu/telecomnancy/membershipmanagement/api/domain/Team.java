@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,16 @@ public class Team {
      * Maximum number of members in the team
      */
     public static final int MAX_MEMBERS = 8;
+
+    /**
+     * Maximum name length of the team accepted by the system
+     */
+    public static final int NAME_MAX_LENGTH = 50;
+
+    /**
+     * Maximum name length of the team accepted by the system
+     */
+    public static final int NAME_MIN_LENGTH = 3;
 
     /**
      * Team id used for the persistence
@@ -34,7 +45,7 @@ public class Team {
      * Members of the team
      */
     @OneToMany(fetch = FetchType.LAZY)
-    private List<User> members;
+    private List<User> members = new ArrayList<>();
 
     /**
      * Create a team from its information
