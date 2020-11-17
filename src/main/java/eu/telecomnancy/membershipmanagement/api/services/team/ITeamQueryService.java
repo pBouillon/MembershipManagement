@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface ITeamQueryService {
 
     /**
-     * Retrieve an team by its id
+     * Retrieve a team by its id
      *
      * @param getTeamQuery Payload from which performing the search to retrieve a team
      * @return An optional team if it exists, no content if not

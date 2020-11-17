@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Query to get an team by its id
+ * Query to get a team by its id
  *
  * @see ITeamQueryService
  */
