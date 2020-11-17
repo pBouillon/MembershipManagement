@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.services.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service to handle {@link Team}-related operations
@@ -49,6 +51,21 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
          log.info("New team created {}", created);
 
          return created;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Team> getTeam(GetTeamQuery getTeamQuery) {
+        long teamId = getTeamQuery.getId();
+        Optional<Team> optionalTeam= teamRepository.findById(teamId);
+
+        optionalTeam.ifPresentOrElse(
+                team -> log.info("Retrieved team {} from id {}", team, teamId),
+                () -> log.warn("Unable to retrieve a team with id {}", teamId));
+
+        return optionalTeam;
     }
 
     /**
