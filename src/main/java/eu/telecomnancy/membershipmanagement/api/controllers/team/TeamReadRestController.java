@@ -10,10 +10,12 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserM
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamQueryService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,17 +63,23 @@ public class TeamReadRestController extends TeamRestController {
      * @return A JSON payload containing the team
      */
     @GetMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="Retrieve a team by its id")
+    @Operation(summary = "Retrieve an existing team by its id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Team successfully retrieved",
+                            content = @Content(
+                                    schema = @Schema(implementation = TeamDto.class)
+                            )),
+                    @ApiResponse(responseCode = "404", description = "Team not found")
+            })
     public ResponseEntity<TeamDetailsDto> getTeam(
             @ApiParam(value = "Id of the team to retrieve")
             @PathVariable long id) {
         GetTeamQuery query = new GetTeamQuery(id);
 
-        return teamService.getTeam(query)
-                .map(team -> ResponseEntity.ok()
-                        .body(teamMapper.toDetailsDto(team)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Team team = teamService.getTeam(query);
+
+        return ResponseEntity.ok()
+                .body(teamMapper.toDetailsDto(team));
     }
 
     /**
@@ -83,9 +91,14 @@ public class TeamReadRestController extends TeamRestController {
      * @return A JSON payload containing the team
      */
     @GetMapping(path = "/{id}/members")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="Retrieve the team members by its id",
-            response = TeamMembersDto.class)
+    @Operation(summary = " Retrieve the team members by its id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Members successfully retrieved",
+                            content = @Content(
+                                    schema = @Schema(implementation = TeamMembersDto.class)
+                            )),
+                    @ApiResponse(responseCode = "404", description = "Team not found")
+            })
     public ResponseEntity<?> getTeamMembers(
             @ApiParam(value = "Id of the team in which the members to retrieve are")
             @PathVariable long id) {
@@ -105,8 +118,10 @@ public class TeamReadRestController extends TeamRestController {
      * @return A JSON payload containing all the teams
      */
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="Retrieve all teams tracked by the system")
+    @Operation(summary = "Retrieve all teams of the system",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Teams successfully retrieved")
+            })
     public ResponseEntity<List<TeamDto>> get() {
         List<Team> teams = teamService.getTeams();
 

@@ -7,16 +7,20 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserM
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserQueryService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * API controller for the User resource
@@ -57,8 +61,10 @@ public class UserReadRestController extends UserRestController {
      * @return A JSON payload containing all the users
      */
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="Retrieve all users tracked by the system")
+    @Operation(summary = "Retrieve all users tracked by the system",
+             responses = {
+                     @ApiResponse(responseCode = "200", description = "Users successfully retrieved")
+             })
     public ResponseEntity<List<UserDto>> get() {
         List<User> users = userService.getUsers();
 
@@ -75,19 +81,23 @@ public class UserReadRestController extends UserRestController {
      * @return A JSON payload containing the user
      */
     @GetMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="Retrieve an existing user by its id")
+    @Operation(summary = "Retrieve an existing user by its id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User successfully retrieved",
+                            content = @Content(
+                                    schema = @Schema(implementation = UserDto.class)
+                            )),
+                    @ApiResponse(responseCode = "404", description = "User not found")
+            })
     public ResponseEntity<UserDetailsDto> getUser(
             @ApiParam(value = "Id of the user to retrieve")
             @PathVariable long id) {
         GetUserQuery query = new GetUserQuery(id);
 
-        Optional<User> optionalUser = userService.getUser(query);
+        User user = userService.getUser(query);
 
-        return optionalUser
-                .map(user -> ResponseEntity.ok()
-                        .body(mapper.toDetailsDto(user)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok()
+                .body(mapper.toDetailsDto(user));
     }
 
 }

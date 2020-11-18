@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.exception;
 
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.MembershipManagementException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.UnknownEntityException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -27,14 +28,31 @@ public class RestExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(value = MembershipManagementException.class)
-    public ResponseEntity<?> handleException(MembershipManagementException exception) {
+    public ResponseEntity<?> handleMembershipManagementException(MembershipManagementException exception) {
         log.error(
-                "{} : {}",
+                "BAD REQUEST | {} : {}",
                 exception.getClass().getSimpleName(),
                 exception.getMessage());
 
         return ResponseEntity.badRequest()
                 .body(exception.getReason());
+    }
+
+    /**
+     * Handle application custom exceptions on missing entities
+     *
+     * @param exception Application exception
+     * @return A formatted 404 error
+     */
+    @ResponseBody
+    @ExceptionHandler(value = UnknownEntityException.class)
+    public ResponseEntity<?> handleUnknownMemberException(UnknownEntityException exception) {
+        log.error(
+                "NOT FOUND | {} : {}",
+                exception.getClass().getSimpleName(),
+                exception.getMessage());
+
+        return ResponseEntity.notFound().build();
     }
 
     /**
@@ -46,7 +64,7 @@ public class RestExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
 
         exception.getBindingResult()
@@ -59,7 +77,7 @@ public class RestExceptionHandler {
 
         //noinspection ConstantConditions
         log.error(
-                "Intercepted validation errors for {} with messages : {}",
+                "VALIDATION | Intercepted validation errors for {} with messages : {}",
                 exception.getBindingResult().getTarget().getClass(),
                 errors);
 

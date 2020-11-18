@@ -6,7 +6,7 @@ import eu.telecomnancy.membershipmanagement.api.services.exceptions.MembershipMa
 /**
  * Custom exception occurring when attempting to remove a user from a team he does not belong to
  */
-public class UnknownMemberException extends MembershipManagementException {
+public class UserNotAMemberOfTheTeamException extends MembershipManagementException {
 
     /**
      * Create the exception from the id and the team
@@ -14,9 +14,8 @@ public class UnknownMemberException extends MembershipManagementException {
      * @param userId Id the user causing the issue
      * @param team Team in which he should have been removed
      */
-    public UnknownMemberException(long userId, Team team) {
-        super(String.format(
-                "Unable to remove the user of id %d from the team %s because he does not belong to is", userId, team));
+    public UserNotAMemberOfTheTeamException(long userId, Team team) {
+        super(String.format("The user of id %d does not belong to the team %s", userId, team));
     }
 
 }

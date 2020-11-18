@@ -26,7 +26,7 @@ public interface ITeamQueryService {
      * @return An optional team if it exists, no content if not
      * @throws UnknownTeamException If the given id does not correspond to any stored {@link Team}
      */
-    Optional<Team> getTeam(GetTeamQuery getTeamQuery)
+    Team getTeam(GetTeamQuery getTeamQuery)
             throws UnknownTeamException;
 
     /**
