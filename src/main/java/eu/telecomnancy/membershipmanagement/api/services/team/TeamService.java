@@ -94,7 +94,7 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
     @Override
     public void removeMemberFromTeam(DeleteTeamMemberCommand command)
             throws UnknownTeamException, UnknownUserException {
-        // Check if the team can have a new member
+        // Retrieve the team and its members
         long memberId = command.getMemberId();
         Team team = retrieveTeamById(command.getTeamId());
 
