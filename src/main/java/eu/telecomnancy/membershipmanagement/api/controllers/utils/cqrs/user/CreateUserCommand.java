@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
 import eu.telecomnancy.membershipmanagement.api.domain.User;
+import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,7 +13,7 @@ import javax.validation.constraints.Size;
 /**
  * Command to create a new user
  *
- * @see eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService
+ * @see IUserCommandService
  */
 @Getter @Setter @ToString
 public class CreateUserCommand {

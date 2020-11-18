@@ -5,21 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+
 /**
- * Command to remove a user from an existing team
+ * Command to delete a team
  *
  * @see ITeamCommandService
  */
 @Getter @Setter @AllArgsConstructor
-public class DeleteTeamMemberCommand {
+public class DeleteTeamCommand {
 
     /**
-     * Id of the user to be removed from the team
-     */
-    private final long memberId;
-
-    /**
-     * Id of the team in which the member will be removed
+     * Id of the team to delete
      */
     private final long teamId;
 

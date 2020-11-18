@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team;
 
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
+import eu.telecomnancy.membershipmanagement.api.services.team.ITeamCommandService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,9 +10,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Command to replace a Team
+ * Command to replace a team
  *
- * @see eu.telecomnancy.membershipmanagement.api.services.team.ITeamCommandService
+ * @see ITeamCommandService
  */
 @Getter @Setter @ToString
 public class UpdateTeamCommand {

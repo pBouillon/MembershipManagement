@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
 import eu.telecomnancy.membershipmanagement.api.domain.User;
+import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +14,7 @@ import java.util.Optional;
  * Command to partially update a new user
  * Since the update can be partial, all fields may or may not contain any value
  *
- * @see eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService
+ * @see IUserCommandService
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Getter @Setter @ToString

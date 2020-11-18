@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
+import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import lombok.ToString;
 /**
  * Command to delete a user
  *
- * @see eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService
+ * @see IUserCommandService
  */
 @Getter
 @Setter
