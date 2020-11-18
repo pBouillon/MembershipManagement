@@ -2,6 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.controllers.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.DeleteTeamMemberCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
@@ -70,6 +71,10 @@ public class TeamWriteRestController extends TeamRestController {
             @PathVariable long teamId,
             @ApiParam(value = "Id of the user to be removed from the team")
             @PathVariable long memberId) {
+        DeleteTeamMemberCommand deleteTeamMemberCommand = new DeleteTeamMemberCommand(memberId, teamId);
+
+        teamService.removeMemberFromTeam(deleteTeamMemberCommand);
+
         return ResponseEntity.noContent().build();
     }
 

@@ -93,7 +93,7 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
     @Override
     public void removeMemberFromTeam(DeleteTeamMemberCommand command)
             throws UnknownTeamException, UnknownUserException {
-        
+
     }
 
     /**
