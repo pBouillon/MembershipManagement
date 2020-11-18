@@ -4,7 +4,6 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.Crea
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import org.mapstruct.*;
 
@@ -43,14 +42,6 @@ public interface TeamMapper {
      * @return A list containing the associated DTOs
      */
     List<TeamDto> toDtoList(List<Team> teams);
-
-    /**
-     * Convert a {@link Team} to a {@link TeamMembersDto}
-     *
-     * @param team) Team to be converted
-     * @return The associated MembersDto
-     */
-    TeamMembersDto toMembersDto(Team team);
 
     /**
      * Convert a {@link CreateTeamCommand} to a {@link Team}
