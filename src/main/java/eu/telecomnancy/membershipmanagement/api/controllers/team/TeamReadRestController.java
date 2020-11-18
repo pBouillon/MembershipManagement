@@ -84,7 +84,7 @@ public class TeamReadRestController extends TeamRestController {
      */
     @GetMapping(path = "/{id}/members")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="Retrieve a team by its id",
+    @ApiOperation(value="Retrieve the team members by its id",
             response = TeamMembersDto.class)
     public ResponseEntity<?> getTeamMembers(
             @ApiParam(value = "Id of the team in which the members to retrieve are")
