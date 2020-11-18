@@ -114,7 +114,6 @@ public class UserWriteRestController extends UserRestController {
         return ResponseEntity.ok(mapper.toDto(user));
     }
 
-
     /**
      * Endpoint for: POST /users
      *
@@ -125,7 +124,8 @@ public class UserWriteRestController extends UserRestController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value="Create a new user with no team")
+    @ApiOperation(value="Create a new user with no team",
+            response = UserDto.class)
     public ResponseEntity<UserDto> post(
             @ApiParam(value = "Payload from which creating the user")
             @Valid @RequestBody CreateUserCommand createUserCommand) {
@@ -159,7 +159,6 @@ public class UserWriteRestController extends UserRestController {
             @PathVariable long id,
             @ApiParam(value = "Payload from which the user details will be replaced")
             @Valid @RequestBody UpdateUserCommand updateUserCommand) {
-        // Retrieve the new user and its creation status
         User user;
 
         try {

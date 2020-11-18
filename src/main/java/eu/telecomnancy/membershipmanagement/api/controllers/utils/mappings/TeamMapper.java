@@ -1,10 +1,13 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
@@ -34,11 +37,27 @@ public interface TeamMapper {
     List<TeamDto> toDtoList(List<Team> teams);
 
     /**
+     * Convert a {@link Team} to a {@link TeamMembersDto}
+     *
+     * @param team) Team to be converted
+     * @return The associated MembersDto
+     */
+    TeamMembersDto toMembersDto(Team team);
+
+    /**
      * Convert a {@link CreateTeamCommand} to a {@link Team}
      *
      * @param command Command to be converted
-     * @return The associated User
+     * @return The associated Team
      */
     Team toTeam(CreateTeamCommand command);
+
+    /**
+     * Replace the content of a {@link Team} by the values held by the {@link UpdateTeamCommand}
+     *
+     * @param command Payload holding the new values used to replace the existing ones
+     * @param team Team to be replaced
+     */
+    void updateFromCommand(UpdateTeamCommand command, @MappingTarget Team team);
 
 }

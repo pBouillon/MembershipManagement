@@ -3,8 +3,10 @@ package eu.telecomnancy.membershipmanagement.api.services.user;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.*;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
+import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UserAlreadyInATeamException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,30 @@ public class UserService implements IUserCommandService, IUserQueryService {
     }
 
     /**
+     * Add a user to a team
+     *
+     * @param userId Id of the user to add to the team
+     * @param team Team that will welcome the new user
+     * @return The user newly added
+     * @throws UnknownUserException If there is no user for the provided id
+     */
+    public User addToTeam(long userId, Team team)
+            throws UnknownUserException {
+        // Retrieve the user
+        User user = retrieveUserById(userId);
+
+        // Check if the user can join the team and doesn't not already has one
+        if (user.isMemberOfATeam()) {
+            log.error("The user {} already has a team and can't join the team {}", user, team);
+            throw new UserAlreadyInATeamException(user, team);
+        }
+
+        // Perform the addition
+        user.setTeam(team);
+        return userRepository.save(user);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -58,29 +84,11 @@ public class UserService implements IUserCommandService, IUserQueryService {
      */
     public void deleteUser(DeleteUserCommand deleteUserCommand)
             throws UnknownUserException {
-        long userId = deleteUserCommand.getId();
-        ensureUserIsExisting(userId);
+        retrieveUserById(userId);
 
         userRepository.deleteById(userId);
 
         log.info("User of id {} successfully deleted", userId);
-    }
-
-    /**
-     * Check whether or not a user exists at the given id
-     *
-     * @param userId Id of the user to check
-     * @throws UnknownUserException If there is no user for the provided id
-     */
-    private void ensureUserIsExisting(long userId)
-            throws UnknownUserException {
-        if (userRepository.existsById(userId)) {
-            return;
-        }
-
-        // If the user does not exists, throw an exception
-        log.error("Unknown user of id {}", userId);
-        throw new UnknownUserException(userId);
     }
 
     /**
@@ -116,11 +124,8 @@ public class UserService implements IUserCommandService, IUserQueryService {
     @Override
     public User patchUser(long userId, PatchUserCommand command)
             throws UnknownUserException {
-        // If the user does not exists, throw an exception
-        ensureUserIsExisting(userId);
-
         // Retrieve the user to update
-        User target = userRepository.getOne(userId);
+        User target = retrieveUserById(userId);
 
         // Perform the update
         log.info("Patch the user {} with {}", target, command);
@@ -133,6 +138,20 @@ public class UserService implements IUserCommandService, IUserQueryService {
         // Return the saved instance
         return userRepository.save(target);
     }
+    /**
+     * Try to retrieve a user by its id
+     *
+     * @param userId Id of the user to check
+     * @throws UnknownUserException If there is no user for the provided id
+     */
+    public User retrieveUserById(long userId)
+            throws UnknownUserException {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    log.error("Unknown user of id {}", userId);
+                    return new UnknownUserException(userId);
+                });
+    }
 
     /**
      * {@inheritDoc}
@@ -140,11 +159,8 @@ public class UserService implements IUserCommandService, IUserQueryService {
     @Override
     public User updateUser(long userId, UpdateUserCommand command)
             throws UnknownUserException {
-        // If the user does not exists, throw an exception
-        ensureUserIsExisting(userId);
-
         // Retrieve the user to update
-        User target = userRepository.getOne(userId);
+        User target = retrieveUserById(userId);
 
         // Perform the update
         log.info("Update the user {} to {}", target, command);

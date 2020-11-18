@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,8 +61,8 @@ public class UserServiceTest {
     @Test
     void givenAnyId_WhenDeletingANonExistingUser_ThenAnUnknownUserExceptionShouldBeThrown() {
         // Arrange
-        Mockito.when(userRepository.existsById(anyLong()))
-                .thenReturn(false);
+        Mockito.when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
 
         long targetUserId = 0;
         UserService userService = new UserService(userRepository, mapper);
@@ -76,11 +77,8 @@ public class UserServiceTest {
     @Test
     void givenAnyId_WhenPatchingAnExistingUser_ThenNoExceptionShouldBeThrown() {
         // Arrange
-        Mockito.when(userRepository.existsById(anyLong()))
-                .thenReturn(true);
-
-        Mockito.when(userRepository.getOne(anyLong()))
-                .thenReturn(new User());
+        Mockito.when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.of(new User()));
 
         Mockito.when(userRepository.save(any(User.class)))
                 .thenReturn(new User());
@@ -98,8 +96,8 @@ public class UserServiceTest {
     @Test
     void givenAnyId_WhenPatchingANonExistingUser_ThenAnUnknownUserExceptionShouldBeThrown() {
         // Arrange
-        Mockito.when(userRepository.existsById(anyLong()))
-                .thenReturn(false);
+        Mockito.when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
 
         UserService userService = new UserService(userRepository, mapper);
 
@@ -115,11 +113,8 @@ public class UserServiceTest {
     @Test
     void givenAnyId_WhenUpdatingAnExistingUser_ThenNoExceptionShouldBeThrown() {
         // Arrange
-        Mockito.when(userRepository.existsById(anyLong()))
-                .thenReturn(true);
-
-        Mockito.when(userRepository.getOne(anyLong()))
-                .thenReturn(new User());
+        Mockito.when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.of(new User()));
 
         Mockito.when(userRepository.save(any(User.class)))
                 .thenReturn(new User());
@@ -137,8 +132,8 @@ public class UserServiceTest {
     @Test
     void givenAnyId_WhenUpdatingANonExistingUser_ThenAnUnknownUserExceptionShouldBeThrown() {
         // Arrange
-        Mockito.when(userRepository.existsById(anyLong()))
-                .thenReturn(false);
+        Mockito.when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
 
         UserService userService = new UserService(userRepository, mapper);
 

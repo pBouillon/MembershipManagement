@@ -2,9 +2,16 @@ package eu.telecomnancy.membershipmanagement.api.services.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
+import eu.telecomnancy.membershipmanagement.api.domain.User;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.TeamAlreadyCompleteException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
+import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,14 +37,44 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
     private final TeamRepository teamRepository;
 
     /**
+     * Injected UserService used to update the membership of the users
+     */
+    private final UserService userService;
+
+    /**
      * Create a new instance of the TeamService
      *
      * @param teamRepository Repository to access the {@link Team} entity in the database
      */
     @Autowired
-    public TeamService(TeamRepository teamRepository, TeamMapper mapper) {
+    public TeamService(TeamRepository teamRepository, UserService userService, TeamMapper mapper) {
         this.mapper = mapper;
         this.teamRepository = teamRepository;
+        this.userService = userService;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Team addTeamMember(long teamId, CreateTeamMemberCommand command)
+            throws UnknownTeamException, UnknownUserException {
+        // Check if the team can have a new member
+        Team team = retrieveTeamById(teamId);
+
+        if (team.isTeamComplete()) {
+            log.error("The team {} is full and can't have any other member", team);
+            throw new TeamAlreadyCompleteException();
+        }
+
+        // Add the user to the team members
+        User user = userService.addToTeam(
+                command.getMemberToAddId(), team);
+
+        log.info("User {} successfully added to the members of the team {}", user, team);
+
+        // Return the result
+        return team;
     }
 
     /**
@@ -51,6 +88,21 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
          log.info("New team created {}", created);
 
          return created;
+    }
+
+    /**
+     * Try to retrieve a team by its id
+     *
+     * @param teamId Id of the team to check
+     * @throws UnknownTeamException If there is no team for the provided id
+     */
+    public Team retrieveTeamById(long teamId)
+            throws UnknownTeamException {
+        return teamRepository.findById(teamId)
+                .orElseThrow(() -> {
+                    log.error("Unknown team of id {}", teamId);
+                    return new UnknownTeamException(teamId);
+                });
     }
 
     /**
@@ -78,6 +130,26 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
         log.info("Retrieved {} teams", teams.size());
 
         return teams;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Team updateTeam(long teamId, UpdateTeamCommand command)
+            throws UnknownTeamException {
+        // Retrieve the user to update
+        Team target = retrieveTeamById(teamId);
+
+        // Perform the update
+        log.info("Update the team {} to {}", target, command);
+
+        mapper.updateFromCommand(command, target);
+
+        log.info("Updated team: {}", target);
+
+        // Return the saved instance
+        return teamRepository.save(target);
     }
 
 }
