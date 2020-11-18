@@ -176,6 +176,15 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
      * {@inheritDoc}
      */
     @Override
+    public Team getTeamMembers(GetTeamMembersQuery getTeamMembersQuery)
+            throws UnknownTeamException {
+        return new Team();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Team> getTeams() {
         List<Team> teams = teamRepository.findAll();
 
