@@ -10,10 +10,12 @@ import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,12 +65,16 @@ public class UserWriteRestController extends UserRestController {
      */
     @DeleteMapping(path = "/{id}",
             consumes = MediaType.ALL_VALUE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "Delete a user")
+    @Operation(summary = "Delete a user",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "User successfully deleted"),
+                    @ApiResponse(responseCode = "404", description = "User not found")
+            })
     public ResponseEntity<?> delete(
             @ApiParam(value = "Id of the targeted user")
             @PathVariable long id) {
         DeleteUserCommand command = new DeleteUserCommand(id);
+
         try {
             userService.deleteUser(command);
         } catch (UnknownUserException ex) {
@@ -88,13 +94,19 @@ public class UserWriteRestController extends UserRestController {
      * @return The JSON of the updated user as {@link UserDto}
      */
     @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Partially update a user",
-            notes = """
+    @Operation(summary = "Partially update a user",
+            description = """
                     The PATCH can be perform surgically by specifying only the fields that you would like to update.
 
                     Missing fields will be ignored""",
-            response = UserDto.class)
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User successfully patched",
+                            content = @Content(
+                                    schema = @Schema(implementation = UserDto.class)
+                            )),
+                    @ApiResponse(responseCode = "400", description = "Malformed patch"),
+                    @ApiResponse(responseCode = "404", description = "User not found")
+            })
     public ResponseEntity<?> patch(
             @ApiParam(value = "Id of the targeted user")
             @PathVariable long id,
@@ -123,9 +135,18 @@ public class UserWriteRestController extends UserRestController {
      * @return A JSON payload containing all the users
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value="Create a new user with no team",
-            response = UserDto.class)
+    @Operation(summary = "Create a new user with no team",
+            description = """
+                    The user's age must be greater than 0 and under 101.
+                    He also must have both his names between 2 and 50 characters.
+                    """,
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "User successfully created",
+                            content = @Content(
+                                    schema = @Schema(implementation = UserDto.class)
+                            )),
+                    @ApiResponse(responseCode = "400", description = "Malformed body")
+            })
     public ResponseEntity<UserDto> post(
             @ApiParam(value = "Payload from which creating the user")
             @Valid @RequestBody CreateUserCommand createUserCommand) {
@@ -151,9 +172,15 @@ public class UserWriteRestController extends UserRestController {
      * @return The JSON of the updated user as {@link UserDto}
      */
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="Replace an existing user by its id",
-            response = UserDto.class)
+    @Operation(summary = "Replace an existing user by its id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User successfully updated",
+                            content = @Content(
+                                    schema = @Schema(implementation = UserDto.class)
+                            )),
+                    @ApiResponse(responseCode = "400", description = "Malformed body"),
+                    @ApiResponse(responseCode = "404", description = "User not found")
+            })
     public ResponseEntity<?> put(
             @ApiParam(value = "Id of the targeted user")
             @PathVariable long id,

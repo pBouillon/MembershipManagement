@@ -9,6 +9,8 @@ import eu.telecomnancy.membershipmanagement.api.services.user.IUserQueryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -82,7 +84,10 @@ public class UserReadRestController extends UserRestController {
     @GetMapping(path = "/{id}")
     @Operation(summary = "Retrieve an existing user by its id",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "User successfully retrieved"),
+                    @ApiResponse(responseCode = "200", description = "User successfully retrieved",
+                            content = @Content(
+                                    schema = @Schema(implementation = UserDto.class)
+                            )),
                     @ApiResponse(responseCode = "404", description = "User not found")
             })
     public ResponseEntity<UserDetailsDto> getUser(
