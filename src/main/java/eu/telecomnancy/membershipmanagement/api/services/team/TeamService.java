@@ -112,6 +112,8 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
 
         // Perform the deletion
         teamRepository.delete(toDelete);
+        
+        log.info("Successfully deleted team {}", toDelete);
     }
 
     /**
