@@ -70,6 +70,8 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
         // Add the user to the team members
         User user = userService.addToTeam(
                 command.getMemberToAddId(), team);
+        
+        team.getMembers().add(user);
 
         log.info("User {} successfully added to the members of the team {}", user, team);
 
@@ -111,7 +113,7 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
     @Override
     public Optional<Team> getTeam(GetTeamQuery getTeamQuery) {
         long teamId = getTeamQuery.getId();
-        Optional<Team> optionalTeam= teamRepository.findById(teamId);
+        Optional<Team> optionalTeam = teamRepository.findById(teamId);
 
         optionalTeam.ifPresentOrElse(
                 team -> log.info("Retrieved team {} from id {}", team, teamId),
@@ -138,7 +140,7 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
     @Override
     public Team updateTeam(long teamId, UpdateTeamCommand command)
             throws UnknownTeamException {
-        // Retrieve the user to update
+        // Retrieve the team to update
         Team target = retrieveTeamById(teamId);
 
         // Perform the update
