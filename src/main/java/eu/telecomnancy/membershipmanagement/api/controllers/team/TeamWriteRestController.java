@@ -68,7 +68,7 @@ public class TeamWriteRestController extends TeamRestController {
         DeleteTeamCommand deleteTeamCommand = new DeleteTeamCommand(id);
 
         teamService.deleteTeam(deleteTeamCommand);
-        
+
         return ResponseEntity.noContent().build();
     }
 
