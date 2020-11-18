@@ -3,6 +3,7 @@ package eu.telecomnancy.membershipmanagement.api.controllers.team;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamQueryService;
@@ -71,6 +72,24 @@ public class TeamReadRestController extends TeamRestController {
                 .map(team -> ResponseEntity.ok()
                         .body(mapper.toDetailsDto(team)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Endpoint for: GET /teams/:id/members
+     *
+     * Retrieve the team members by its id
+     *
+     * @param id Id of the team in which the members to retrieve are
+     * @return A JSON payload containing the team
+     */
+    @GetMapping(path = "/{id}/members")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value="Retrieve a team by its id",
+            response = TeamMembersDto.class)
+    public ResponseEntity<?> getTeamMembers(
+            @ApiParam(value = "Id of the team in which the members to retrieve are")
+            @PathVariable long id) {
+        return ResponseEntity.ok(new TeamMembersDto());
     }
 
     /**
