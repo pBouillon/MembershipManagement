@@ -150,7 +150,7 @@ public class UserService implements IUserCommandService, IUserQueryService {
      * @param userId Id of the user to check
      * @throws UnknownUserException If there is no user for the provided id
      */
-    private User retrieveUserById(long userId)
+    public User retrieveUserById(long userId)
             throws UnknownUserException {
         return userRepository.findById(userId)
                 .orElseThrow(() -> {

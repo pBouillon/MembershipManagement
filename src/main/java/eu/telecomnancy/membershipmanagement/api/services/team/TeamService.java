@@ -94,7 +94,7 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
      * @param teamId Id of the team to check
      * @throws UnknownTeamException If there is no team for the provided id
      */
-    private Team retrieveTeamById(long teamId)
+    public Team retrieveTeamById(long teamId)
             throws UnknownTeamException {
         return teamRepository.findById(teamId)
                 .orElseThrow(() -> {
