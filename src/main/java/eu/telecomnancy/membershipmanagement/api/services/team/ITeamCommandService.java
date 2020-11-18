@@ -41,6 +41,7 @@ public interface ITeamCommandService {
     Team createTeam(CreateTeamCommand command);
 
     /**
+     * Delete a team by its id
      *
      * @param command Command payload containing the data on the team to be removed
      * @throws UnknownTeamException If the given id does not correspond to any stored {@link Team}

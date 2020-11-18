@@ -6,16 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-
 /**
  * Command to delete a user
  *
  * @see IUserCommandService
  */
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
+@Getter @Setter @ToString @AllArgsConstructor
 public class DeleteUserCommand {
 
     /**
