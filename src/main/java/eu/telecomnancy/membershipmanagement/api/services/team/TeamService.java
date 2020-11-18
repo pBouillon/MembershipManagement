@@ -6,6 +6,7 @@ import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.TeamAlreadyCompleteException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownMemberException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
@@ -93,7 +94,26 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
     @Override
     public void removeMemberFromTeam(DeleteTeamMemberCommand command)
             throws UnknownTeamException, UnknownUserException {
+        // Check if the team can have a new member
+        long memberId = command.getMemberId();
+        Team team = retrieveTeamById(command.getTeamId());
 
+        // Check if the user does belong to the team
+        boolean isUserMemberOfTheTeam = team.getMembers()
+                .stream()
+                .anyMatch(user -> user.getId() == memberId);
+
+        if (!isUserMemberOfTheTeam) {
+            log.error(
+                    "Unable to remove the user of id {} from the team {} because he does not belong to is",
+                    memberId, team);
+            throw new UnknownMemberException(memberId, team);
+        }
+
+        // Perform the removal
+        userService.leaveTeam(memberId);
+
+        log.info("The user of id {} has successfully been removed from the team {}", memberId, team);
     }
 
     /**
