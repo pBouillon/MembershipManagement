@@ -6,6 +6,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.Upda
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
+import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface UserMapper {
      * Convert a {@link UpdateUserCommand} to a {@link CreateUserCommand}
      *
      * Used to create instead of replacing a {@link User}
-     * in the {@link eu.telecomnancy.membershipmanagement.api.services.user.UserService}
+     * in the {@link UserService}
      *
      * @param command Command to be converted
      * @return The associated command
@@ -31,6 +32,7 @@ public interface UserMapper {
     CreateUserCommand toCreateUserCommand(UpdateUserCommand command);
 
     /**
+     * Convert a {@link User} to a {@link UserDetailsDto}
      *
      * @param user Entity to be converted
      * @return The associated DTO
