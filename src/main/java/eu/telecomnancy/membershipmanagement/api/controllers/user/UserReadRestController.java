@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.GetUserQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
@@ -76,7 +77,7 @@ public class UserReadRestController extends UserRestController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="Retrieve an existing user by its id")
-    public ResponseEntity<User> getUser(
+    public ResponseEntity<UserDetailsDto> getUser(
             @ApiParam(value = "Id of the user to retrieve")
             @PathVariable long id) {
         GetUserQuery query = new GetUserQuery(id);
@@ -84,7 +85,8 @@ public class UserReadRestController extends UserRestController {
         Optional<User> optionalUser = userService.getUser(query);
 
         return optionalUser
-                .map(user -> ResponseEntity.ok().body(user))
+                .map(user -> ResponseEntity.ok()
+                        .body(mapper.toDetailsDto(user)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
