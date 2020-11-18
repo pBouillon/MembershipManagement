@@ -54,6 +54,26 @@ public class TeamWriteRestController extends TeamRestController {
     }
 
     /**
+     * Endpoint for: DELETE /teams/:id/members/:id
+     *
+     * Remove a user from the team's members
+     *
+     * @param teamId Id of the team in which the member will be removed
+     * @param memberId Id of the user to be removed from the team
+     * @return No Content on success
+     */
+    @DeleteMapping("/{teamId}/members/{memberId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value="Remove a user from the team's members")
+    public ResponseEntity<?> deleteMember(
+            @ApiParam(value = "Id of the team in which the member will be removed")
+            @PathVariable long teamId,
+            @ApiParam(value = "Id of the user to be removed from the team")
+            @PathVariable long memberId) {
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
      * Endpoint for: POST /teams
      *
      * Create a new team with no member
