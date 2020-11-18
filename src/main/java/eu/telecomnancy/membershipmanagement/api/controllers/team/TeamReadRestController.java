@@ -1,21 +1,22 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.team;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamQueryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * API controller for the Team resource
@@ -46,6 +47,30 @@ public class TeamReadRestController extends TeamRestController {
         super(mapper);
 
         this.teamService = teamService;
+    }
+
+    /**
+     * Endpoint for: GET /teams/:id
+     *
+     * Retrieve a team by its id
+     *
+     * @param id Id of the team to retrieve
+     * @return A JSON payload containing the team
+     */
+    @GetMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value="Retrieve a team by its id")
+    public ResponseEntity<TeamDetailsDto> getTeam(
+            @ApiParam(value = "Id of the team to retrieve")
+            @PathVariable long id) {
+        GetTeamQuery query = new GetTeamQuery(id);
+
+        Optional<Team> optionalTeam = teamService.getTeam(query);
+
+        return optionalTeam
+                .map(team -> ResponseEntity.ok()
+                        .body(mapper.toDetailsDto(team)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**

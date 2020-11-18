@@ -1,8 +1,10 @@
 package eu.telecomnancy.membershipmanagement.api.services.team;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamQuery;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Query part of the TeamService
@@ -14,6 +16,14 @@ import java.util.List;
  * @see TeamService
  */
 public interface ITeamQueryService {
+
+    /**
+     * Retrieve a team by its id
+     *
+     * @param getTeamQuery Payload from which performing the search to retrieve a team
+     * @return An optional team if it exists, no content if not
+     */
+    Optional<Team> getTeam(GetTeamQuery getTeamQuery);
 
     /**
      * Retrieve all teams of the application

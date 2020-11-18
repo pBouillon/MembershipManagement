@@ -10,12 +10,12 @@ import lombok.Setter;
 public class TeamDto {
 
     /**
-     * Id of the user
+     * Id of the team
      */
     private Long id;
 
     /**
-     * Name of the user
+     * Name of the team
      */
     private String name;
 
