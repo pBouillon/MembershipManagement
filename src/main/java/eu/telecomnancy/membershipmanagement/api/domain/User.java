@@ -1,7 +1,9 @@
 package eu.telecomnancy.membershipmanagement.api.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -37,7 +39,8 @@ public class User implements Serializable {
      * User id used for the persistence
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(insertable = false, nullable = false)
     private Long id;
 
     /**
@@ -58,7 +61,10 @@ public class User implements Serializable {
     /**
      * User's team
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Team team;
 
     /**
@@ -72,6 +78,15 @@ public class User implements Serializable {
         this.age = age;
         this.firstname = firstname;
         this.name = name;
+    }
+
+    /**
+     * Check whether or not the user is part of a team
+     *
+     * @return true if the user has a team; false otherwise
+     */
+    public boolean isMemberOfATeam() {
+        return team != null;
     }
 
 }

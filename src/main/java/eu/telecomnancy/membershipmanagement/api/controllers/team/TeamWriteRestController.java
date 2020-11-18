@@ -1,8 +1,10 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
@@ -81,11 +83,42 @@ public class TeamWriteRestController extends TeamRestController {
     }
 
     /**
+     * Endpoint for: POST /teams/:id/members
+     *
+     * Create a new member in the team from an existing user
+     *
+     * @return The JSON of the updated team as {@link TeamDto}
+     */
+    @PostMapping("/{id}/members")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Create a new member in the team from an existing user",
+            response = TeamMembersDto.class)
+    public ResponseEntity<TeamMembersDto> postMember(
+            @ApiParam(value = "Id of the team in which the user will be added as a member")
+            @PathVariable long id,
+            @ApiParam(value = "Payload from which the user will be added as a member")
+            @Valid @RequestBody CreateTeamMemberCommand createTeamMemberCommand) {
+        // Perform the new member's creation
+        Team team = teamService.addTeamMember(id, createTeamMemberCommand);
+
+        // Retrieve the new member created
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}/members")
+                .buildAndExpand(team.getId())
+                .toUri();
+
+        // Return the result with its location
+        return ResponseEntity.created(location)
+                .body(mapper.toMembersDto(team));
+    }
+
+    /**
      * Endpoint for: PUT /teams/:id
      *
      * Replace the team with the specified identifier if it exists
      *
-     * @return The JSON of the updated user as {@link TeamDto}
+     * @return The JSON of the updated team as {@link TeamDto}
      */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

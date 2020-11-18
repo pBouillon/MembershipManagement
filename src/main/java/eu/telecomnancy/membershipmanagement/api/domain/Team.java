@@ -33,7 +33,8 @@ public class Team {
      * Team id used for the persistence
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "team_id", insertable = false, nullable = false)
     private Long id;
 
     /**
@@ -44,7 +45,7 @@ public class Team {
     /**
      * Members of the team
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "team")
     private List<User> members = new ArrayList<>();
 
     /**

@@ -1,9 +1,12 @@
 package eu.telecomnancy.membershipmanagement.api.services.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
+import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 
 /**
  * Command part of the TeamService
@@ -18,6 +21,18 @@ import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.Unknown
  * @see TeamService
  */
 public interface ITeamCommandService {
+
+    /**
+     * Create a new team member from an existing user
+     *
+     * @param teamId Id of the team in which the member will be created
+     * @param command Payload containing the data on the member to create
+     * @return The team in its new state
+     * @throws UnknownTeamException If the given id does not correspond to any stored {@link Team}
+     * @throws UnknownUserException If the given id does not correspond to any stored {@link User}
+     */
+    Team addTeamMember(long teamId, CreateTeamMemberCommand command)
+            throws UnknownTeamException, UnknownUserException;
 
     /**
      * Store a new {@link Team} in the database from the provided command
