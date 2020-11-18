@@ -132,7 +132,7 @@ public class UserService implements IUserCommandService, IUserQueryService {
 
         userRepository.save(user);
 
-        log.info("The user {} successfully his team", user);
+        log.info("The user {} successfully left his team", user);
     }
 
     /**
