@@ -3,6 +3,7 @@ package eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.CreateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import org.mapstruct.*;
@@ -28,6 +29,13 @@ public interface UserMapper {
      * @return The associated command
      */
     CreateUserCommand toCreateUserCommand(UpdateUserCommand command);
+
+    /**
+     *
+     * @param user Entity to be converted
+     * @return The associated DTO
+     */
+    UserDetailsDto toDetailsDto(User user);
 
     /**
      * Convert a {@link User} entity to a {@link UserDto}
