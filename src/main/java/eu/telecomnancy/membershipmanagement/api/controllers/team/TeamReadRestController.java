@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
@@ -59,7 +60,7 @@ public class TeamReadRestController extends TeamRestController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="Retrieve a team by its id")
-    public ResponseEntity<Team> getTeam(
+    public ResponseEntity<TeamDetailsDto> getTeam(
             @ApiParam(value = "Id of the team to retrieve")
             @PathVariable long id) {
         GetTeamQuery query = new GetTeamQuery(id);
@@ -67,7 +68,8 @@ public class TeamReadRestController extends TeamRestController {
         Optional<Team> optionalTeam = teamService.getTeam(query);
 
         return optionalTeam
-                .map(team -> ResponseEntity.ok().body(team))
+                .map(team -> ResponseEntity.ok()
+                        .body(mapper.toDetailsDto(team)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 

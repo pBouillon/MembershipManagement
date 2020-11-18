@@ -2,6 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
@@ -27,6 +28,15 @@ public interface TeamMapper {
      */
     @Mapping(target = "complete", expression = "java( team.isTeamComplete() )")
     TeamDto toDto(Team team);
+
+    /**
+     * Convert a {@link Team} entity to a {@link TeamDetailsDto}
+     *
+     * @param team Entity to be converted
+     * @return The associated DTO
+     */
+    @Mapping(target = "complete", expression = "java( team.isTeamComplete() )")
+    TeamDetailsDto toDetailsDto(Team team);
 
     /**
      * Convert {@link Team} entities to a list of {@link TeamDto}
