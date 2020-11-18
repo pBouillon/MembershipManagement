@@ -93,14 +93,13 @@ public class TeamWriteRestController extends TeamRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create a new member in the team from an existing user",
             response = TeamMembersDto.class)
-    // TODO: PUT vs POST ?
     public ResponseEntity<TeamMembersDto> postMember(
             @ApiParam(value = "Id of the team in which the user will be added as a member")
             @PathVariable long id,
             @ApiParam(value = "Payload from which the user will be added as a member")
             @Valid @RequestBody CreateTeamMemberCommand createTeamMemberCommand) {
         // Perform the new member's creation
-        Team team = teamService.createTeamMember(id, createTeamMemberCommand);
+        Team team = teamService.addTeamMember(id, createTeamMemberCommand);
 
         // Retrieve the new member created
         URI location = ServletUriComponentsBuilder
