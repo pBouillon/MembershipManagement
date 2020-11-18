@@ -16,7 +16,7 @@ public class UnknownMemberException extends MembershipManagementException {
      */
     public UnknownMemberException(long userId, Team team) {
         super(String.format(
-                "Unable to remove the user of id %d from the team %s because he does not belong to is", userId, team));
+                "Unable to remove the user of id %d from the team %s because he does not belong to it", userId, team));
     }
 
 }
