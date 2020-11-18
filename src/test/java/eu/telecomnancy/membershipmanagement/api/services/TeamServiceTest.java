@@ -1,10 +1,12 @@
 package eu.telecomnancy.membershipmanagement.api.services;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.DeleteTeamMemberCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.TeamAlreadyCompleteException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownMemberException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.team.TeamService;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
@@ -15,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -90,6 +93,46 @@ public class TeamServiceTest {
         assertThrows(
                 UnknownTeamException.class,
                 () -> teamService.addTeamMember(teamId, command));
+    }
+
+    @Test
+    public void givenANonExistingTeam_WhenRemovingAUser_ThenAnExceptionShouldBeThrown() {
+        // Arrange
+        Mockito.when(teamRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
+
+        final long userId = 0;
+        final long teamId = 0;
+        DeleteTeamMemberCommand deleteTeamMemberCommand = new DeleteTeamMemberCommand(userId, teamId);
+
+        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+
+        // Act + Assert
+        assertThrows(
+                UnknownTeamException.class,
+                () -> teamService.removeMemberFromTeam(deleteTeamMemberCommand));
+    }
+
+    @Test
+    public void givenATeam_WhenRemovingAUserThatDoesNotBelongToIt_ThenAnExceptionShouldBeThrown() {
+        // Arrange
+        Team team = Mockito.mock(Team.class);
+        Mockito.when(team.getMembers())
+                .thenReturn(new ArrayList<>());
+
+        Mockito.when(teamRepository.findById(anyLong()))
+                .thenReturn(Optional.of(team));
+
+        final long userId = 0;
+        final long teamId = 0;
+        DeleteTeamMemberCommand deleteTeamMemberCommand = new DeleteTeamMemberCommand(userId, teamId);
+
+        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+
+        // Act + Assert
+        assertThrows(
+                UnknownMemberException.class,
+                () -> teamService.removeMemberFromTeam(deleteTeamMemberCommand));
     }
 
 }

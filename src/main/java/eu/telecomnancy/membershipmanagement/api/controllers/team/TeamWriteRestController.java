@@ -2,6 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.controllers.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.DeleteTeamMemberCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
@@ -51,6 +52,30 @@ public class TeamWriteRestController extends TeamRestController {
         super(mapper);
 
         this.teamService = teamService;
+    }
+
+    /**
+     * Endpoint for: DELETE /teams/:id/members/:id
+     *
+     * Remove a user from the team's members
+     *
+     * @param teamId Id of the team in which the member will be removed
+     * @param memberId Id of the user to be removed from the team
+     * @return No Content on success
+     */
+    @DeleteMapping("/{teamId}/members/{memberId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value="Remove a user from the team's members")
+    public ResponseEntity<?> deleteMember(
+            @ApiParam(value = "Id of the team in which the member will be removed")
+            @PathVariable long teamId,
+            @ApiParam(value = "Id of the user to be removed from the team")
+            @PathVariable long memberId) {
+        DeleteTeamMemberCommand deleteTeamMemberCommand = new DeleteTeamMemberCommand(memberId, teamId);
+
+        teamService.removeMemberFromTeam(deleteTeamMemberCommand);
+
+        return ResponseEntity.noContent().build();
     }
 
     /**

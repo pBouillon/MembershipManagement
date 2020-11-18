@@ -119,6 +119,23 @@ public class UserService implements IUserCommandService, IUserQueryService {
     }
 
     /**
+     * Leave the team of the provided user
+     *
+     * @param userId Id of the user that will leave the team
+     * @throws UnknownUserException If the user does not exists
+     */
+    public void leaveTeam(long userId)
+            throws UnknownUserException {
+        User user = retrieveUserById(userId);
+
+        user.setTeam(null);
+
+        userRepository.save(user);
+
+        log.info("The user {} successfully left his team", user);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
