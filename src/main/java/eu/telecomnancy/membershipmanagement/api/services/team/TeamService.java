@@ -92,6 +92,15 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
      * {@inheritDoc}
      */
     @Override
+    public void deleteTeam(DeleteTeamCommand command)
+            throws UnknownTeamException {
+        
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void removeMemberFromTeam(DeleteTeamMemberCommand command)
             throws UnknownTeamException, UnknownUserException {
         // Retrieve the team and its members
