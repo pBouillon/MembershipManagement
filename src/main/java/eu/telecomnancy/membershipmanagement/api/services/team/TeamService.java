@@ -94,6 +94,30 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
      * {@inheritDoc}
      */
     @Override
+    public void deleteTeam(DeleteTeamCommand command)
+            throws UnknownTeamException {
+        // Retrieve the team to delete
+        Team toDelete = retrieveTeamById(
+                command.getTeamId());
+
+        // Delete the membership of all of its members
+        toDelete.getMembers()
+                .stream()
+                .map(User::getId)
+                .forEach(userService::leaveTeam);
+
+        // Clean the team's members
+        toDelete.setMembers(null);
+        teamRepository.save(toDelete);
+
+        // Perform the deletion
+        teamRepository.delete(toDelete);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void removeMemberFromTeam(DeleteTeamMemberCommand command)
             throws UnknownTeamException, UnknownUserException {
         // Retrieve the team and its members

@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.services;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.DeleteTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.DeleteTeamMemberCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
@@ -72,6 +73,26 @@ public class TeamServiceTest {
         assertThrows(
                 TeamAlreadyCompleteException.class,
                 () -> teamService.addTeamMember(teamId, command));
+    }
+
+    @Test
+    public void givenANonExistingTeam_WhenAttemptingToDeleteATeam_ThenAnExceptionShouldBeThrown() {
+        // Arrange
+        Mockito.when(teamRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
+
+        // Create the id (will not affect the test outcome)
+        long teamId = 1;
+
+        DeleteTeamCommand command = new DeleteTeamCommand(teamId);
+
+        // Create the service
+        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+
+        // Act + Assert
+        assertThrows(
+                UnknownTeamException.class,
+                () -> teamService.deleteTeam(command));
     }
 
     @Test
