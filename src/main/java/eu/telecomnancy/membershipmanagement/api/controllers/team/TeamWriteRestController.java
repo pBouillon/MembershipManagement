@@ -2,8 +2,9 @@ package eu.telecomnancy.membershipmanagement.api.controllers.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.*;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamCommandService;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 /**
  * API controller for the Team resource
@@ -42,11 +44,12 @@ public class TeamWriteRestController extends TeamRestController {
      * Default constructor
      *
      * @param teamService Team service used for write-only operation
-     * @param mapper TeamDto mapper utility
+     * @param teamMapper TeamDto mapper utility
+     * @param userMapper UserDto mapper utility
      */
     @Autowired
-    public TeamWriteRestController(ITeamCommandService teamService, TeamMapper mapper) {
-        super(mapper);
+    public TeamWriteRestController(ITeamCommandService teamService, TeamMapper teamMapper, UserMapper userMapper) {
+        super(teamMapper, userMapper);
 
         this.teamService = teamService;
     }
@@ -122,7 +125,7 @@ public class TeamWriteRestController extends TeamRestController {
 
         // Return the result with its location
         return ResponseEntity.created(location)
-                .body(mapper.toDto(created));
+                .body(teamMapper.toDto(created));
     }
 
     /**
@@ -134,9 +137,8 @@ public class TeamWriteRestController extends TeamRestController {
      */
     @PostMapping("/{id}/members")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "Create a new member in the team from an existing user",
-            response = TeamMembersDto.class)
-    public ResponseEntity<TeamMembersDto> postMember(
+    @ApiOperation(value = "Create a new member in the team from an existing user")
+    public ResponseEntity<List<UserDto>> postMember(
             @ApiParam(value = "Id of the team in which the user will be added as a member")
             @PathVariable long id,
             @ApiParam(value = "Payload from which the user will be added as a member")
@@ -153,7 +155,7 @@ public class TeamWriteRestController extends TeamRestController {
 
         // Return the result with its location
         return ResponseEntity.created(location)
-                .body(mapper.toMembersDto(team));
+                .body(userMapper.toDtoList(team.getMembers()));
     }
 
     /**
@@ -183,7 +185,7 @@ public class TeamWriteRestController extends TeamRestController {
         }
 
         // Return HTTP 200 OK if the team has been updated
-        return ResponseEntity.ok(mapper.toDto(team));
+        return ResponseEntity.ok(teamMapper.toDto(team));
     }
 
 }

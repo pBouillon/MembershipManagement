@@ -1,10 +1,12 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.team;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamMembersQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamQueryService;
 import io.swagger.annotations.Api;
@@ -17,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * API controller for the Team resource
@@ -41,11 +42,12 @@ public class TeamReadRestController extends TeamRestController {
      * Default constructor
      *
      * @param teamService Team service used for read-only operation
-     * @param mapper TeamDto mapper utility
+     * @param teamMapper TeamDto mapper utility
+     * @param userMapper UserDto mapper utility
      */
     @Autowired
-    public TeamReadRestController(ITeamQueryService teamService, TeamMapper mapper) {
-        super(mapper);
+    public TeamReadRestController(ITeamQueryService teamService, TeamMapper teamMapper, UserMapper userMapper) {
+        super(teamMapper, userMapper);
 
         this.teamService = teamService;
     }
@@ -66,11 +68,9 @@ public class TeamReadRestController extends TeamRestController {
             @PathVariable long id) {
         GetTeamQuery query = new GetTeamQuery(id);
 
-        Optional<Team> optionalTeam = teamService.getTeam(query);
-
-        return optionalTeam
+        return teamService.getTeam(query)
                 .map(team -> ResponseEntity.ok()
-                        .body(mapper.toDetailsDto(team)))
+                        .body(teamMapper.toDetailsDto(team)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -89,7 +89,12 @@ public class TeamReadRestController extends TeamRestController {
     public ResponseEntity<?> getTeamMembers(
             @ApiParam(value = "Id of the team in which the members to retrieve are")
             @PathVariable long id) {
-        return ResponseEntity.ok(new TeamMembersDto());
+        GetTeamMembersQuery query = new GetTeamMembersQuery(id);
+
+        return teamService.getTeamMembers(query)
+                .map(team -> ResponseEntity.ok()
+                        .body(userMapper.toDtoList(team.getMembers())))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -106,7 +111,7 @@ public class TeamReadRestController extends TeamRestController {
         List<Team> teams = teamService.getTeams();
 
         return ResponseEntity.ok()
-                .body(mapper.toDtoList(teams));
+                .body(teamMapper.toDtoList(teams));
     }
 
 }

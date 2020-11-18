@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import lombok.AllArgsConstructor;
 
 /**
@@ -18,8 +19,13 @@ public abstract class TeamRestController {
     static final String CONTROLLER_TAG = "Team";
 
     /**
+     * TeamDto mapper utility
+     */
+    protected final TeamMapper teamMapper;
+
+    /**
      * UserDto mapper utility
      */
-    protected final TeamMapper mapper;
+    protected final UserMapper userMapper;
 
 }

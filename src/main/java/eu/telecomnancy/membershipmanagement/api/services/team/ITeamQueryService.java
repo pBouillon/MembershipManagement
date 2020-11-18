@@ -36,7 +36,7 @@ public interface ITeamQueryService {
      * @return The team along with its members
      * @throws UnknownTeamException If the given id does not correspond to any stored {@link Team}
      */
-    Team getTeamMembers(GetTeamMembersQuery getTeamMembersQuery)
+    Optional<Team> getTeamMembers(GetTeamMembersQuery getTeamMembersQuery)
             throws UnknownTeamException;
 
     /**
