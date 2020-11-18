@@ -2,6 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.services.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.DeleteTeamMemberCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
@@ -41,6 +42,16 @@ public interface ITeamCommandService {
      * @return The team newly created
      */
     Team createTeam(CreateTeamCommand command);
+
+    /**
+     * Remove a user from the team
+     *
+     * @param command Payload containing the data on the member to be removed
+     * @throws UnknownTeamException If the given id does not correspond to any stored {@link Team}
+     * @throws UnknownUserException If the given id does not correspond to any stored {@link User}
+     */
+    void removeMemberFromTeam(DeleteTeamMemberCommand command)
+            throws UnknownTeamException, UnknownUserException;
 
     /**
      * Given his id, replace the details of an existing {@link Team}
