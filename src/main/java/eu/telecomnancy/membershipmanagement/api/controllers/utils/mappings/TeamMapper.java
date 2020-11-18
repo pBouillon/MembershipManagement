@@ -6,10 +6,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamD
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -17,6 +14,7 @@ import java.util.List;
  * Team and TeamDto mapper utility
  */
 @Mapper(componentModel = "spring",
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface TeamMapper {
 
