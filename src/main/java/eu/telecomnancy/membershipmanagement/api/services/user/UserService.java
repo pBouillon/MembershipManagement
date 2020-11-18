@@ -84,11 +84,11 @@ public class UserService implements IUserCommandService, IUserQueryService {
      */
     public void deleteUser(DeleteUserCommand deleteUserCommand)
             throws UnknownUserException {
-        retrieveUserById(userId);
+        User toDelete = retrieveUserById(deleteUserCommand.getId());
 
-        userRepository.deleteById(userId);
+        userRepository.delete(toDelete);
 
-        log.info("User of id {} successfully deleted", userId);
+        log.info("User of id {} successfully deleted", toDelete.getId());
     }
 
     /**
