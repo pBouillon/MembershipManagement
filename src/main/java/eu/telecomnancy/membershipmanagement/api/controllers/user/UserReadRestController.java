@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * API controller for the User resource
@@ -95,12 +94,10 @@ public class UserReadRestController extends UserRestController {
             @PathVariable long id) {
         GetUserQuery query = new GetUserQuery(id);
 
-        Optional<User> optionalUser = userService.getUser(query);
+        User user = userService.getUser(query);
 
-        return optionalUser
-                .map(user -> ResponseEntity.ok()
-                        .body(mapper.toDetailsDto(user)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok()
+                .body(mapper.toDetailsDto(user));
     }
 
 }

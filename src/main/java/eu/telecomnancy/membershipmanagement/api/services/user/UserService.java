@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service to handle {@link User}-related operations
@@ -93,17 +92,15 @@ public class UserService implements IUserCommandService, IUserQueryService {
 
     /**
      * {@inheritDoc}
+     * @return
      */
     @Override
-    public Optional<User> getUser(GetUserQuery getUserQuery) {
-        long userId = getUserQuery.getId();
-        Optional<User> optionalUser = userRepository.findById(userId);
+    public User getUser(GetUserQuery getUserQuery) {
+        User user = retrieveUserById(getUserQuery.getId());
 
-        optionalUser.ifPresentOrElse(
-                user -> log.info("Retrieved user {} from id {}", user, userId),
-                () -> log.warn("Unable to retrieve a user with id {}", userId));
+        log.info("Successfully retrieved user {}", user);
 
-        return optionalUser;
+        return user;
     }
 
     /**

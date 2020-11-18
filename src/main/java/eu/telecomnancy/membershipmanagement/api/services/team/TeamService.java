@@ -6,7 +6,7 @@ import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.TeamAlreadyCompleteException;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownMemberException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UserNotAMemberOfTheTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
@@ -133,7 +133,7 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
             log.error(
                     "Unable to remove the user of id {} from the team {} because he does not belong to is",
                     memberId, team);
-            throw new UnknownMemberException(memberId, team);
+            throw new UserNotAMemberOfTheTeamException(memberId, team);
         }
 
         // Perform the removal
@@ -159,17 +159,15 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
 
     /**
      * {@inheritDoc}
+     * @return
      */
     @Override
-    public Optional<Team> getTeam(GetTeamQuery getTeamQuery) {
-        long teamId = getTeamQuery.getId();
-        Optional<Team> optionalTeam = teamRepository.findById(teamId);
+    public Team getTeam(GetTeamQuery getTeamQuery) {
+        Team team = retrieveTeamById(getTeamQuery.getId());
 
-        optionalTeam.ifPresentOrElse(
-                team -> log.info("Retrieved team {} from id {}", team, teamId),
-                () -> log.warn("Unable to retrieve a team with id {}", teamId));
+        log.info("Successfully retrieved team {}", team);
 
-        return optionalTeam;
+        return team;
     }
 
     /**

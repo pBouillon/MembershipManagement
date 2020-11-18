@@ -76,10 +76,10 @@ public class TeamReadRestController extends TeamRestController {
             @PathVariable long id) {
         GetTeamQuery query = new GetTeamQuery(id);
 
-        return teamService.getTeam(query)
-                .map(team -> ResponseEntity.ok()
-                        .body(teamMapper.toDetailsDto(team)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Team team = teamService.getTeam(query);
+
+        return ResponseEntity.ok()
+                .body(teamMapper.toDetailsDto(team));
     }
 
     /**

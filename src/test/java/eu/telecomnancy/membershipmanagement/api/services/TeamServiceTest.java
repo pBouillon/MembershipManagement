@@ -7,7 +7,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamM
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.TeamAlreadyCompleteException;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownMemberException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UserNotAMemberOfTheTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.team.TeamService;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
@@ -152,7 +152,7 @@ public class TeamServiceTest {
 
         // Act + Assert
         assertThrows(
-                UnknownMemberException.class,
+                UserNotAMemberOfTheTeamException.class,
                 () -> teamService.removeMemberFromTeam(deleteTeamMemberCommand));
     }
 

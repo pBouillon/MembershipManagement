@@ -93,8 +93,8 @@ public class TeamWriteRestController extends TeamRestController {
     @Operation(summary = "Remove a user from the team's members",
             responses = {
                     @ApiResponse(responseCode = "204", description = "User successfully removed from the team"),
-                    @ApiResponse(responseCode = "400", description = "This user can't be removed from this team"),
-                    //TODO @ApiResponse(responseCode = "404", description = "Team or user not found")
+                    @ApiResponse(responseCode = "400", description = "This user does not belong to the team"),
+                    @ApiResponse(responseCode = "404", description = "Team not found")
             })
     public ResponseEntity<?> deleteMember(
             @ApiParam(value = "Id of the team in which the member will be removed")
@@ -157,7 +157,7 @@ public class TeamWriteRestController extends TeamRestController {
                                     schema = @Schema(implementation = TeamDto.class)
                             )),
                     @ApiResponse(responseCode = "400", description = "Malformed body"),
-                    //TODO @ApiResponse(responseCode = "404", description = "Team or user not found")
+                    @ApiResponse(responseCode = "404", description = "Team or user not found")
             })
     public ResponseEntity<List<UserDto>> postMember(
             @ApiParam(value = "Id of the team in which the user will be added as a member")
