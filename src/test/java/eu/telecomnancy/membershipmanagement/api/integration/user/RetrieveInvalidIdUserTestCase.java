@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 
 /**
  * Route :
- *     /api/users/
+ *     /api/users/:id
  *
  * Case :
  *     (Read-only operation)
