@@ -1,7 +1,5 @@
 package eu.telecomnancy.membershipmanagement.api;
 
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapperImpl;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapperImpl;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.web.client.RestTemplate;
@@ -12,11 +10,7 @@ import java.net.URISyntaxException;
 /**
  * Base class for integration tests
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = {
-                UserMapperImpl.class,
-                TeamMapperImpl.class
-})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class IntegrationTest {
 
     /**
