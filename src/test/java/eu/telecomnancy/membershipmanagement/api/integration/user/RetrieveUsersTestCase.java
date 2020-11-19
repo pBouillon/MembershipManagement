@@ -67,7 +67,7 @@ public class RetrieveUsersTestCase extends IntegrationTest {
         assertNotNull(retrievedUsers);
 
         // Ensure that we retrieved a list containing all the users
-        assertArrayEquals(retrievedUsers.toArray(), createdUsers.toArray());
+        retrievedUsers.containsAll(createdUsers);
     }
 
 }
