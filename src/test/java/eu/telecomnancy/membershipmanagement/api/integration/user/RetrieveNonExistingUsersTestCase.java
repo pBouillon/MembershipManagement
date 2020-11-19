@@ -43,7 +43,6 @@ public class RetrieveNonExistingUsersTestCase extends IntegrationTest {
                 = restTemplate.exchange(uri, HttpMethod.GET,null, new ParameterizedTypeReference<>() {
         });
 
-
         // Ensure that the list of users is retrieved
         assertEquals(createdResponse.getStatusCode(), HttpStatus.OK);
 

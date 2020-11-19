@@ -1,12 +1,11 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * User Data Transfer Object to be served and received by the API
  */
-@Getter @Setter
+@Data
 public class UserDto {
 
     /**
