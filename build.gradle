@@ -2,7 +2,6 @@ plugins {
 	id 'org.springframework.boot' version '2.3.5.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
-	id 'idea'
 }
 
 group = 'eu.telecomnancy.membership-management'
@@ -50,7 +49,6 @@ dependencies {
 	// MapStruct
 	implementation 'org.mapstruct:mapstruct:1.4.1.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
-	testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
 
 	// RabbitMQ
 	testImplementation 'org.springframework.amqp:spring-rabbit-test'
