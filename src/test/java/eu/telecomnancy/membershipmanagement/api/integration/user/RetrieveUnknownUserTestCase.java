@@ -1,5 +1,6 @@
-package eu.telecomnancy.membershipmanagement.api;
+package eu.telecomnancy.membershipmanagement.api.integration.user;
 
+import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.user.UserReadRestController;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDetailsDto;
 import org.junit.jupiter.api.Assertions;
