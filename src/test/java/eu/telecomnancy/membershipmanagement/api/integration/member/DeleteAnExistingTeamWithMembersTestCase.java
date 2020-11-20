@@ -52,9 +52,7 @@ class DeleteAnExistingTeamWithMembersTestCase extends IntegrationTest {
                 = restTemplate.postForEntity(teamCreationUri, teamToCreate, TeamDto.class);
 
         assertEquals(createdTeamResponse.getStatusCode(), HttpStatus.CREATED);
-
-        TeamDto createdTeam = createdTeamResponse.getBody();
-        assertNotNull(createdTeam);
+        TeamDto createdTeam = extractPayload(createdTeamResponse);
 
         // Add a user to the team
         User userToCreate = new User(22, "Victor", "Varnier");
@@ -65,9 +63,7 @@ class DeleteAnExistingTeamWithMembersTestCase extends IntegrationTest {
                 = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
-
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Add this user to the team
         CreateTeamMemberCommand createTeamMemberCommand = new CreateTeamMemberCommand();
@@ -85,8 +81,7 @@ class DeleteAnExistingTeamWithMembersTestCase extends IntegrationTest {
         ResponseEntity<UserDetailsDto> memberResponse
                 = restTemplate.getForEntity(retrieveUserUri, UserDetailsDto.class);
 
-        UserDetailsDto member = memberResponse.getBody();
-        assertNotNull(member);
+        UserDetailsDto member = extractPayload(memberResponse);
 
         assertEquals(member.getTeam().getId(), createdTeam.getId());
 
@@ -99,9 +94,7 @@ class DeleteAnExistingTeamWithMembersTestCase extends IntegrationTest {
         ResponseEntity<UserDetailsDto> formerMemberResponse
                 = restTemplate.getForEntity(retrieveUserUri, UserDetailsDto.class);
 
-        UserDetailsDto formerMember = formerMemberResponse.getBody();
-        assertNotNull(formerMember);
-
+        UserDetailsDto formerMember = extractPayload(formerMemberResponse);
         assertNull(formerMember.getTeam());
     }
 

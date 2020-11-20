@@ -55,9 +55,7 @@ public class AddAUserToATeamHeDoesNotBelongToTestCase extends IntegrationTest {
                 = restTemplate.postForEntity(teamCreationUri, teamToCreate, TeamDto.class);
 
         assertEquals(createdTeamResponse.getStatusCode(), HttpStatus.CREATED);
-
-        TeamDto createdTeam = createdTeamResponse.getBody();
-        assertNotNull(createdTeam);
+        TeamDto createdTeam = extractPayload(createdTeamResponse);
 
         // Create a new user
         User userToCreate = new User(22, "Victor", "Varnier");
@@ -68,9 +66,7 @@ public class AddAUserToATeamHeDoesNotBelongToTestCase extends IntegrationTest {
                 = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
-
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Add the user to the team
         CreateTeamMemberCommand createTeamMemberCommand = new CreateTeamMemberCommand();
@@ -89,10 +85,8 @@ public class AddAUserToATeamHeDoesNotBelongToTestCase extends IntegrationTest {
                 = restTemplate.exchange(retrieveTeamUri, HttpMethod.GET, null, new ParameterizedTypeReference<>() { });
 
         assertEquals(membersResponse.getStatusCode(), HttpStatus.OK);
+        List<UserDto> members = extractPayload(membersResponse);
 
-        List<UserDto> members = membersResponse.getBody();
-
-        assertNotNull(members);
         assertTrue(members.contains(createdUser));
 
         // Ensure that the user is in the team members
@@ -101,8 +95,7 @@ public class AddAUserToATeamHeDoesNotBelongToTestCase extends IntegrationTest {
         ResponseEntity<UserDetailsDto> memberResponse
                 = restTemplate.getForEntity(retrieveUserUri, UserDetailsDto.class);
 
-        UserDetailsDto member = memberResponse.getBody();
-        assertNotNull(member);
+        UserDetailsDto member = extractPayload(memberResponse);
 
         assertEquals(member.getTeam(), createdTeam);
     }

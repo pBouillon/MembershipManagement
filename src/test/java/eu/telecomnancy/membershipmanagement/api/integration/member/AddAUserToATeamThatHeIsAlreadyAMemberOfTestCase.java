@@ -55,9 +55,7 @@ public class AddAUserToATeamThatHeIsAlreadyAMemberOfTestCase extends Integration
                 = restTemplate.postForEntity(teamCreationUri, teamToCreate, TeamDto.class);
 
         assertEquals(createdTeamResponse.getStatusCode(), HttpStatus.CREATED);
-
-        TeamDto createdTeam = createdTeamResponse.getBody();
-        assertNotNull(createdTeam);
+        TeamDto createdTeam = extractPayload(createdTeamResponse);
 
         // Create a new user
         User userToCreate = new User(22, "Victor", "Varnier");
@@ -68,9 +66,7 @@ public class AddAUserToATeamThatHeIsAlreadyAMemberOfTestCase extends Integration
                 = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
-
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Add the user to the team
         CreateTeamMemberCommand createTeamMemberCommand = new CreateTeamMemberCommand();
@@ -89,9 +85,7 @@ public class AddAUserToATeamThatHeIsAlreadyAMemberOfTestCase extends Integration
 
         assertEquals(membersResponse.getStatusCode(), HttpStatus.OK);
 
-        List<UserDto> members = membersResponse.getBody();
-
-        assertNotNull(members);
+        List<UserDto> members = extractPayload(membersResponse);
         assertTrue(members.contains(createdUser));
 
         // Attempt to add this user once again

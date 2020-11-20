@@ -61,9 +61,7 @@ public class RetrieveUsersTestCase extends IntegrationTest {
 
         // Ensure that the list of users is retrieved
         assertEquals(createdResponse.getStatusCode(), HttpStatus.OK);
-
-        List<UserDto> retrievedUsers = createdResponse.getBody();
-        assertNotNull(retrievedUsers);
+        List<UserDto> retrievedUsers = extractPayload(createdResponse);
 
         // Ensure that we retrieved a list containing all the users
         retrievedUsers.containsAll(createdUsers);
