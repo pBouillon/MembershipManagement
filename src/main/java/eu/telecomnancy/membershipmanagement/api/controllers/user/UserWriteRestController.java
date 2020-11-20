@@ -7,7 +7,6 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.Upda
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -75,12 +74,7 @@ public class UserWriteRestController extends UserRestController {
             @PathVariable long id) {
         DeleteUserCommand command = new DeleteUserCommand(id);
 
-        try {
-            userService.deleteUser(command);
-        } catch (UnknownUserException ex) {
-            // Return HTTP 404 NOT FOUND if the user is not known by the system
-            return ResponseEntity.notFound().build();
-        }
+        userService.deleteUser(command);
 
         // Return HTTP 204 NO CONTENT on a successful deletion
         return ResponseEntity.noContent().build();
@@ -113,14 +107,7 @@ public class UserWriteRestController extends UserRestController {
             @ApiParam(value = "Fields to update")
             @Valid @RequestBody PatchUserCommand patchUserCommand) {
         // Retrieve the new user and its creation status
-        User user;
-
-        try {
-            user = userService.patchUser(id, patchUserCommand);
-        } catch (UnknownUserException ex) {
-            // Return HTTP 404 NOT FOUND if the user is not known by the system
-            return ResponseEntity.notFound().build();
-        }
+        User user = userService.patchUser(id, patchUserCommand);
 
         // Return HTTP 200 OK if the user has been updated
         return ResponseEntity.ok(mapper.toDto(user));
@@ -186,14 +173,7 @@ public class UserWriteRestController extends UserRestController {
             @PathVariable long id,
             @ApiParam(value = "Payload from which the user details will be replaced")
             @Valid @RequestBody UpdateUserCommand updateUserCommand) {
-        User user;
-
-        try {
-            user = userService.updateUser(id, updateUserCommand);
-        } catch (UnknownUserException ex) {
-            // Return HTTP 404 NOT FOUND if the user is not known by the system
-            return ResponseEntity.notFound().build();
-        }
+        User user = userService.updateUser(id, updateUserCommand);
 
         // Return HTTP 200 OK if the user has been updated
         return ResponseEntity.ok(mapper.toDto(user));
