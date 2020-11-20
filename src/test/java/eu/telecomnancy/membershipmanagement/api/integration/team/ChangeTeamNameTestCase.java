@@ -15,7 +15,6 @@ import java.net.URISyntaxException;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Route :
@@ -45,9 +44,7 @@ public class ChangeTeamNameTestCase extends IntegrationTest {
                 = restTemplate.postForEntity(creationUri, toCreate, TeamDto.class);
 
         assertEquals(createdResponse.getStatusCode(), HttpStatus.CREATED);
-
-        TeamDto created = createdResponse.getBody();
-        assertNotNull(created);
+        TeamDto created = extractPayload(createdResponse);
 
         // Change its name
         UpdateTeamCommand updateTeamCommand = new UpdateTeamCommand();
@@ -65,9 +62,7 @@ public class ChangeTeamNameTestCase extends IntegrationTest {
 
         assertEquals(updatedResponse.getStatusCode(), HttpStatus.OK);
 
-        TeamDetailsDto updated = updatedResponse.getBody();
-        assertNotNull(updated);
-
+        TeamDetailsDto updated = extractPayload(updatedResponse);
         assertEquals(updated.getName(), updateTeamCommand.getName());
     }
 
