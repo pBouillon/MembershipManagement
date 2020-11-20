@@ -46,8 +46,8 @@ public class RetrieveATeamTestCase extends IntegrationTest {
         // Ensure that the team is created and retrieve its id
         assertEquals(createdResponse.getStatusCode(), HttpStatus.CREATED);
 
-        assertNotNull(createdResponse.getBody());
-        created.setId(createdResponse.getBody().getId());
+        TeamDto createdTeamDto = extractPayload(createdResponse);
+        created.setId(createdTeamDto.getId());
 
         // Perform the HTTP call to retrieve the details of the created team based on its id
         URI retrieveUri = getUrlForRoute("/api/teams/" + created.getId());
@@ -58,9 +58,7 @@ public class RetrieveATeamTestCase extends IntegrationTest {
         // Ensure that the team retrieved is indeed the same as the one we created
         assertEquals(retrievedResponse.getStatusCode(), HttpStatus.OK);
 
-        TeamDetailsDto retrieved = retrievedResponse.getBody();
-
-        assertNotNull(retrieved);
+        TeamDetailsDto retrieved = extractPayload(retrievedResponse);
 
         assertEquals(retrieved.getId(), created.getId());
         assertEquals(retrieved.getName(), created.getName());

@@ -44,8 +44,7 @@ public class DeleteAnExistingTeamTestCase extends IntegrationTest {
 
         assertEquals(createdTeamResponse.getStatusCode(), HttpStatus.CREATED);
 
-        TeamDto createdTeam = createdTeamResponse.getBody();
-        assertNotNull(createdTeam);
+        TeamDto createdTeam = extractPayload(createdTeamResponse);
 
         // Delete the team
         URI teamDeletionUri = getUrlForRoute("/api/teams/" + createdTeam.getId());

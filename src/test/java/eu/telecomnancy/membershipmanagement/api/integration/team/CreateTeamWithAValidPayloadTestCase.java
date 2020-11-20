@@ -12,7 +12,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Route :
@@ -44,9 +43,7 @@ public class CreateTeamWithAValidPayloadTestCase extends IntegrationTest {
 
         // Ensure that the creation successfully happened
         assertEquals(createdResponse.getStatusCode(), HttpStatus.CREATED);
-
-        TeamDto created = createdResponse.getBody();
-        assertNotNull(created);
+        TeamDto created = extractPayload(createdResponse);
 
         assertEquals(created.getName(), toCreate.getName());
     }
