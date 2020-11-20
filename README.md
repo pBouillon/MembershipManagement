@@ -30,6 +30,8 @@ The overall architecutre is the following:
 
 ## Code Quality
 
+### Logging
+
 ### CI
 
 ### Unit tests
