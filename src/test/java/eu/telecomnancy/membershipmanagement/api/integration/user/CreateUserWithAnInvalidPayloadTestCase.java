@@ -25,14 +25,14 @@ import java.net.URISyntaxException;
 public class CreateUserWithAnInvalidPayloadTestCase extends IntegrationTest {
 
     /**
-     * Ensure that the user creation with an empty name throws a 400 bad request
+     * Ensure that the user creation with a blank firstname throws a 400 bad request
      *
      * @throws URISyntaxException Throws exception when the URI is invalid
      */
     @Test
-    public void createUserWithAnEmptyName() throws URISyntaxException {
+    public void createUserWithABlankFirstname() throws URISyntaxException {
         // Prepare the payload
-        User created = new User(23, "Pierre", TestUtils.EMPTY_STRING);
+        User created = new User(22, TestUtils.BLANK_STRING, "Varnier");
 
         // Perform the HTTP call
         URI uri = getUrlForRoute("/api/users");
@@ -61,24 +61,6 @@ public class CreateUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     }
 
     /**
-     * Ensure that the user creation with a too long name throws a 400 bad request
-     *
-     * @throws URISyntaxException Throws exception when the URI is invalid
-     */
-    @Test
-    public void createUserWithATooLongName() throws URISyntaxException {
-        // Prepare the payload
-        User created = new User(23, "Pierre", TestUtils.LONG_STRING);
-
-        // Perform the HTTP call
-        URI uri = getUrlForRoute("/api/users");
-
-        Assertions.assertThrows(
-                HttpClientErrorException.BadRequest.class,
-                () -> restTemplate.postForEntity(uri, created, UserDto.class));
-    }
-
-    /**
      * Ensure that the user creation with an empty firstname throws a 400 bad request
      *
      * @throws URISyntaxException Throws exception when the URI is invalid
@@ -97,32 +79,14 @@ public class CreateUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     }
 
     /**
-     * Ensure that the user creation with a blank firstname throws a 400 bad request
+     * Ensure that the user creation with an empty name throws a 400 bad request
      *
      * @throws URISyntaxException Throws exception when the URI is invalid
      */
     @Test
-    public void createUserWithABlankFirstname() throws URISyntaxException {
+    public void createUserWithAnEmptyName() throws URISyntaxException {
         // Prepare the payload
-        User created = new User(22, TestUtils.BLANK_STRING, "Varnier");
-
-        // Perform the HTTP call
-        URI uri = getUrlForRoute("/api/users");
-
-        Assertions.assertThrows(
-                HttpClientErrorException.BadRequest.class,
-                () -> restTemplate.postForEntity(uri, created, UserDto.class));
-    }
-
-    /**
-     * Ensure that the user creation with a too long firstname throws a 400 bad request
-     *
-     * @throws URISyntaxException Throws exception when the URI is invalid
-     */
-    @Test
-    public void createUserWithATooLongFirstname() throws URISyntaxException {
-        // Prepare the payload
-        User created = new User(22, TestUtils.LONG_STRING, "Varnier");
+        User created = new User(23, "Pierre", TestUtils.EMPTY_STRING);
 
         // Perform the HTTP call
         URI uri = getUrlForRoute("/api/users");
@@ -158,7 +122,43 @@ public class CreateUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void createUserWithASuperiorUnacceptedAge() throws URISyntaxException {
         // Prepare the payload
-        User created = new User(User.AGE_MAX+1, "Anakin", "Skywalker");
+        User created = new User(User.AGE_MAX + 1, "Anakin", "Skywalker");
+
+        // Perform the HTTP call
+        URI uri = getUrlForRoute("/api/users");
+
+        Assertions.assertThrows(
+                HttpClientErrorException.BadRequest.class,
+                () -> restTemplate.postForEntity(uri, created, UserDto.class));
+    }
+
+    /**
+     * Ensure that the user creation with a too long firstname throws a 400 bad request
+     *
+     * @throws URISyntaxException Throws exception when the URI is invalid
+     */
+    @Test
+    public void createUserWithATooLongFirstname() throws URISyntaxException {
+        // Prepare the payload
+        User created = new User(22, TestUtils.LONG_STRING, "Varnier");
+
+        // Perform the HTTP call
+        URI uri = getUrlForRoute("/api/users");
+
+        Assertions.assertThrows(
+                HttpClientErrorException.BadRequest.class,
+                () -> restTemplate.postForEntity(uri, created, UserDto.class));
+    }
+
+    /**
+     * Ensure that the user creation with a too long name throws a 400 bad request
+     *
+     * @throws URISyntaxException Throws exception when the URI is invalid
+     */
+    @Test
+    public void createUserWithATooLongName() throws URISyntaxException {
+        // Prepare the payload
+        User created = new User(23, "Pierre", TestUtils.LONG_STRING);
 
         // Perform the HTTP call
         URI uri = getUrlForRoute("/api/users");
@@ -176,7 +176,7 @@ public class CreateUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void createUserWithInvalidArgs() throws URISyntaxException {
         // Prepare the payload
-        User created = new User(User.AGE_MAX+1, TestUtils.EMPTY_STRING, TestUtils.BLANK_STRING);
+        User created = new User(User.AGE_MAX + 1, TestUtils.EMPTY_STRING, TestUtils.BLANK_STRING);
 
         // Perform the HTTP call
         URI uri = getUrlForRoute("/api/users");
