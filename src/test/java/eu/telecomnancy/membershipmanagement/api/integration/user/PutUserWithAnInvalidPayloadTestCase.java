@@ -16,7 +16,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Route :
@@ -48,8 +47,7 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Perform the HTTP call
         URI userModifiedUri = getUrlForRoute("/api/users/" + createdUser.getId());
@@ -83,8 +81,7 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Perform the HTTP call
         URI userModifiedUri = getUrlForRoute("/api/users/" + createdUser.getId());
@@ -118,8 +115,7 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Perform the HTTP call
         URI userModifiedUri = getUrlForRoute("/api/users/" + createdUser.getId());
@@ -153,8 +149,7 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Perform the HTTP call
         URI userModifiedUri = getUrlForRoute("/api/users/" + createdUser.getId());
@@ -188,8 +183,7 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Perform the HTTP call
         URI userModifiedUri = getUrlForRoute("/api/users/" + createdUser.getId());
@@ -223,8 +217,7 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Perform the HTTP call
         URI userModifiedUri = getUrlForRoute("/api/users/" + createdUser.getId());
@@ -258,8 +251,7 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Perform the HTTP call
         URI userModifiedUri = getUrlForRoute("/api/users/" + createdUser.getId());
@@ -293,8 +285,7 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Perform the HTTP call
         URI userModifiedUri = getUrlForRoute("/api/users/" + createdUser.getId());
@@ -328,8 +319,7 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
-        UserDto createdUser = createdUserResponse.getBody();
-        assertNotNull(createdUser);
+        UserDto createdUser = extractPayload(createdUserResponse);
 
         // Perform the HTTP call
         URI userModifiedUri = getUrlForRoute("/api/users/" + createdUser.getId());

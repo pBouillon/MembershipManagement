@@ -56,9 +56,7 @@ public class RetrieveAUserTestCase extends IntegrationTest {
         // Ensure that the user retrieved is indeed the same as the one we created
         assertEquals(retrievedResponse.getStatusCode(), HttpStatus.OK);
 
-        UserDetailsDto retrieved = retrievedResponse.getBody();
-
-        assertNotNull(retrieved);
+        UserDetailsDto retrieved = extractPayload(retrievedResponse);
 
         assertEquals(retrieved.getId(), created.getId());
         assertEquals(retrieved.getAge(), created.getAge());
