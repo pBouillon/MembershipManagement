@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *
  * Case :
  *     (Write-only operation)
- *     Test the user creation
+ *     Test the team creation
  *
  * @see TeamWriteRestController
  */
