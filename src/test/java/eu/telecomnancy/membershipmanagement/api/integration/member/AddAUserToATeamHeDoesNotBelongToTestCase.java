@@ -11,14 +11,16 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserD
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Routes :
@@ -81,19 +83,17 @@ public class AddAUserToATeamHeDoesNotBelongToTestCase extends IntegrationTest {
                 = restTemplate.postForEntity(addMembershipUri, createTeamMemberCommand, Object.class);
 
         // Ensure that team is the user's team
+        URI retrieveTeamUri = getUrlForRoute("/api/teams/" + createdTeam.getId() + "/members");
 
-        // FIXME
-//        URI retrieveTeamUri = getUrlForRoute("/api/teams/" + createdTeam.getId());
-//
-//        ResponseEntity<List<UserDto>> membersResponse
-//                = restTemplate.exchange(retrieveTeamUri, HttpMethod.GET, null, new ParameterizedTypeReference<>() { });
-//
-//        assertEquals(membersResponse.getStatusCode(), HttpStatus.OK);
-//
-//        List<UserDto> members = membersResponse.getBody();
-//
-//        assertNotNull(members);
-//        assertTrue(members.contains(createdUser));
+        ResponseEntity<List<UserDto>> membersResponse
+                = restTemplate.exchange(retrieveTeamUri, HttpMethod.GET, null, new ParameterizedTypeReference<>() { });
+
+        assertEquals(membersResponse.getStatusCode(), HttpStatus.OK);
+
+        List<UserDto> members = membersResponse.getBody();
+
+        assertNotNull(members);
+        assertTrue(members.contains(createdUser));
 
         // Ensure that the user is in the team members
         URI retrieveUserUri = getUrlForRoute("/api/users/" + createdUser.getId());
