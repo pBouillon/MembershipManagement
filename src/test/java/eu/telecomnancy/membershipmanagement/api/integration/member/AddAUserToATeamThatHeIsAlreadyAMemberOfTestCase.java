@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @see UserReadRestController
  * @see UserWriteRestController
  */
-public class AddAUserToATeamThatHeIsAlreadyAMemberOfToTestCase extends IntegrationTest {
+public class AddAUserToATeamThatHeIsAlreadyAMemberOfTestCase extends IntegrationTest {
 
     /**
      * Ensure that a user can't join a team twice
@@ -45,7 +45,7 @@ public class AddAUserToATeamThatHeIsAlreadyAMemberOfToTestCase extends Integrati
      * @throws URISyntaxException Throws exception when the URI is invalid
      */
     @Test
-    public void addAUserToATeam() throws URISyntaxException {
+    public void addAUserToATeamHeAlreadyBelongsTo() throws URISyntaxException {
         // Create a new team
         Team teamToCreate = new Team("ApprenTeam");
 
