@@ -1,7 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.integration.team;
 
 import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
-import eu.telecomnancy.membershipmanagement.api.controllers.user.UserReadRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamReadRestController;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *     (Read & Write operation)
  *     Test that the controller successfully retrieve an existing team
  *
- * @see UserReadRestController
+ * @see TeamReadRestController
  */
 public class RetrieveATeamTestCase extends IntegrationTest {
 

@@ -1,7 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.integration.team;
 
 import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
-import eu.telecomnancy.membershipmanagement.api.controllers.user.UserReadRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamReadRestController;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import java.net.URISyntaxException;
  *     (Read-only operation)
  *     Test when an id that does not correspond to an existing team is provided
  *
- * @see UserReadRestController
+ * @see TeamReadRestController
  */
 public class RetrieveUnknownTeamTestCase extends IntegrationTest {
 
