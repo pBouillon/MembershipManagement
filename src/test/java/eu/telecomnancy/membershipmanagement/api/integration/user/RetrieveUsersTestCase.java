@@ -57,8 +57,7 @@ public class RetrieveUsersTestCase extends IntegrationTest {
 
         // Perform the HTTP call
         ResponseEntity<List<UserDto>> createdResponse
-                = restTemplate.exchange(uri, HttpMethod.GET,null, new ParameterizedTypeReference<>() {
-        });
+                = restTemplate.exchange(uri, HttpMethod.GET,null, new ParameterizedTypeReference<>() { });
 
         // Ensure that the list of users is retrieved
         assertEquals(createdResponse.getStatusCode(), HttpStatus.OK);
