@@ -2,9 +2,9 @@ package eu.telecomnancy.membershipmanagement.api.integration.user;
 
 import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.user.UserReadRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.CreateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
-import eu.telecomnancy.membershipmanagement.api.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,8 @@ import org.springframework.http.ResponseEntity;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Route :
@@ -34,18 +35,16 @@ public class RetrieveAUserTestCase extends IntegrationTest {
     @Test
     public void retrieveACreatedUser() throws URISyntaxException {
         // Create a new user in the system
-        User created = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         URI creationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdResponse
-                = restTemplate.postForEntity(creationUri, created, UserDto.class);
+                = restTemplate.postForEntity(creationUri, createUserCommand, UserDto.class);
 
         // Ensure that the user is created and retrieve its id
         assertEquals(createdResponse.getStatusCode(), HttpStatus.CREATED);
-
-        assertNotNull(createdResponse.getBody());
-        created.setId(createdResponse.getBody().getId());
+        UserDto created = extractPayload(createdResponse);
 
         // Perform the HTTP call to retrieve the details of the created user based on its id
         URI retrieveUri = getUrlForRoute("/api/users/" + created.getId());
@@ -58,10 +57,9 @@ public class RetrieveAUserTestCase extends IntegrationTest {
 
         UserDetailsDto retrieved = extractPayload(retrievedResponse);
 
-        assertEquals(retrieved.getId(), created.getId());
-        assertEquals(retrieved.getAge(), created.getAge());
-        assertEquals(retrieved.getFirstname(), created.getFirstname());
-        assertEquals(retrieved.getName(), created.getName());
+        assertEquals(retrieved.getAge(), createUserCommand.getAge());
+        assertEquals(retrieved.getFirstname(), createUserCommand.getFirstname());
+        assertEquals(retrieved.getName(), createUserCommand.getName());
 
         // On creation, the user should not belong to any team
         assertNull(retrieved.getTeam());
