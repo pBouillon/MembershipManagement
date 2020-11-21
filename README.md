@@ -72,7 +72,7 @@ To ensure that it's working and investigate issues without having to stop the
 whole application, we used [Log4J2](https://logging.apache.org/log4j/2.x/) to
 log the actions currently executed by the API.
 
-### CI
+### CI and testing
 
 We also wanted to continuously check the integrity of our code and add an
 additional level of confidence when building features so that all merge request
@@ -84,6 +84,6 @@ which can be found [here](https://gitlab.telecomnancy.univ-lorraine.fr/sdisapp20
 This CI is building the code, checking the warnings and running both the unit
 and the integration tests.
 
-The prior ones help us to check that all of our services are still valid; and
-the former to check their integration with the embedded database and the
+The prior help us to check that all of our services are still valid; and
+the former are to check their integration with the embedded database and the
 controllers.
