@@ -54,7 +54,7 @@ public class TeamServiceTest {
         // Arrange
         // Create a team that will look like it is complete
         Team completeTeam = Mockito.mock(Team.class);
-        Mockito.when(completeTeam.isTeamComplete())
+        Mockito.when(completeTeam.isComplete())
                 .thenReturn(true);
 
         Mockito.when(teamRepository.findById(anyLong()))

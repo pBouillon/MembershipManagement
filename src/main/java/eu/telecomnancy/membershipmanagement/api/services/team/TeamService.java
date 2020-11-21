@@ -61,7 +61,7 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
         // Check if the team can have a new member
         Team team = retrieveTeamById(teamId);
 
-        if (team.isTeamComplete()) {
+        if (team.isComplete()) {
             log.error("The team {} is full and can't have any other member", team);
             throw new TeamAlreadyCompleteException();
         }
@@ -69,8 +69,8 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
         // Add the user to the team members
         User user = userService.addToTeam(
                 command.getMemberToAddId(), team);
-        
-        team.getMembers().add(user);
+
+        team.addMember(user);
 
         log.info("User {} successfully added to the members of the team {}", user, team);
 
@@ -142,6 +142,12 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
         // Perform the removal
         userService.leaveTeam(memberId);
 
+        // If the team was complete, then it is no longer so
+        if (team.isComplete()) {
+            team.setComplete(false);
+            teamRepository.save(team);
+        }
+
         log.info("The user of id {} has successfully been removed from the team {}", memberId, team);
     }
 
@@ -208,7 +214,7 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
             log.info("Filtering the team such that team.isComplete = {}", isCompleteTeamFilter.get());
 
             teams = teams.stream()
-                    .filter(team -> team.isTeamComplete() == isCompleteTeamFilter.get())
+                    .filter(team -> team.isComplete() == isCompleteTeamFilter.get())
                     .collect(Collectors.toList());
         }
 
