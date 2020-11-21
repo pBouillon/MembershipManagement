@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CreateTeamWithAValidPayloadTestCase extends IntegrationTest {
 
     /**
-     * Ensure that the user creation is functional
+     * Ensure that the team creation is functional
      *
      * @throws URISyntaxException Throws exception when the URI is invalid
      */
