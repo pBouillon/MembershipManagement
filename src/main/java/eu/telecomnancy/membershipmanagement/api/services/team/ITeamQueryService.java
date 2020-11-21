@@ -2,6 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.services.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamMembersQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamsQuery;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
 
@@ -42,8 +43,10 @@ public interface ITeamQueryService {
     /**
      * Retrieve all teams of the application
      *
+     * Given the query, a filter might be applied to retrieve only the teams which are completed or aren't
+     *
      * @return A list containing all of the teams
      */
-    List<Team> getTeams();
+    List<Team> getTeams(GetTeamsQuery getTeamsQuery);
 
 }

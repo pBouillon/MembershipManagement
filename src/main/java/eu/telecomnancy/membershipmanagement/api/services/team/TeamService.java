@@ -6,8 +6,8 @@ import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.TeamAlreadyCompleteException;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UserNotAMemberOfTheTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UserNotAMemberOfTheTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service to handle {@link Team}-related operations
@@ -198,11 +199,20 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
      * {@inheritDoc}
      */
     @Override
-    public List<Team> getTeams() {
+    public List<Team> getTeams(GetTeamsQuery getTeamsQuery) {
+        Optional<Boolean> isCompleteTeamFilter = getTeamsQuery.getIsComplete();
+
         List<Team> teams = teamRepository.findAll();
 
-        log.info("Retrieved {} teams", teams.size());
+        if (isCompleteTeamFilter.isPresent()) {
+            log.info("Filtering the team such that team.isComplete = {}", isCompleteTeamFilter.get());
 
+            teams = teams.stream()
+                    .filter(team -> team.isTeamComplete() == isCompleteTeamFilter.get())
+                    .collect(Collectors.toList());
+        }
+
+        log.info("Retrieved {} teams", teams.size());
         return teams;
     }
 
