@@ -69,7 +69,7 @@ quality standards widely used in many projects.
 First of all, this API is meant to be ran without supervision.
 
 To ensure that it's working and investigate issues without having to stop the
-whole application, we used [Log4J2](https://logging.apache.org/log4j/2.x/) to
+whole application, we used [Log4j2](https://logging.apache.org/log4j/2.x/) to
 log the actions currently executed by the API.
 
 ### CI and testing
