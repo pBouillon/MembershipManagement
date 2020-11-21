@@ -117,6 +117,9 @@ public class TeamReadRestController extends TeamRestController {
      *
      * Retrieve all teams of the system
      *
+     * Note: the `required = false`, even if not necessary thanks to the Optional type, is necessary for the swagger UI
+     * If not present, Swagger will consider this parameter as mandatory
+     *
      * @return A JSON payload containing all the teams
      */
     @GetMapping
@@ -126,7 +129,7 @@ public class TeamReadRestController extends TeamRestController {
             })
     public ResponseEntity<List<TeamDto>> get(
             @ApiParam(value = "Optional parameter to filter the teams regarding their completed attribute")
-            @RequestParam Optional<Boolean> isComplete) {
+            @RequestParam(required = false) Optional<Boolean> isComplete) {
         GetTeamsQuery getTeamsQuery = new GetTeamsQuery(isComplete);
 
         List<Team> teams = teamService.getTeams(getTeamsQuery);
