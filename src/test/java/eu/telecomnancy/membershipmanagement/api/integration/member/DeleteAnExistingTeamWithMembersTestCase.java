@@ -4,12 +4,12 @@ import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamWriteRestController;
 import eu.telecomnancy.membershipmanagement.api.controllers.user.UserReadRestController;
 import eu.telecomnancy.membershipmanagement.api.controllers.user.UserWriteRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamMemberCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.CreateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
-import eu.telecomnancy.membershipmanagement.api.domain.Team;
-import eu.telecomnancy.membershipmanagement.api.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,8 @@ import org.springframework.http.ResponseEntity;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Routes :
@@ -44,23 +45,23 @@ class DeleteAnExistingTeamWithMembersTestCase extends IntegrationTest {
     @Test
     public void deleteATeamWithUsers() throws URISyntaxException {
         // Create the team to be used
-        Team teamToCreate = new Team("ApprenTeam");
+        CreateTeamCommand createTeamCommand = new CreateTeamCommand("ApprenTeam");
 
         URI teamCreationUri = getUrlForRoute("/api/teams");
 
         ResponseEntity<TeamDto> createdTeamResponse
-                = restTemplate.postForEntity(teamCreationUri, teamToCreate, TeamDto.class);
+                = restTemplate.postForEntity(teamCreationUri, createTeamCommand, TeamDto.class);
 
         assertEquals(createdTeamResponse.getStatusCode(), HttpStatus.CREATED);
         TeamDto createdTeam = extractPayload(createdTeamResponse);
 
         // Add a user to the team
-        User userToCreate = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
         UserDto createdUser = extractPayload(createdUserResponse);

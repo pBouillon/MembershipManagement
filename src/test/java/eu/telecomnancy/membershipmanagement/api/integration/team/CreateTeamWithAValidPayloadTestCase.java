@@ -2,8 +2,8 @@ package eu.telecomnancy.membershipmanagement.api.integration.team;
 
 import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamWriteRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
-import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,19 +33,19 @@ public class CreateTeamWithAValidPayloadTestCase extends IntegrationTest {
     @Test
     public void createTeamWithAValidName() throws URISyntaxException {
         // Prepare the payload
-        Team toCreate = new Team("ApprenTeam");
+        CreateTeamCommand createTeamCommand = new CreateTeamCommand("ApprenTeam");
 
         // Perform the HTTP call
         URI creationUri = getUrlForRoute("/api/teams");
 
         ResponseEntity<TeamDto> createdResponse
-                = restTemplate.postForEntity(creationUri, toCreate, TeamDto.class);
+                = restTemplate.postForEntity(creationUri, createTeamCommand, TeamDto.class);
 
         // Ensure that the creation successfully happened
         assertEquals(createdResponse.getStatusCode(), HttpStatus.CREATED);
         TeamDto created = extractPayload(createdResponse);
 
-        assertEquals(created.getName(), toCreate.getName());
+        assertEquals(created.getName(), createTeamCommand.getName());
     }
 
 }

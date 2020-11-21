@@ -2,8 +2,8 @@ package eu.telecomnancy.membershipmanagement.api.integration.team;
 
 import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamWriteRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
-import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.integration.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,14 +32,14 @@ public class CreateTeamWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void createTeamWithABlankName() throws URISyntaxException {
         // Prepare the payload
-        Team toCreate = new Team(TestUtils.BLANK_STRING);
+        CreateTeamCommand createTeamCommand = new CreateTeamCommand(TestUtils.BLANK_STRING);
 
         // Ensure that the appropriate error is thrown
         URI creationUri = getUrlForRoute("/api/teams");
 
         Assertions.assertThrows(
                 HttpClientErrorException.BadRequest.class,
-                () -> restTemplate.postForEntity(creationUri, toCreate, UserDto.class));
+                () -> restTemplate.postForEntity(creationUri, createTeamCommand, UserDto.class));
     }
 
     /**
@@ -50,14 +50,14 @@ public class CreateTeamWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void createTeamWithAnEmptyName() throws URISyntaxException {
         // Prepare the payload
-        Team toCreate = new Team(TestUtils.EMPTY_STRING);
+        CreateTeamCommand createTeamCommand = new CreateTeamCommand(TestUtils.EMPTY_STRING);
 
         // Ensure that the appropriate error is thrown
         URI creationUri = getUrlForRoute("/api/teams");
 
         Assertions.assertThrows(
                 HttpClientErrorException.BadRequest.class,
-                () -> restTemplate.postForEntity(creationUri, toCreate, UserDto.class));
+                () -> restTemplate.postForEntity(creationUri, createTeamCommand, UserDto.class));
     }
 
     /**
@@ -68,14 +68,14 @@ public class CreateTeamWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void createTeamWithANameTooLong() throws URISyntaxException {
         // Prepare the payload
-        Team toCreate = new Team(TestUtils.LONG_STRING);
+        CreateTeamCommand createTeamCommand = new CreateTeamCommand(TestUtils.LONG_STRING);
 
         // Ensure that the appropriate error is thrown
         URI creationUri = getUrlForRoute("/api/teams");
 
         Assertions.assertThrows(
                 HttpClientErrorException.BadRequest.class,
-                () -> restTemplate.postForEntity(creationUri, toCreate, UserDto.class));
+                () -> restTemplate.postForEntity(creationUri, createTeamCommand, UserDto.class));
     }
 
 }

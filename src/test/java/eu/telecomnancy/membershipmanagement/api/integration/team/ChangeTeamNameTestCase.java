@@ -2,10 +2,10 @@ package eu.telecomnancy.membershipmanagement.api.integration.team;
 
 import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamWriteRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
-import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +36,12 @@ public class ChangeTeamNameTestCase extends IntegrationTest {
     @Test
     public void updateTheTeamInformation() throws URISyntaxException {
         // Create the team
-        Team toCreate = new Team("ApprenTeam");
+        CreateTeamCommand createTeamCommand = new CreateTeamCommand("ApprenTeam");
 
         URI creationUri = getUrlForRoute("/api/teams");
 
         ResponseEntity<TeamDto> createdResponse
-                = restTemplate.postForEntity(creationUri, toCreate, TeamDto.class);
+                = restTemplate.postForEntity(creationUri, createTeamCommand, TeamDto.class);
 
         assertEquals(createdResponse.getStatusCode(), HttpStatus.CREATED);
         TeamDto created = extractPayload(createdResponse);
