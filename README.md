@@ -18,9 +18,9 @@ Made with **Java 15**, **Java Spring** and **Apache Derby**, a web interface is 
 
 > For the initial API documentation, please refer to [the wiki](https://gitlab.telecomnancy.univ-lorraine.fr/sdisapp2021/membership-management/-/wikis/home)
 
-The overall architecutre is the following:
+The overall architecture is the following:
 
-> **TODO Victor's schema**
+![architecture](./docs/images/architecture-overview-v1.jpg)
 
 ## Architecture principles and other tools
 
