@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Route :
- *     /api/teams
+ *     /api/users
  *
  * Case :
  *     (Write-only operation)
@@ -33,7 +33,7 @@ public class CreateUserWithAValidPayloadTestCase extends IntegrationTest {
     @Test
     public void createUserWithValidArgs() throws URISyntaxException {
         // Prepare the payload
-        User toCreate = new User(42,"Mace","Windu");
+        User toCreate = new User(42, "Mace", "Windu");
 
         // Perform the HTTP call
         URI creationUri = getUrlForRoute("/api/users");
@@ -45,6 +45,8 @@ public class CreateUserWithAValidPayloadTestCase extends IntegrationTest {
         assertEquals(createdResponse.getStatusCode(), HttpStatus.CREATED);
         UserDto created = extractPayload(createdResponse);
 
+        assertEquals(created.getAge(), toCreate.getAge());
+        assertEquals(created.getFirstname(), toCreate.getFirstname());
         assertEquals(created.getName(), toCreate.getName());
     }
 
