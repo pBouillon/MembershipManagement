@@ -31,10 +31,10 @@ project around some specific additional technologies.
 
 CQRS, or Command Query Responsibility Segregation, is a way to design
 a system in a way such that the read operations are completely
-separated from the write operation.  
+separated from the write operations.  
 
 We applied this principle to our controllers by splitting them between
-read and write only controllers. By doing so, each payload received
+read- and write-only controllers. By doing so, each payload received
 is holding all the data needed to perform an operation, without any
 additional one which may be misused or provide too much information.
 
@@ -48,11 +48,11 @@ of data it needs to operate and in an increased loose coupling
 To ease the manipulation of our entities across the various layers of the
 application, we used [MapStruct](https://mapstruct.org/).
 
-This tools helped us to map our commands and queries (from CQRS) to our domain
+This tools helped us map our commands and queries (from CQRS) to our domain
 entities when receiving a request; and from the entities to their associated
 DTO when providing and building the response.
 
-DTO are used in a way that we can evolve independently our domain from what the
+DTO are used in a way that allows us to independently evolve our domain from what the
 client is receiving, without coupling our persistence layer and the presentation
 layer.
 
