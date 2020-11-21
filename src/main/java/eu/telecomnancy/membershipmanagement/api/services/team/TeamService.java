@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Service to handle {@link Team}-related operations
@@ -70,7 +69,9 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
         User user = userService.addToTeam(
                 command.getMemberToAddId(), team);
 
-        team.addMember(user);
+        // Update the completeness of the team with this new member
+        team.setComplete(team.isTeamComplete());
+        teamRepository.save(team);
 
         log.info("User {} successfully added to the members of the team {}", user, team);
 
@@ -208,17 +209,12 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
     public List<Team> getTeams(GetTeamsQuery getTeamsQuery) {
         Optional<Boolean> isCompleteTeamFilter = getTeamsQuery.getIsComplete();
 
-        List<Team> teams = teamRepository.findAll();
-
-        if (isCompleteTeamFilter.isPresent()) {
-            log.info("Filtering the team such that team.isComplete = {}", isCompleteTeamFilter.get());
-
-            teams = teams.stream()
-                    .filter(team -> team.isComplete() == isCompleteTeamFilter.get())
-                    .collect(Collectors.toList());
-        }
+        List<Team> teams = isCompleteTeamFilter.isPresent()
+                ? teamRepository.getTeamByIsComplete(isCompleteTeamFilter.get())
+                : teamRepository.findAll();
 
         log.info("Retrieved {} teams", teams.size());
+
         return teams;
     }
 

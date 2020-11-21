@@ -66,21 +66,11 @@ public class Team {
     }
 
     /**
-     * Add a new member to the team
-     *
-     * @param user User to add as a member
-     */
-    public void addMember(User user) {
-        members.add(user);
-        isComplete = isTeamComplete();
-    }
-
-    /**
      * Check whether or not the team is complete
      *
      * @return true if the team is complete; false otherwise
      */
-    private boolean isTeamComplete() {
+    public boolean isTeamComplete() {
         return members.size() == MAX_MEMBERS;
     }
 
