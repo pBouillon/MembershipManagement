@@ -24,7 +24,24 @@ The overall architecture is the following:
 
 ## Architecture principles and other tools
 
+In order to help us to build a robust and efficient API, we created our
+project around some specific additional technologies.
+
 ### CQRS
+
+CQRS, or Command Query Responsibility Segregation, is a way to design
+a system in a way such that the read operations are completely
+separated from the write operation.  
+
+We applied this principle to our controllers by splitting them between
+read and write only controllers. By doing so, each payload received
+is holding all the data needed to perform an operation, without any
+additional one which may be misused or provide too much information.
+
+This is resulting in several components with a specific
+closed scope that can only access and use the minimal amount
+of data it needs to operate and in an increased loose coupling
+(see the [Law of Demeter](https://en.wikipedia.org/wiki/Law_of_Demeter)).
 
 ### Mapping
 
