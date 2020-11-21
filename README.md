@@ -10,7 +10,7 @@ This project is developped by **[Pierre Bouillon](https://www.linkedin.com/in/pi
 and **[Victor Varnier](https://www.linkedin.com/in/victor-varnier/)**
 
 `MembershipManagement` is a RESTful web API to manage teams, users and their memberships.  
-Made with **Java 15**, **Java Spring** and **Apache Derby**, a web interface is accessible through the **Swagger UI**
+Made with **Java 15**, **Java Spring** and **Apache Derby**, a web interface is accessible through the **Swagger UI** (accessible by default on http://localhost:8080/swagger-ui/#/ when the project is running)
 
 ![Swagger UI](./docs/images/swagger-overview-v1.png)
 
@@ -43,7 +43,21 @@ closed scope that can only access and use the minimal amount
 of data it needs to operate and in an increased loose coupling
 (see the [Law of Demeter](https://en.wikipedia.org/wiki/Law_of_Demeter)).
 
-### Mapping
+### DTO and Mapping
+
+To ease the manipulation of our entities across the various layers of the
+application, we used [MapStruct](https://mapstruct.org/).
+
+This tools helped us to map our commands and queries (from CQRS) to our domain
+entities when receiving a request; and from the entities to their associated
+DTO when providing and building the response.
+
+DTO are used in a way that we can evolve independently our domain from what the
+client is receiving, without coupling our persistence layer and the presentation
+layer.
+
+By doing so, each of our layer can be isolated and only have a single purpose
+that does not impact any other.
 
 ## Code Quality
 
