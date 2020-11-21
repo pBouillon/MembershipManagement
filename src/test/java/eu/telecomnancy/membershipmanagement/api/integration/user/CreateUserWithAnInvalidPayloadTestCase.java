@@ -105,7 +105,7 @@ public class CreateUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void createUserWithAnInferiorUnacceptedAge() throws URISyntaxException {
         // Prepare the payload
-        CreateUserCommand createUserCommand = new CreateUserCommand(User.AGE_MIN-1, "Pierre", "Bouillon");
+        CreateUserCommand createUserCommand = new CreateUserCommand(User.AGE_MIN - 1, "Pierre", "Bouillon");
 
         // Perform the HTTP call
         URI uri = getUrlForRoute("/api/users");
