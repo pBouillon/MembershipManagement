@@ -2,9 +2,9 @@ package eu.telecomnancy.membershipmanagement.api.integration.team;
 
 import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamReadRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
-import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,6 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Route :
@@ -36,21 +35,20 @@ public class RetrieveATeamTestCase extends IntegrationTest {
     @Test
     public void retrieveACreatedUser() throws URISyntaxException {
         // Create a new team in the system
-        Team created = new Team("ApprenTeam");
+        CreateTeamCommand createTeamCommand = new CreateTeamCommand("ApprenTeam");
 
         URI creationUri = getUrlForRoute("/api/teams");
 
         ResponseEntity<TeamDto> createdResponse
-                = restTemplate.postForEntity(creationUri, created, TeamDto.class);
+                = restTemplate.postForEntity(creationUri, createTeamCommand, TeamDto.class);
 
         // Ensure that the team is created and retrieve its id
         assertEquals(createdResponse.getStatusCode(), HttpStatus.CREATED);
 
         TeamDto createdTeamDto = extractPayload(createdResponse);
-        created.setId(createdTeamDto.getId());
 
         // Perform the HTTP call to retrieve the details of the created team based on its id
-        URI retrieveUri = getUrlForRoute("/api/teams/" + created.getId());
+        URI retrieveUri = getUrlForRoute("/api/teams/" + createdTeamDto.getId());
 
         ResponseEntity<TeamDetailsDto> retrievedResponse
                 = restTemplate.getForEntity(retrieveUri, TeamDetailsDto.class);
@@ -60,8 +58,7 @@ public class RetrieveATeamTestCase extends IntegrationTest {
 
         TeamDetailsDto retrieved = extractPayload(retrievedResponse);
 
-        assertEquals(retrieved.getId(), created.getId());
-        assertEquals(retrieved.getName(), created.getName());
+        assertEquals(retrieved.getName(), createTeamCommand.getName());
         assertEquals(retrieved.getMembers(), Collections.emptyList());
     }
 

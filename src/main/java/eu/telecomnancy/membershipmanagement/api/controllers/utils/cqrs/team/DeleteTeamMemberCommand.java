@@ -1,26 +1,26 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team;
 
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamCommandService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Command to remove a user from an existing team
  *
  * @see ITeamCommandService
  */
-@Getter @Setter @AllArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DeleteTeamMemberCommand {
 
     /**
      * Id of the user to be removed from the team
      */
-    private final long memberId;
+    private long memberId;
 
     /**
      * Id of the team in which the member will be removed
      */
-    private final long teamId;
+    private long teamId;
 
 }

@@ -2,9 +2,9 @@ package eu.telecomnancy.membershipmanagement.api.integration.user;
 
 import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.user.UserWriteRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.CreateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
-import eu.telecomnancy.membershipmanagement.api.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +36,12 @@ public class DeleteAnExistingUserTestCase extends IntegrationTest {
     @Test
     public void deleteAnExistingUser() throws URISyntaxException {
         // Create the user to be used
-        User userToCreate = new User(33, "Ki-Adi", "Mundi");
+        CreateUserCommand createUserCommand = new CreateUserCommand(33, "Ki-Adi", "Mundi");
 
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 

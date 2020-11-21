@@ -2,10 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
@@ -16,8 +13,9 @@ import javax.validation.constraints.Size;
  *
  * @see IUserCommandService
  */
-@Getter @Setter @ToString
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CreateUserCommand {
 
     /**

@@ -2,6 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.integration.user;
 
 import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.user.UserWriteRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.CreateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
@@ -37,13 +38,13 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void putUserWithABlankFirstname() throws URISyntaxException {
         // Prepare the payload
-        User userToCreate = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         // Perform the HTTP call
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
@@ -71,13 +72,13 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void putUserWithABlankName() throws URISyntaxException {
         // Prepare the payload
-        User userToCreate = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         // Perform the HTTP call
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
@@ -105,13 +106,13 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void putUserWithAnEmptyFirstname() throws URISyntaxException {
         // Prepare the payload
-        User userToCreate = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         // Perform the HTTP call
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
@@ -139,13 +140,13 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void putUserWithAnEmptyName() throws URISyntaxException {
         // Prepare the payload
-        User userToCreate = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         // Perform the HTTP call
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
@@ -173,13 +174,13 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void putUserWithAnInferiorUnacceptedAge() throws URISyntaxException {
         // Prepare the payload
-        User userToCreate = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         // Perform the HTTP call
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
@@ -207,13 +208,13 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void putUserWithASuperiorUnacceptedAge() throws URISyntaxException {
         // Prepare the payload
-        User userToCreate = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         // Perform the HTTP call
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
@@ -241,13 +242,13 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void putUserWithATooLongFirstname() throws URISyntaxException {
         // Prepare the payload
-        User userToCreate = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         // Perform the HTTP call
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
@@ -275,13 +276,13 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void putUserWithATooLongName() throws URISyntaxException {
         // Prepare the payload
-        User userToCreate = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         // Perform the HTTP call
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 
@@ -309,13 +310,13 @@ public class PutUserWithAnInvalidPayloadTestCase extends IntegrationTest {
     @Test
     public void putUserWithInvalidArgs() throws URISyntaxException {
         // Prepare the payload
-        User userToCreate = new User(22, "Victor", "Varnier");
+        CreateUserCommand createUserCommand = new CreateUserCommand(22, "Victor", "Varnier");
 
         // Perform the HTTP call
         URI userCreationUri = getUrlForRoute("/api/users");
 
         ResponseEntity<UserDto> createdUserResponse
-                = restTemplate.postForEntity(userCreationUri, userToCreate, UserDto.class);
+                = restTemplate.postForEntity(userCreationUri, createUserCommand, UserDto.class);
 
         assertEquals(createdUserResponse.getStatusCode(), HttpStatus.CREATED);
 

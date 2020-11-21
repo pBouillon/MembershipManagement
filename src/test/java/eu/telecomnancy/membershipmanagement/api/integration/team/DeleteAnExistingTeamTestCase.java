@@ -2,9 +2,9 @@ package eu.telecomnancy.membershipmanagement.api.integration.team;
 
 import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamWriteRestController;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
-import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Route :
@@ -35,12 +36,12 @@ public class DeleteAnExistingTeamTestCase extends IntegrationTest {
     @Test
     public void deleteAnExistingTeam() throws URISyntaxException {
         // Create the team to be used
-        Team teamToCreate = new Team("ApprenTeam");
+        CreateTeamCommand createTeamCommand = new CreateTeamCommand("ApprenTeam");
 
         URI teamCreationUri = getUrlForRoute("/api/teams");
 
         ResponseEntity<TeamDto> createdTeamResponse
-                = restTemplate.postForEntity(teamCreationUri, teamToCreate, TeamDto.class);
+                = restTemplate.postForEntity(teamCreationUri, createTeamCommand, TeamDto.class);
 
         assertEquals(createdTeamResponse.getStatusCode(), HttpStatus.CREATED);
 
