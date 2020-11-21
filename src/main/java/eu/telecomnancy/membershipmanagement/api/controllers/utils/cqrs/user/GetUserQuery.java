@@ -1,16 +1,16 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserQueryService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Query to get an user by its id
  *
  * @see IUserQueryService
  */
-@Getter @Setter @AllArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class GetUserQuery {
 
     /**

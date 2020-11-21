@@ -2,9 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team;
 
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamCommandService;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -14,7 +12,9 @@ import javax.validation.constraints.Size;
  *
  * @see ITeamCommandService
  */
-@Getter @Setter @ToString
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UpdateTeamCommand {
 
     /**

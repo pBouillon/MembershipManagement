@@ -2,9 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Size;
@@ -17,7 +15,9 @@ import java.util.Optional;
  * @see IUserCommandService
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-@Getter @Setter @ToString
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PatchUserCommand {
 
     /**

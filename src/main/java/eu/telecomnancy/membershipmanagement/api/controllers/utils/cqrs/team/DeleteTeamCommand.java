@@ -1,21 +1,21 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team;
 
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamCommandService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Command to delete a team
  *
  * @see ITeamCommandService
  */
-@Getter @Setter @AllArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DeleteTeamCommand {
 
     /**
      * Id of the team to delete
      */
-    private final long teamId;
+    private long teamId;
 
 }

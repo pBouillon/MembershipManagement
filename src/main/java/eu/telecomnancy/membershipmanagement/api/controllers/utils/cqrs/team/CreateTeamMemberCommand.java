@@ -3,16 +3,16 @@ package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamCommandService;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * Command to add a user to an existing team
  *
  * @see ITeamCommandService
  */
-@Getter @Setter @ToString
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateTeamMemberCommand {
 
     /**
