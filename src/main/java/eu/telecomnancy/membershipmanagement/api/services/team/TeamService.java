@@ -209,8 +209,8 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
     public List<Team> getTeams(GetTeamsQuery getTeamsQuery) {
         Optional<Boolean> isCompleteTeamFilter = getTeamsQuery.getIsComplete();
 
-        isCompleteTeamFilter.ifPresent(value
-                -> log.info("Retrieving all teams such that team.isComplete = {}", value));
+        isCompleteTeamFilter.ifPresent(filterValue
+                -> log.info("Retrieving all teams such that team.isComplete = {}", filterValue));
 
         List<Team> teams = isCompleteTeamFilter.isPresent()
                 ? teamRepository.getTeamByIsComplete(isCompleteTeamFilter.get())
