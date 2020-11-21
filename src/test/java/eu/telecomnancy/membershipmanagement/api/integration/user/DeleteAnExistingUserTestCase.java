@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Route :
- *     /api/teams/:id
+ *     /api/users/:id
  *
  * Case :
  *     (Write-only operation)
@@ -36,7 +36,7 @@ public class DeleteAnExistingUserTestCase extends IntegrationTest {
     @Test
     public void deleteAnExistingUser() throws URISyntaxException {
         // Create the user to be used
-        User userToCreate = new User(33,"Ki-Adi","Mundi");
+        User userToCreate = new User(33, "Ki-Adi", "Mundi");
 
         URI userCreationUri = getUrlForRoute("/api/users");
 
