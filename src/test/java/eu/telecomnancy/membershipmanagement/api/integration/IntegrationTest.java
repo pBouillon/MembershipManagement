@@ -32,6 +32,21 @@ public abstract class IntegrationTest {
     protected RestTemplate restTemplate = new RestTemplate();
 
     /**
+     * Extract the payload of a response entity and ensure it exists
+     *
+     * @param responseEntity ResponseEntity from which extract the payload
+     * @param <T> Type of the payload to extract
+     * @return The extracted payload
+     */
+    protected <T> T extractPayload(ResponseEntity<T> responseEntity) {
+        T payload = responseEntity.getBody();
+
+        assertNotNull(payload);
+
+        return payload;
+    }
+
+    /**
      * Port used to perform integration tests
      */
     @LocalServerPort
@@ -46,21 +61,6 @@ public abstract class IntegrationTest {
      */
     protected URI getUrlForRoute(String route) throws URISyntaxException {
         return new URI(DEFAULT_URL + ":" + serverPort + route);
-    }
-
-    /**
-     * Extract the payload of a response entity and ensure it exists
-     *
-     * @param responseEntity ResponseEntity from which extract the payload
-     * @param <T> Type of the payload to extract
-     * @return The extracted payload
-     */
-    protected <T> T extractPayload(ResponseEntity<T> responseEntity) {
-        T payload = responseEntity.getBody();
-
-        assertNotNull(payload);
-
-        return payload;
     }
 
 }
