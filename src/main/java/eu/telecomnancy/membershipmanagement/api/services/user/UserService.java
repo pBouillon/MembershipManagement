@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service to handle {@link User}-related operations
@@ -91,6 +92,19 @@ public class UserService implements IUserCommandService, IUserQueryService {
     }
 
     /**
+     * Retrieve users depending of their belonging to a team
+     *
+     * @param hasTeam True if we want to retrieve the users that belong to a team
+     *                False if we want the ones that does not belong to a team
+     * @return The filter list of users
+     */
+    private List<User> getUserByHasTeam(boolean hasTeam) {
+        return hasTeam
+            ? userRepository.findByTeamNotNull()
+            : userRepository.findByTeamNull();
+    }
+
+    /**
      * {@inheritDoc}
      * @return
      */
@@ -107,8 +121,15 @@ public class UserService implements IUserCommandService, IUserQueryService {
      * {@inheritDoc}
      */
     @Override
-    public List<User> getUsers() {
-        List<User> users = userRepository.findAll();
+    public List<User> getUsers(GetUsersQuery getUsersQuery) {
+        Optional<Boolean> hasTeamFilter = getUsersQuery.getHasTeam();
+
+        hasTeamFilter.ifPresent(filterValue
+                -> log.info("Retrieving all users such that (user.team != null) = {}",filterValue));
+
+        List<User> users = hasTeamFilter.isEmpty()
+            ? userRepository.findAll()
+            : getUserByHasTeam(hasTeamFilter.get());
 
         log.info("Retrieved {} users", users.size());
 
