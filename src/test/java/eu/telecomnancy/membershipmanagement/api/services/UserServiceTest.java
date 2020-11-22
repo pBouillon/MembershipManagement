@@ -6,6 +6,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.Patc
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
+import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
@@ -169,6 +170,69 @@ public class UserServiceTest {
 
         // Assert
         assertEquals(users, storedUsers);
+    }
+
+    @Test
+    public void givenUsersWithOrWithoutTeam_WhenQueryingAllOfThem_BothShouldBeRetrieved() {
+        // Arrange
+        User userWithTeam = new User(100, "Sheev", "Palpatine");
+        userWithTeam.setTeam(new Team("Apprenteam"));
+
+        User userWithoutTeam = new User(25,"Luke","Skywalker");
+
+        List<User> users = Arrays.asList(userWithTeam, userWithoutTeam);
+
+        Mockito.when(userRepository.findAll())
+                .thenReturn(users);
+
+        GetUsersQuery getUsersQuery = new GetUsersQuery(Optional.empty());
+
+        UserService userService = new UserService(userRepository, mapper);
+
+        // Act
+        List<User> retrievedUsers = userService.getUsers(getUsersQuery);
+
+        // Assert
+        assertEquals(retrievedUsers.size(), users.size());
+    }
+
+    @Test
+    public void givenUsersWithOrWithoutTeam_WhenQueryingTheOnesWithoutTeam_OnlyTheWithoutTeamUsersShouldBeRetrieved() {
+        // Arrange
+        User userWithTeam = new User(100, "Sheev", "Palpatine");
+        userWithTeam.setTeam(new Team("Apprenteam"));
+
+        Mockito.when(userRepository.findByTeamNotNull())
+                .thenReturn(List.of(userWithTeam));
+
+        GetUsersQuery getUsersQuery = new GetUsersQuery(Optional.of(true));
+
+        UserService userService = new UserService(userRepository, mapper);
+
+        // Act
+        List<User> retrievedUsers = userService.getUsers(getUsersQuery);
+
+        // Assert
+        assertEquals(retrievedUsers, List.of(userWithTeam));
+    }
+
+    @Test
+    public void givenUsersWithOrWithoutTeam_WhenQueryingTheOnesWithTeam_OnlyTheWithoutTeamUsersShouldBeRetrieved() {
+        // Arrange
+        User userWithoutTeam = new User(23, "Cal", "Kestis");
+
+        Mockito.when(userRepository.findByTeamNull())
+                .thenReturn(List.of(userWithoutTeam));
+
+        GetUsersQuery getUsersQuery = new GetUsersQuery(Optional.of(false));
+
+        UserService userService = new UserService(userRepository, mapper);
+
+        // Act
+        List<User> retrievedUsers = userService.getUsers(getUsersQuery);
+
+        // Assert
+        assertEquals(retrievedUsers, List.of(userWithoutTeam));
     }
 
 }
