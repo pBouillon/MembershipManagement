@@ -2,6 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.controllers.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamMembersQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamsQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * API controller for the Team resource
@@ -115,6 +117,9 @@ public class TeamReadRestController extends TeamRestController {
      *
      * Retrieve all teams of the system
      *
+     * Note: the `required = false`, even if not necessary thanks to the Optional type, is necessary for the swagger UI
+     * If not present, Swagger will consider this parameter as mandatory
+     *
      * @return A JSON payload containing all the teams
      */
     @GetMapping
@@ -122,8 +127,12 @@ public class TeamReadRestController extends TeamRestController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "Teams successfully retrieved")
             })
-    public ResponseEntity<List<TeamDto>> get() {
-        List<Team> teams = teamService.getTeams();
+    public ResponseEntity<List<TeamDto>> get(
+            @ApiParam(value = "Optional parameter to filter the teams regarding their completed attribute")
+            @RequestParam(required = false) Optional<Boolean> isComplete) {
+        GetTeamsQuery getTeamsQuery = new GetTeamsQuery(isComplete);
+
+        List<Team> teams = teamService.getTeams(getTeamsQuery);
 
         return ResponseEntity.ok()
                 .body(teamMapper.toDtoList(teams));

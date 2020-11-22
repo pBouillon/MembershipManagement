@@ -1,6 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.integration.member;
 
-import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
+import eu.telecomnancy.membershipmanagement.api.integration.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamWriteRestController;
 import eu.telecomnancy.membershipmanagement.api.controllers.user.UserReadRestController;
 import eu.telecomnancy.membershipmanagement.api.controllers.user.UserWriteRestController;

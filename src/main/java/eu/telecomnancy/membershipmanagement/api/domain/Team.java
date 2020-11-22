@@ -38,15 +38,23 @@ public class Team {
     private Long id;
 
     /**
-     * Name of the team
+     * Indicate whether or not the team is complete
+     *
+     * This column has been added in v2.0 because of the various queries regarding the filtering of the teams
+     * on this attribute. This allow to ease the query without joining any columns and perform in-place checks
      */
-    private String name;
+    private boolean isComplete;
 
     /**
      * Members of the team
      */
     @OneToMany(mappedBy = "team")
     private List<User> members = new ArrayList<>();
+
+    /**
+     * Name of the team
+     */
+    private String name;
 
     /**
      * Create a team from its information

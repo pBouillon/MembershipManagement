@@ -23,7 +23,6 @@ public interface TeamMapper {
      * @param team Entity to be converted
      * @return The associated DTO
      */
-    @Mapping(target = "complete", expression = "java( team.isTeamComplete() )")
     TeamDto toDto(Team team);
 
     /**
@@ -32,7 +31,6 @@ public interface TeamMapper {
      * @param team Entity to be converted
      * @return The associated DTO
      */
-    @Mapping(target = "complete", expression = "java( team.isTeamComplete() )")
     TeamDetailsDto toDetailsDto(Team team);
 
     /**

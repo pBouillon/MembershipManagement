@@ -6,8 +6,8 @@ import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.TeamAlreadyCompleteException;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UserNotAMemberOfTheTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
+import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UserNotAMemberOfTheTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -60,7 +60,7 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
         // Check if the team can have a new member
         Team team = retrieveTeamById(teamId);
 
-        if (team.isTeamComplete()) {
+        if (team.isComplete()) {
             log.error("The team {} is full and can't have any other member", team);
             throw new TeamAlreadyCompleteException();
         }
@@ -68,8 +68,10 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
         // Add the user to the team members
         User user = userService.addToTeam(
                 command.getMemberToAddId(), team);
-        
-        team.getMembers().add(user);
+
+        // Update the completeness of the team with this new member
+        team.setComplete(team.isTeamComplete());
+        teamRepository.save(team);
 
         log.info("User {} successfully added to the members of the team {}", user, team);
 
@@ -141,6 +143,12 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
         // Perform the removal
         userService.leaveTeam(memberId);
 
+        // If the team was complete, then it is no longer so
+        if (team.isComplete()) {
+            team.setComplete(false);
+            teamRepository.save(team);
+        }
+
         log.info("The user of id {} has successfully been removed from the team {}", memberId, team);
     }
 
@@ -198,8 +206,15 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
      * {@inheritDoc}
      */
     @Override
-    public List<Team> getTeams() {
-        List<Team> teams = teamRepository.findAll();
+    public List<Team> getTeams(GetTeamsQuery getTeamsQuery) {
+        Optional<Boolean> isCompleteTeamFilter = getTeamsQuery.getIsComplete();
+
+        isCompleteTeamFilter.ifPresent(filterValue
+                -> log.info("Retrieving all teams such that team.isComplete = {}", filterValue));
+
+        List<Team> teams = isCompleteTeamFilter.isPresent()
+                ? teamRepository.getTeamByIsComplete(isCompleteTeamFilter.get())
+                : teamRepository.findAll();
 
         log.info("Retrieved {} teams", teams.size());
 
