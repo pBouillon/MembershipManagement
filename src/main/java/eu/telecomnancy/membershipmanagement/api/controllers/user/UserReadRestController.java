@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.GetUserQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.GetUsersQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
@@ -15,12 +16,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * API controller for the User resource
@@ -58,6 +57,9 @@ public class UserReadRestController extends UserRestController {
      *
      * Retrieve all users of the system
      *
+     * Note: the `required = false`, even if not necessary thanks to the Optional type, is necessary for the swagger UI
+     * If not present, Swagger will consider this parameter as mandatory
+     *
      * @return A JSON payload containing all the users
      */
     @GetMapping
@@ -65,8 +67,12 @@ public class UserReadRestController extends UserRestController {
              responses = {
                      @ApiResponse(responseCode = "200", description = "Users successfully retrieved")
              })
-    public ResponseEntity<List<UserDto>> get() {
-        List<User> users = userService.getUsers();
+    public ResponseEntity<List<UserDto>> get(
+            @ApiParam(value = "Optional parameter to filter the users regarding their belonging to a team")
+            @RequestParam(required = false) Optional<Boolean> hasTeam) {
+        GetUsersQuery getUsersQuery = new GetUsersQuery(hasTeam);
+
+        List<User> users = userService.getUsers(getUsersQuery);
 
         return ResponseEntity.ok()
                 .body(mapper.toDtoList(users));
