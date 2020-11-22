@@ -1,4 +1,4 @@
-package eu.telecomnancy.membershipmanagement.api;
+package eu.telecomnancy.membershipmanagement.api.integration;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;

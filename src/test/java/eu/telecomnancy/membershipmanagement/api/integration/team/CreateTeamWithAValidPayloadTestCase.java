@@ -1,6 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.integration.team;
 
-import eu.telecomnancy.membershipmanagement.api.IntegrationTest;
+import eu.telecomnancy.membershipmanagement.api.integration.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamWriteRestController;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
