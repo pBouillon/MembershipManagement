@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.services;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.DeleteUserCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.GetUsersQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.PatchUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.UpdateUserCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
@@ -51,8 +52,10 @@ public class UserServiceTest {
 
         UserService userService = new UserService(userRepository, mapper);
 
+        GetUsersQuery getUsersQuery = new GetUsersQuery(Optional.empty());
+
         // Act
-        List<User> users = userService.getUsers();
+        List<User> users = userService.getUsers(getUsersQuery);
 
         // Assert
         assertTrue(users.isEmpty());
@@ -159,8 +162,10 @@ public class UserServiceTest {
 
         UserService userService = new UserService(userRepository, mapper);
 
+        GetUsersQuery getUsersQuery = new GetUsersQuery(Optional.empty());
+
         // Act
-        List<User> users = userService.getUsers();
+        List<User> users = userService.getUsers(getUsersQuery);
 
         // Assert
         assertEquals(users, storedUsers);
