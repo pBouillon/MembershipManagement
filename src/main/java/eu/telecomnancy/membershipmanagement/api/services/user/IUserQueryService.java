@@ -1,6 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.services.user;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.GetUserQuery;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user.GetUsersQuery;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 
 import java.util.List;
@@ -27,8 +28,10 @@ public interface IUserQueryService {
     /**
      * Retrieve all users of the application
      *
+     * Given the query, a filter might be applied to retrieve only the users that belong or not belong to a team
+     *
      * @return A list containing all of the users
      */
-    List<User> getUsers();
+    List<User> getUsers(GetUsersQuery getUsersQuery);
 
 }
