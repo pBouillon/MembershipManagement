@@ -19,9 +19,9 @@ import org.springframework.http.ResponseEntity;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -70,6 +70,8 @@ public class RetrieveTeamOnTheirCompletenessTestCase extends IntegrationTest {
         assertEquals(createdSecondTeamResponse.getStatusCode(), HttpStatus.CREATED);
         TeamDto second = extractPayload(createdSecondTeamResponse);
 
+        List<Long> createdTeamsIds = toIds(Arrays.asList(first, second));
+
         // Create enough user to fill a team
         URI userCreationUri = getUrlForRoute("/api/users");
 
@@ -94,14 +96,9 @@ public class RetrieveTeamOnTheirCompletenessTestCase extends IntegrationTest {
 
         List<TeamDto> unfilteredTeams = extractPayload(unfilteredTeamsResponse);
 
-        assertTrue(
-                unfilteredTeams.stream()
-                        .map(TeamDto::getId)
-                        .collect(Collectors.toList())
-                        .containsAll(
-                                Stream.of(first, second)
-                                        .map(TeamDto::getId)
-                                        .collect(Collectors.toList())));
+        // Both the teams should be retrieved when no filtering has occurred
+        List<Long> unfilteredTeamsIds = toIds(unfilteredTeams);
+        assertTrue(unfilteredTeamsIds.containsAll(createdTeamsIds));
 
         // Get only complete teams
         ResponseEntity<List<TeamDto>> completeTeamsResponse
@@ -110,11 +107,10 @@ public class RetrieveTeamOnTheirCompletenessTestCase extends IntegrationTest {
 
         List<TeamDto> completeTeams = extractPayload(completeTeamsResponse);
 
-        assertTrue(completeTeams.stream()
-                .map(TeamDto::getId)
-                .noneMatch(retrievedTeamId
-                        -> retrievedTeamId.equals(first.getId())
-                        || retrievedTeamId.equals(second.getId())));
+        // Neither of the teams are complete on creation
+        List<Long> completeTeamsIds = toIds(completeTeams);
+        assertTrue(completeTeamsIds.stream()
+                .noneMatch(createdTeamsIds::contains));
 
         // Get only incomplete teams
         ResponseEntity<List<TeamDto>> incompleteTeamsResponse
@@ -123,11 +119,9 @@ public class RetrieveTeamOnTheirCompletenessTestCase extends IntegrationTest {
 
         List<TeamDto> incompleteTeams = extractPayload(incompleteTeamsResponse);
 
-        assertTrue(incompleteTeams.stream()
-                .map(TeamDto::getId)
-                .allMatch(retrievedTeamId
-                        -> retrievedTeamId.equals(first.getId())
-                        || retrievedTeamId.equals(second.getId())));
+        // Both team are incomplete after being created
+        List<Long> incompleteTeamsIds = toIds(incompleteTeams);
+        assertTrue(incompleteTeamsIds.containsAll(createdTeamsIds));
 
         // Fill the first team
         URI addMemberToFirstTeamUri = getUrlForRoute("/api/teams/" + first.getId() + "/members");
@@ -145,14 +139,9 @@ public class RetrieveTeamOnTheirCompletenessTestCase extends IntegrationTest {
 
         unfilteredTeams = extractPayload(unfilteredTeamsResponse);
 
-        assertTrue(
-                unfilteredTeams.stream()
-                        .map(TeamDto::getId)
-                        .collect(Collectors.toList())
-                        .containsAll(
-                                Stream.of(first, second)
-                                        .map(TeamDto::getId)
-                                        .collect(Collectors.toList())));
+        // Both the teams should be retrieved when no filtering has occurred
+        unfilteredTeamsIds = toIds(unfilteredTeams);
+        assertTrue(unfilteredTeamsIds.containsAll(createdTeamsIds));
 
         // Get only complete teams
         completeTeamsResponse
@@ -161,6 +150,7 @@ public class RetrieveTeamOnTheirCompletenessTestCase extends IntegrationTest {
 
         completeTeams = extractPayload(completeTeamsResponse);
 
+        // The first team is now complete and should be retrieved when querying the completed teams
         assertTrue(completeTeams.stream()
                 .map(TeamDto::getId)
                 .anyMatch(retrievedTeamId -> retrievedTeamId.equals(first.getId())));
@@ -172,9 +162,22 @@ public class RetrieveTeamOnTheirCompletenessTestCase extends IntegrationTest {
 
         incompleteTeams = extractPayload(incompleteTeamsResponse);
 
+        // The first team is now complete and should not appear when filtering only the incomplete teams anymore
         assertTrue(incompleteTeams.stream()
                 .map(TeamDto::getId)
                 .noneMatch(retrievedTeamId -> retrievedTeamId.equals(first.getId())));
+    }
+
+    /**
+     * Convert a list of team DTO to a list of their ids
+     *
+     * @param teamDtos DTOs to convert
+     * @return The list of their ids
+     */
+    private List<Long> toIds(List<TeamDto> teamDtos) {
+        return teamDtos.stream()
+                .map(TeamDto::getId)
+                .collect(Collectors.toList());
     }
 
 }
