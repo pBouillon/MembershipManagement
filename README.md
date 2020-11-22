@@ -4,13 +4,15 @@
 
 ---
 
-# Overview
+## Overview
 
 This project is developped by **[Pierre Bouillon](https://www.linkedin.com/in/pierre-bouillon/)**
 and **[Victor Varnier](https://www.linkedin.com/in/victor-varnier/)**
 
-`MembershipManagement` is a RESTful web API to manage teams, users and their memberships.  
-Made with **Java 15**, **Java Spring** and **Apache Derby**, a web interface is accessible through the **Swagger UI** (accessible by default on http://localhost:8080/swagger-ui/#/ when the project is running)
+`MembershipManagement` is a RESTful web API to manage teams, users and their
+memberships. Made with **Java 15**, **Java Spring** and **Apache Derby**, a web
+interface is accessible through the **Swagger UI** (accessible by default on
+http://localhost:8080/swagger-ui/#/ when the project is running)
 
 ![Swagger UI](./docs/images/swagger-overview-v1.png)
 
@@ -48,7 +50,7 @@ of data it needs to operate and in an increased loose coupling
 To ease the manipulation of our entities across the various layers of the
 application, we used [MapStruct](https://mapstruct.org/).
 
-This tools helped us map our commands and queries (from CQRS) to our domain
+This tool help us map our commands and queries (from CQRS) to our domain
 entities when receiving a request; and from the entities to their associated
 DTO when providing and building the response.
 
@@ -82,7 +84,7 @@ To achieve this goal, we set up a continuous integration process with GitLab CI
 which can be found [here](https://gitlab.telecomnancy.univ-lorraine.fr/sdisapp2021/membership-management/-/pipelines)
 
 This CI is building the code, checking the warnings and running both the unit
-and the integration tests.
+and the integration tests. 
 
 The prior help us to check that all of our services are still valid; and
 the former are to check their integration with the embedded database and the
