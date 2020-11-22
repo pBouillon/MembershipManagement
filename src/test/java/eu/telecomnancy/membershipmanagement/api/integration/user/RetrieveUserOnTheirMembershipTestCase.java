@@ -103,8 +103,8 @@ public class RetrieveUserOnTheirMembershipTestCase extends IntegrationTest {
         URI retrieveTeamUri = getUrlForRoute("/api/teams/" + teamDto.getId() + "/members");
 
         ResponseEntity<List<UserDto>> membersResponse
-                = restTemplate.exchange(retrieveTeamUri, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-        });
+                = restTemplate.exchange(retrieveTeamUri, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {});
 
         assertEquals(membersResponse.getStatusCode(), HttpStatus.OK);
         List<UserDto> members = extractPayload(membersResponse);
@@ -116,8 +116,8 @@ public class RetrieveUserOnTheirMembershipTestCase extends IntegrationTest {
 
         // Get non-filtered users
         ResponseEntity<List<UserDto>> unfilteredUsersResponse
-                = restTemplate.exchange(retrieveUsersUri, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-        });
+                = restTemplate.exchange(retrieveUsersUri, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {});
 
         List<UserDto> unfilteredUsers = extractPayload(unfilteredUsersResponse);
 
@@ -152,6 +152,3 @@ public class RetrieveUserOnTheirMembershipTestCase extends IntegrationTest {
     }
 
 }
-
-
-
