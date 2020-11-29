@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "amqp.queue.name",
+      "type": "java.lang.String",
+      "description": "Description for amqp.queue.name."
+    },
+    {
+      "name": "amqp.queue.is-durable",
+      "type": "java.lang.Boolean",
+      "description": "Description for amqp.queue.is-durable."
+    },
+    {
+      "name": "amqp.fanout.name",
+      "type": "java.lang.String",
+      "description": "Description for amqp.fanout.name."
+    }
+  ] }
