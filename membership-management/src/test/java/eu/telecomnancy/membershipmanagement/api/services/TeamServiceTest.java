@@ -10,6 +10,7 @@ import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.TeamAlreadyCompleteException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UserNotAMemberOfTheTeamException;
+import eu.telecomnancy.membershipmanagement.api.services.notification.MessagingService;
 import eu.telecomnancy.membershipmanagement.api.services.team.TeamService;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,12 @@ import static org.mockito.ArgumentMatchers.anyLong;
  */
 @ExtendWith(MockitoExtension.class)
 public class TeamServiceTest {
+
+    /**
+     * Mocked messaging service to be injected for the unit tests
+     */
+    @Mock
+    MessagingService messagingService;
 
     /**
      * Mocked Team repository to be injected for the unit tests
@@ -68,7 +75,7 @@ public class TeamServiceTest {
         command.setMemberToAddId(0);
 
         // Create the service
-        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+        TeamService teamService = new TeamService(messagingService, teamRepository, userService, mapper);
 
         // Act + Assert
         assertThrows(
@@ -92,7 +99,7 @@ public class TeamServiceTest {
 
         GetTeamsQuery getTeamsQuery = new GetTeamsQuery(Optional.empty());
 
-        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+        TeamService teamService = new TeamService(messagingService, teamRepository, userService, mapper);
 
         // Act
         List<Team> retrievedTeams = teamService.getTeams(getTeamsQuery);
@@ -112,7 +119,7 @@ public class TeamServiceTest {
 
         GetTeamsQuery getTeamsQuery = new GetTeamsQuery(Optional.of(true));
 
-        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+        TeamService teamService = new TeamService(messagingService, teamRepository, userService, mapper);
 
         // Act
         List<Team> retrievedTeams = teamService.getTeams(getTeamsQuery);
@@ -132,7 +139,7 @@ public class TeamServiceTest {
 
         GetTeamsQuery getTeamsQuery = new GetTeamsQuery(Optional.of(false));
 
-        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+        TeamService teamService = new TeamService(messagingService, teamRepository, userService, mapper);
 
         // Act
         List<Team> retrievedTeams = teamService.getTeams(getTeamsQuery);
@@ -153,7 +160,7 @@ public class TeamServiceTest {
         DeleteTeamCommand command = new DeleteTeamCommand(teamId);
 
         // Create the service
-        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+        TeamService teamService = new TeamService(messagingService, teamRepository, userService, mapper);
 
         // Act + Assert
         assertThrows(
@@ -174,7 +181,7 @@ public class TeamServiceTest {
         command.setMemberToAddId(0);
 
         // Create the service
-        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+        TeamService teamService = new TeamService(messagingService, teamRepository, userService, mapper);
 
         // Act + Assert
         assertThrows(
@@ -192,7 +199,7 @@ public class TeamServiceTest {
         final long teamId = 0;
         DeleteTeamMemberCommand deleteTeamMemberCommand = new DeleteTeamMemberCommand(userId, teamId);
 
-        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+        TeamService teamService = new TeamService(messagingService, teamRepository, userService, mapper);
 
         // Act + Assert
         assertThrows(
@@ -214,7 +221,7 @@ public class TeamServiceTest {
         final long teamId = 0;
         DeleteTeamMemberCommand deleteTeamMemberCommand = new DeleteTeamMemberCommand(userId, teamId);
 
-        TeamService teamService = new TeamService(teamRepository, userService, mapper);
+        TeamService teamService = new TeamService(messagingService, teamRepository, userService, mapper);
 
         // Act + Assert
         assertThrows(

@@ -5,8 +5,11 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserM
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
+import eu.telecomnancy.membershipmanagement.api.services.MembershipManagementService;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UserAlreadyInATeamException;
+import eu.telecomnancy.membershipmanagement.api.services.notification.MessagingService;
+import javassist.compiler.ast.Member;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,7 @@ import java.util.Optional;
  */
 @Log4j2
 @Service
-public class UserService implements IUserCommandService, IUserQueryService {
+public class UserService extends MembershipManagementService implements IUserCommandService, IUserQueryService {
 
     /**
      * UserDto mapper utility
@@ -34,10 +37,14 @@ public class UserService implements IUserCommandService, IUserQueryService {
     /**
      * Create a new instance of the UserService
      *
+     * @param messagingService RabbitMQ message dispatcher
      * @param userRepository Repository to access the {@link User} entity in the database
+     * @param mapper UserDto mapper utility
      */
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper mapper) {
+    public UserService(MessagingService messagingService, UserRepository userRepository, UserMapper mapper) {
+        super(messagingService);
+
         this.mapper = mapper;
         this.userRepository = userRepository;
     }

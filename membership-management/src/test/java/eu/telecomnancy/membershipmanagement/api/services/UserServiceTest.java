@@ -9,6 +9,7 @@ import eu.telecomnancy.membershipmanagement.api.dal.repositories.UserRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
+import eu.telecomnancy.membershipmanagement.api.services.notification.MessagingService;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +36,12 @@ import static org.mockito.ArgumentMatchers.anyLong;
 public class UserServiceTest {
 
     /**
+     * Mocked messaging service to be injected for the unit tests
+     */
+    @Mock
+    MessagingService messagingService;
+
+    /**
      * Mocked User repository to be injected for the unit tests
      */
     @Mock
@@ -51,7 +58,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findAll())
                 .thenReturn(new ArrayList<>());
 
-        UserService userService = new UserService(userRepository, mapper);
+        UserService userService = new UserService(messagingService, userRepository, mapper);
 
         GetUsersQuery getUsersQuery = new GetUsersQuery(Optional.empty());
 
@@ -69,7 +76,7 @@ public class UserServiceTest {
                 .thenReturn(Optional.empty());
 
         long targetUserId = 0;
-        UserService userService = new UserService(userRepository, mapper);
+        UserService userService = new UserService(messagingService, userRepository, mapper);
         DeleteUserCommand command = new DeleteUserCommand(targetUserId);
 
         // Act + Assert
@@ -87,7 +94,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.save(any(User.class)))
                 .thenReturn(new User());
 
-        UserService userService = new UserService(userRepository, mapper);
+        UserService userService = new UserService(messagingService, userRepository, mapper);
 
         long targetUserId = 0;
         PatchUserCommand command = new PatchUserCommand();
@@ -103,7 +110,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findById(anyLong()))
                 .thenReturn(Optional.empty());
 
-        UserService userService = new UserService(userRepository, mapper);
+        UserService userService = new UserService(messagingService, userRepository, mapper);
 
         long targetUserId = 0;
         PatchUserCommand command = new PatchUserCommand();
@@ -123,7 +130,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.save(any(User.class)))
                 .thenReturn(new User());
 
-        UserService userService = new UserService(userRepository, mapper);
+        UserService userService = new UserService(messagingService, userRepository, mapper);
 
         long targetUserId = 0;
         UpdateUserCommand command = new UpdateUserCommand();
@@ -139,7 +146,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findById(anyLong()))
                 .thenReturn(Optional.empty());
 
-        UserService userService = new UserService(userRepository, mapper);
+        UserService userService = new UserService(messagingService, userRepository, mapper);
 
         long targetUserId = 0;
         UpdateUserCommand command = new UpdateUserCommand();
@@ -161,7 +168,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findAll())
                 .thenReturn(storedUsers);
 
-        UserService userService = new UserService(userRepository, mapper);
+        UserService userService = new UserService(messagingService, userRepository, mapper);
 
         GetUsersQuery getUsersQuery = new GetUsersQuery(Optional.empty());
 
@@ -187,7 +194,7 @@ public class UserServiceTest {
 
         GetUsersQuery getUsersQuery = new GetUsersQuery(Optional.empty());
 
-        UserService userService = new UserService(userRepository, mapper);
+        UserService userService = new UserService(messagingService, userRepository, mapper);
 
         // Act
         List<User> retrievedUsers = userService.getUsers(getUsersQuery);
@@ -207,7 +214,7 @@ public class UserServiceTest {
 
         GetUsersQuery getUsersQuery = new GetUsersQuery(Optional.of(true));
 
-        UserService userService = new UserService(userRepository, mapper);
+        UserService userService = new UserService(messagingService, userRepository, mapper);
 
         // Act
         List<User> retrievedUsers = userService.getUsers(getUsersQuery);
@@ -226,7 +233,7 @@ public class UserServiceTest {
 
         GetUsersQuery getUsersQuery = new GetUsersQuery(Optional.of(false));
 
-        UserService userService = new UserService(userRepository, mapper);
+        UserService userService = new UserService(messagingService, userRepository, mapper);
 
         // Act
         List<User> retrievedUsers = userService.getUsers(getUsersQuery);
