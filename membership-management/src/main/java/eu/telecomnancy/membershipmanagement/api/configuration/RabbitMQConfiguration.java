@@ -16,33 +16,8 @@ public class RabbitMQConfiguration {
     /**
      * RabbitMQ fanout name
      */
-    @Value("${amqp.fanout.name}")
-    private String fanoutName;
-
-    /**
-     * RabbitMQ queue name
-     */
-    @Value("${amqp.queue.name}")
-    private String queueName;
-
-    /**
-     * RabbitMQ queue persistence
-     */
-    @Value("${amqp.queue.is-durable}")
-    private boolean isQueueDurable;
-
-    /**
-     * Bean to initialize the binding between a queue and a fanout
-     *
-     * @param queue Queue to be bound
-     * @param fanout Fanout used for binding
-     * @return The resulting binding
-     */
-    @Bean
-    Binding binding(Queue queue, FanoutExchange fanout) {
-        return BindingBuilder.bind(queue)
-                .to(fanout);
-    }
+    @Value("${amqp.topic.name}")
+    private String topicName;
 
     /**
      * Bean to create the RabbitMQ fanout
@@ -50,18 +25,8 @@ public class RabbitMQConfiguration {
      * @return An initialized fanout
      */
     @Bean
-    public FanoutExchange fanout() {
-        return new FanoutExchange(fanoutName);
-    }
-
-    /**
-     * Bean to create the RabbitMQ queue used for message exchanges
-     *
-     * @return A messaging queue
-     */
-    @Bean
-    public Queue queue() {
-        return new Queue(queueName, isQueueDurable);
+    public TopicExchange topicExchange() {
+        return new TopicExchange(topicName);
     }
 
 }

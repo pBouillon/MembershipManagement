@@ -1,18 +1,18 @@
 {
   "properties": [
     {
-      "name": "amqp.queue.name",
+      "name": "amqp.routing-key.log",
       "type": "java.lang.String",
-      "description": "Description for amqp.queue.name."
+      "description": "Description for amqp.routing-key.log."
     },
     {
-      "name": "amqp.queue.is-durable",
-      "type": "java.lang.Boolean",
-      "description": "Description for amqp.queue.is-durable."
+      "name": "amqp.routing-key.content",
+      "type": "java.lang.String",
+      "description": "Description for amqp.routing-key.content."
     },
     {
-      "name": "amqp.fanout.name",
+      "name": "amqp.topic.name",
       "type": "java.lang.String",
-      "description": "Description for amqp.fanout.name."
+      "description": "Description for amqp.topic.name."
     }
   ] }
