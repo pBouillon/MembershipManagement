@@ -173,6 +173,7 @@ public class UserService implements IUserCommandService, IUserQueryService {
         // Return the saved instance
         return userRepository.save(target);
     }
+
     /**
      * Try to retrieve a user by its id
      *
