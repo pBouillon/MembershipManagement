@@ -5,10 +5,12 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamM
 import eu.telecomnancy.membershipmanagement.api.dal.repositories.TeamRepository;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
+import eu.telecomnancy.membershipmanagement.api.services.MembershipManagementService;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.TeamAlreadyCompleteException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UserNotAMemberOfTheTeamException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
+import eu.telecomnancy.membershipmanagement.api.services.notification.MessagingService;
 import eu.telecomnancy.membershipmanagement.api.services.user.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ import java.util.Optional;
  */
 @Log4j2
 @Service
-public class TeamService implements ITeamCommandService, ITeamQueryService {
+public class TeamService extends MembershipManagementService implements ITeamCommandService, ITeamQueryService {
 
     /**
      * TeamDto mapper utility
@@ -42,10 +44,16 @@ public class TeamService implements ITeamCommandService, ITeamQueryService {
     /**
      * Create a new instance of the TeamService
      *
+     * @param messagingService RabbitMQ message dispatcher
      * @param teamRepository Repository to access the {@link Team} entity in the database
+     * @param userService Injected UserService used to update the membership of the users
+     * @param mapper TeamDto mapper utility
      */
     @Autowired
-    public TeamService(TeamRepository teamRepository, UserService userService, TeamMapper mapper) {
+    public TeamService(MessagingService messagingService, TeamRepository teamRepository, UserService userService,
+                       TeamMapper mapper) {
+        super(messagingService);
+
         this.mapper = mapper;
         this.teamRepository = teamRepository;
         this.userService = userService;

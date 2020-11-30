@@ -18,7 +18,7 @@ import java.util.Collections;
  */
 @Configuration
 @Import(SpringDataRestConfiguration.class)
-public class SpringFoxConfig {
+public class SpringFoxConfiguration {
 
     /**
      * Package in which the controllers are defined
