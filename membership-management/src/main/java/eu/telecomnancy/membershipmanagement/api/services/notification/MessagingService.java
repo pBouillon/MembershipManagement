@@ -19,23 +19,23 @@ public class MessagingService {
      * the creation of a user or of a team
      */
     @Value("${amqp.routing-key.content}")
-    private String _contentRouteKey;
+    private String contentRouteKey;
 
     /**
      * Rabbit route key used to notify of an event to be logged by the consumers
      */
     @Value("${amqp.routing-key.log}")
-    private String _logRouteKey;
+    private String logRouteKey;
 
     /**
      * RabbitMQ template used to dispatch messages
      */
-    private final RabbitTemplate _template;
+    private final RabbitTemplate template;
 
     /**
      * Topic exchange used as a route to propagate messages
      */
-    private final TopicExchange _topic;
+    private final TopicExchange topic;
 
     /**
      * Default constructor used to create a messaging service that will dispatch messages on RabbitMQ queues
@@ -45,8 +45,8 @@ public class MessagingService {
      */
     @Autowired
     public MessagingService(RabbitTemplate template, TopicExchange topic) {
-        _template = template;
-        _topic = topic;
+        this.template = template;
+        this.topic = topic;
     }
 
     /**
@@ -56,10 +56,10 @@ public class MessagingService {
      * @param routeKey Route key to be used
      */
     private void send(String message, String routeKey) {
-        _template.convertAndSend(_topic.getName(), routeKey, message);
+        template.convertAndSend(topic.getName(), routeKey, message);
 
         log.info(
-                String.format("Send message (on '%s'): %s", routeKey, message));
+                String.format("Send message (on key '%s'): %s", routeKey, message));
     }
 
     /**
@@ -69,7 +69,7 @@ public class MessagingService {
      * @param message Message to send
      */
     public void sendContentUpdatedMessage(String message) {
-        send(message, _contentRouteKey);
+        send(message, contentRouteKey);
     }
 
     /**
@@ -78,7 +78,7 @@ public class MessagingService {
      * @param message Message to send
      */
     public void sendLogMessage(String message) {
-        send(message, _logRouteKey);
+        send(message, logRouteKey);
     }
 
 }
