@@ -22,12 +22,6 @@ public class MessagingService {
     private String contentRouteKey;
 
     /**
-     * Rabbit route key used to notify of an event to be logged by the consumers
-     */
-    @Value("${amqp.routing-key.log}")
-    private String logRouteKey;
-
-    /**
      * RabbitMQ template used to dispatch messages
      */
     private final RabbitTemplate template;
@@ -70,15 +64,6 @@ public class MessagingService {
      */
     public void sendContentUpdatedMessage(String message) {
         send(message, contentRouteKey);
-    }
-
-    /**
-     * Send a message to be logged by the consumers
-     *
-     * @param message Message to send
-     */
-    public void sendLogMessage(String message) {
-        send(message, logRouteKey);
     }
 
 }
