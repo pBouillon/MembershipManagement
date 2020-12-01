@@ -14,15 +14,15 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfiguration {
 
     /**
-     * RabbitMQ fanout name
+     * RabbitMQ topic name
      */
     @Value("${amqp.topic.name}")
     private String topicName;
 
     /**
-     * Bean to create the RabbitMQ fanout
+     * Bean to create the RabbitMQ topic exchance
      *
-     * @return An initialized fanout
+     * @return An initialized topic exchange
      */
     @Bean
     public TopicExchange topicExchange() {
