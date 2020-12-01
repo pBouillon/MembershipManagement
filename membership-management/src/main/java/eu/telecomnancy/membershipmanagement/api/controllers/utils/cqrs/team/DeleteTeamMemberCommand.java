@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.Command;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamCommandService;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteTeamMemberCommand {
+public class DeleteTeamMemberCommand implements Command {
 
     /**
      * Id of the user to be removed from the team

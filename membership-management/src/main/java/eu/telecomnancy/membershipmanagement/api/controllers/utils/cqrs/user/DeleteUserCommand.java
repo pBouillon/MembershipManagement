@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.Command;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteUserCommand {
+public class DeleteUserCommand implements Command {
 
     /**
      * Id of the user to delete

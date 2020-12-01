@@ -1,18 +1,13 @@
 {
   "properties": [
     {
-      "name": "amqp.routing-key.log",
-      "type": "java.lang.String",
-      "description": "Description for amqp.routing-key.log."
-    },
-    {
       "name": "amqp.routing-key.content",
       "type": "java.lang.String",
-      "description": "Description for amqp.routing-key.content."
+      "description": "RabbitMQ key to route a message related to the content of the API on the application's topic"
     },
     {
       "name": "amqp.topic.name",
       "type": "java.lang.String",
-      "description": "Description for amqp.topic.name."
+      "description": "RabbitMQ topic name used to disptach notifications"
     }
   ] }

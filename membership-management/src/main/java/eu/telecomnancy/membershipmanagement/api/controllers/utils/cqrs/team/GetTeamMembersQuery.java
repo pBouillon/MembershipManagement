@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.Query;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamQueryService;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetTeamMembersQuery {
+public class GetTeamMembersQuery implements Query {
 
     /**
      * Id of the team

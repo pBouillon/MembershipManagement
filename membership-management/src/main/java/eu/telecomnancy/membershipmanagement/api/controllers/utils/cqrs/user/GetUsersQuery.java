@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.Query;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserQueryService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,7 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetUsersQuery {
+public class GetUsersQuery implements Query {
 
     /**
      * Additional parameter to query only users who belong to a team, who don't belong to a team or not to perform any

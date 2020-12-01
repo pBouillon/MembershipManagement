@@ -83,6 +83,9 @@ public class UserService extends MembershipManagementService implements IUserCom
 
         log.info("New user created {}", created);
 
+        // Notify other client that the content of the application changed
+        messagingService.sendContentUpdatedMessage(createUserCommand);
+
         return created;
     }
 
@@ -96,6 +99,9 @@ public class UserService extends MembershipManagementService implements IUserCom
         userRepository.delete(toDelete);
 
         log.info("User of id {} successfully deleted", toDelete.getId());
+
+        // Notify other client that the content of the application changed
+        messagingService.sendContentUpdatedMessage(deleteUserCommand);
     }
 
     /**
@@ -121,6 +127,9 @@ public class UserService extends MembershipManagementService implements IUserCom
 
         log.info("Successfully retrieved user {}", user);
 
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(getUserQuery);
+
         return user;
     }
 
@@ -139,6 +148,9 @@ public class UserService extends MembershipManagementService implements IUserCom
             : getUserByHasTeam(hasTeamFilter.get());
 
         log.info("Retrieved {} users", users.size());
+
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(getUsersQuery);
 
         return users;
     }
@@ -164,18 +176,21 @@ public class UserService extends MembershipManagementService implements IUserCom
      * {@inheritDoc}
      */
     @Override
-    public User patchUser(long userId, PatchUserCommand command)
+    public User patchUser(long userId, PatchUserCommand patchUserCommand)
             throws UnknownUserException {
         // Retrieve the user to update
         User target = retrieveUserById(userId);
 
         // Perform the update
-        log.info("Patch the user {} with {}", target, command);
+        log.info("Patch the user {} with {}", target, patchUserCommand);
 
         mapper.updateFromUser(
-                mapper.toUser(command), target);
+                mapper.toUser(patchUserCommand), target);
 
         log.info("Patched user: {}", target);
+
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(patchUserCommand);
 
         // Return the saved instance
         return userRepository.save(target);
@@ -200,17 +215,20 @@ public class UserService extends MembershipManagementService implements IUserCom
      * {@inheritDoc}
      */
     @Override
-    public User updateUser(long userId, UpdateUserCommand command)
+    public User updateUser(long userId, UpdateUserCommand updateUserCommand)
             throws UnknownUserException {
         // Retrieve the user to update
         User target = retrieveUserById(userId);
 
         // Perform the update
-        log.info("Update the user {} to {}", target, command);
+        log.info("Update the user {} to {}", target, updateUserCommand);
 
-        mapper.updateFromCommand(command, target);
+        mapper.updateFromCommand(updateUserCommand, target);
 
         log.info("Updated user: {}", target);
+
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(updateUserCommand);
 
         // Return the saved instance
         return userRepository.save(target);

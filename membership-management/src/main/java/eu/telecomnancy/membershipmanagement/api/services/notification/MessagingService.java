@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.services.notification;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.CqrsOperation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -20,12 +21,6 @@ public class MessagingService {
      */
     @Value("${amqp.routing-key.content}")
     private String contentRouteKey;
-
-    /**
-     * Rabbit route key used to notify of an event to be logged by the consumers
-     */
-    @Value("${amqp.routing-key.log}")
-    private String logRouteKey;
 
     /**
      * RabbitMQ template used to dispatch messages
@@ -63,22 +58,22 @@ public class MessagingService {
     }
 
     /**
-     * Send a message relative to an update of the content of the API such as
-     * the creation of a user or of a team
+     * Send a message containing a CQRS operation that has occurred in the application to the RabbitMQ broker
      *
-     * @param message Message to send
+     * @param operation The CQRS notification
      */
-    public void sendContentUpdatedMessage(String message) {
-        send(message, contentRouteKey);
+    public void sendContentMessage(CqrsOperation operation) {
+        // The message is sent with no specific route key so that all RabbitMQ listeners can listen to it
+        send(operation.toString(), "");
     }
 
     /**
-     * Send a message to be logged by the consumers
+     * Send a message related to an update of the application's content to the RabbitMQ broker
      *
-     * @param message Message to send
+     * @param operation The CQRS notification
      */
-    public void sendLogMessage(String message) {
-        send(message, logRouteKey);
+    public void sendContentUpdatedMessage(CqrsOperation operation) {
+        send(operation.toString(), contentRouteKey);
     }
 
 }

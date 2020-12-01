@@ -63,7 +63,7 @@ public class TeamService extends MembershipManagementService implements ITeamCom
      * {@inheritDoc}
      */
     @Override
-    public Team addTeamMember(long teamId, CreateTeamMemberCommand command)
+    public Team addTeamMember(long teamId, CreateTeamMemberCommand createTeamMemberCommand)
             throws UnknownTeamException, UnknownUserException {
         // Check if the team can have a new member
         Team team = retrieveTeamById(teamId);
@@ -75,13 +75,16 @@ public class TeamService extends MembershipManagementService implements ITeamCom
 
         // Add the user to the team members
         User user = userService.addToTeam(
-                command.getMemberToAddId(), team);
+                createTeamMemberCommand.getMemberToAddId(), team);
 
         // Update the completeness of the team with this new member
         team.setComplete(team.isTeamComplete());
         teamRepository.save(team);
 
         log.info("User {} successfully added to the members of the team {}", user, team);
+
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(createTeamMemberCommand);
 
         // Return the result
         return team;
@@ -97,6 +100,9 @@ public class TeamService extends MembershipManagementService implements ITeamCom
 
          log.info("New team created {}", created);
 
+        // Notify other client that the content of the application changed
+        messagingService.sendContentUpdatedMessage(createTeamCommand);
+
          return created;
     }
 
@@ -104,11 +110,11 @@ public class TeamService extends MembershipManagementService implements ITeamCom
      * {@inheritDoc}
      */
     @Override
-    public void deleteTeam(DeleteTeamCommand command)
+    public void deleteTeam(DeleteTeamCommand deleteTeamCommand)
             throws UnknownTeamException {
         // Retrieve the team to delete
         Team toDelete = retrieveTeamById(
-                command.getTeamId());
+                deleteTeamCommand.getTeamId());
 
         // Delete the membership of all of its members
         toDelete.getMembers()
@@ -122,6 +128,9 @@ public class TeamService extends MembershipManagementService implements ITeamCom
 
         // Perform the deletion
         teamRepository.delete(toDelete);
+
+        // Notify other client that the content of the application changed
+        messagingService.sendContentUpdatedMessage(deleteTeamCommand);
         
         log.info("Successfully deleted team {}", toDelete);
     }
@@ -130,11 +139,11 @@ public class TeamService extends MembershipManagementService implements ITeamCom
      * {@inheritDoc}
      */
     @Override
-    public void removeMemberFromTeam(DeleteTeamMemberCommand command)
+    public void removeMemberFromTeam(DeleteTeamMemberCommand deleteTeamMemberCommand)
             throws UnknownTeamException, UnknownUserException {
         // Retrieve the team and its members
-        long memberId = command.getMemberId();
-        Team team = retrieveTeamById(command.getTeamId());
+        long memberId = deleteTeamMemberCommand.getMemberId();
+        Team team = retrieveTeamById(deleteTeamMemberCommand.getTeamId());
 
         // Check if the user does belong to the team
         boolean isUserMemberOfTheTeam = team.getMembers()
@@ -185,6 +194,9 @@ public class TeamService extends MembershipManagementService implements ITeamCom
 
         log.info("Successfully retrieved team {}", team);
 
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(getTeamQuery);
+
         return team;
     }
 
@@ -207,6 +219,9 @@ public class TeamService extends MembershipManagementService implements ITeamCom
                 },
                 () -> log.warn("Unable to retrieve a team with id {}", teamId));
 
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(getTeamMembersQuery);
+
         return optionalTeam;
     }
 
@@ -226,6 +241,9 @@ public class TeamService extends MembershipManagementService implements ITeamCom
 
         log.info("Retrieved {} teams", teams.size());
 
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(getTeamsQuery);
+
         return teams;
     }
 
@@ -233,17 +251,20 @@ public class TeamService extends MembershipManagementService implements ITeamCom
      * {@inheritDoc}
      */
     @Override
-    public Team updateTeam(long teamId, UpdateTeamCommand command)
+    public Team updateTeam(long teamId, UpdateTeamCommand updateTeamCommand)
             throws UnknownTeamException {
         // Retrieve the team to update
         Team target = retrieveTeamById(teamId);
 
         // Perform the update
-        log.info("Update the team {} to {}", target, command);
+        log.info("Update the team {} to {}", target, updateTeamCommand);
 
-        mapper.updateFromCommand(command, target);
+        mapper.updateFromCommand(updateTeamCommand, target);
 
         log.info("Updated team: {}", target);
+
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(updateTeamCommand);
 
         // Return the saved instance
         return teamRepository.save(target);
