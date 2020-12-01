@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.services.notification;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.CqrsOperation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -57,13 +58,12 @@ public class MessagingService {
     }
 
     /**
-     * Send a message relative to an update of the content of the API such as
-     * the creation of a user or of a team
+     * Send a message CQRS operation to the RabbitMQ broker
      *
-     * @param message Message to send
+     * @param operation The CQRS notification
      */
-    public void sendContentUpdatedMessage(String message) {
-        send(message, contentRouteKey);
+    public void sendContentUpdatedMessage(CqrsOperation operation) {
+        send(operation.toString(), contentRouteKey);
     }
 
 }
