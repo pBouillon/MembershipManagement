@@ -83,6 +83,9 @@ public class TeamService extends MembershipManagementService implements ITeamCom
 
         log.info("User {} successfully added to the members of the team {}", user, team);
 
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(createTeamMemberCommand);
+
         // Return the result
         return team;
     }
@@ -191,6 +194,9 @@ public class TeamService extends MembershipManagementService implements ITeamCom
 
         log.info("Successfully retrieved team {}", team);
 
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(getTeamQuery);
+
         return team;
     }
 
@@ -213,6 +219,9 @@ public class TeamService extends MembershipManagementService implements ITeamCom
                 },
                 () -> log.warn("Unable to retrieve a team with id {}", teamId));
 
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(getTeamMembersQuery);
+
         return optionalTeam;
     }
 
@@ -232,6 +241,9 @@ public class TeamService extends MembershipManagementService implements ITeamCom
 
         log.info("Retrieved {} teams", teams.size());
 
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(getTeamsQuery);
+
         return teams;
     }
 
@@ -239,17 +251,20 @@ public class TeamService extends MembershipManagementService implements ITeamCom
      * {@inheritDoc}
      */
     @Override
-    public Team updateTeam(long teamId, UpdateTeamCommand command)
+    public Team updateTeam(long teamId, UpdateTeamCommand updateTeamCommand)
             throws UnknownTeamException {
         // Retrieve the team to update
         Team target = retrieveTeamById(teamId);
 
         // Perform the update
-        log.info("Update the team {} to {}", target, command);
+        log.info("Update the team {} to {}", target, updateTeamCommand);
 
-        mapper.updateFromCommand(command, target);
+        mapper.updateFromCommand(updateTeamCommand, target);
 
         log.info("Updated team: {}", target);
+
+        // Notify other client that an operation has been made on the API
+        messagingService.sendContentUpdatedMessage(updateTeamCommand);
 
         // Return the saved instance
         return teamRepository.save(target);

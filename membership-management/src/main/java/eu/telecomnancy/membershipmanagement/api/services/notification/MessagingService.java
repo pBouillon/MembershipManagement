@@ -58,7 +58,17 @@ public class MessagingService {
     }
 
     /**
-     * Send a message CQRS operation to the RabbitMQ broker
+     * Send a message containing a CQRS operation that has occurred in the application to the RabbitMQ broker
+     *
+     * @param operation The CQRS notification
+     */
+    public void sendContentMessage(CqrsOperation operation) {
+        // The message is sent with no specific route key so that all RabbitMQ listeners can listen to it
+        send(operation.toString(), "");
+    }
+
+    /**
+     * Send a message related to an update of the application's content to the RabbitMQ broker
      *
      * @param operation The CQRS notification
      */
