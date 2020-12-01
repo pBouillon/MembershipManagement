@@ -29,7 +29,7 @@ test:
   stage: test
   script:
     - cd ./membership-management 
-    - gradle check
+    - gradle test --fail-fast --tests *ServiceTest
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
