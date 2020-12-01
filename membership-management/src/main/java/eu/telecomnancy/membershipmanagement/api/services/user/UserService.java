@@ -83,6 +83,9 @@ public class UserService extends MembershipManagementService implements IUserCom
 
         log.info("New user created {}", created);
 
+        // Notify other client that the content of the application changed
+        messagingService.sendContentUpdatedMessage(createUserCommand);
+
         return created;
     }
 
@@ -96,6 +99,9 @@ public class UserService extends MembershipManagementService implements IUserCom
         userRepository.delete(toDelete);
 
         log.info("User of id {} successfully deleted", toDelete.getId());
+
+        // Notify other client that the content of the application changed
+        messagingService.sendContentUpdatedMessage(deleteUserCommand);
     }
 
     /**

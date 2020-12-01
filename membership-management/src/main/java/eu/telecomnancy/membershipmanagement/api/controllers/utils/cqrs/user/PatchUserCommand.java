@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.Command;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
 import lombok.*;
@@ -18,7 +19,7 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatchUserCommand {
+public class PatchUserCommand implements Command {
 
     /**
      * Age of the user

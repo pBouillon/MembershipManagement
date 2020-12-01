@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.user;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.Command;
 import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.user.IUserCommandService;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserCommand {
+public class UpdateUserCommand implements Command {
 
     /**
      * Age of the user

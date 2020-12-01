@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.Command;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamCommandService;
 import lombok.*;
@@ -15,7 +16,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateTeamCommand {
+public class UpdateTeamCommand implements Command {
 
     /**
      * Name of the team

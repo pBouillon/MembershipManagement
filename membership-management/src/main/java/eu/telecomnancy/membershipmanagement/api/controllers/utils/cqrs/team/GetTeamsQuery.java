@@ -1,5 +1,6 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.Query;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamQueryService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetTeamsQuery {
+public class GetTeamsQuery implements Query {
 
     /**
      * Additional parameter to query only completed teams, not completed teams or not to perform any
