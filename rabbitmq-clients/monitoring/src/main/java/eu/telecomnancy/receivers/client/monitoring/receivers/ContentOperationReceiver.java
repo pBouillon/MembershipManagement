@@ -32,7 +32,10 @@ public class ContentOperationReceiver {
      */
     @RabbitListener(queues = "#{autoDeleteQueue.name}")
     public void RabbitListener(String dequeuedMessage) {
+        // Update the current count of each resources
         monitoringService.alterCountFromOperation(dequeuedMessage);
+
+        // Display the updated values
         System.out.print("Current count:\t" + monitoringService.toString() + "\r");
     }
 
