@@ -20,7 +20,7 @@ public class RabbitMQConfiguration {
     private String topicName;
 
     /**
-     * Bean to create the RabbitMQ topic exchance
+     * Bean to create the RabbitMQ topic exchange
      *
      * @return An initialized topic exchange
      */
