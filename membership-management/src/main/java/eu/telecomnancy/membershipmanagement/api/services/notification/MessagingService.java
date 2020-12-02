@@ -62,7 +62,7 @@ public class MessagingService {
      *
      * @param operation The CQRS notification
      */
-    public void sendContentMessage(CqrsOperation operation) {
+    public void sendOperationInfoMessage(CqrsOperation operation) {
         // The message is sent with no specific route key so that all RabbitMQ listeners can listen to it
         send(operation.toString(), "");
     }
