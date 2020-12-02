@@ -84,7 +84,7 @@ public class TeamService extends MembershipManagementService implements ITeamCom
         log.info("User {} successfully added to the members of the team {}", user, team);
 
         // Notify other client that an operation has been made on the API
-        messagingService.sendContentUpdatedMessage(createTeamMemberCommand);
+        messagingService.sendOperationInfoMessage(createTeamMemberCommand);
 
         // Return the result
         return team;
@@ -167,6 +167,9 @@ public class TeamService extends MembershipManagementService implements ITeamCom
         }
 
         log.info("The user of id {} has successfully been removed from the team {}", memberId, team);
+
+        // Notify other client that an operation has been made on the API
+        messagingService.sendOperationInfoMessage(deleteTeamMemberCommand);
     }
 
     /**
@@ -195,7 +198,7 @@ public class TeamService extends MembershipManagementService implements ITeamCom
         log.info("Successfully retrieved team {}", team);
 
         // Notify other client that an operation has been made on the API
-        messagingService.sendContentUpdatedMessage(getTeamQuery);
+        messagingService.sendOperationInfoMessage(getTeamQuery);
 
         return team;
     }
@@ -220,7 +223,7 @@ public class TeamService extends MembershipManagementService implements ITeamCom
                 () -> log.warn("Unable to retrieve a team with id {}", teamId));
 
         // Notify other client that an operation has been made on the API
-        messagingService.sendContentUpdatedMessage(getTeamMembersQuery);
+        messagingService.sendOperationInfoMessage(getTeamMembersQuery);
 
         return optionalTeam;
     }
@@ -242,7 +245,7 @@ public class TeamService extends MembershipManagementService implements ITeamCom
         log.info("Retrieved {} teams", teams.size());
 
         // Notify other client that an operation has been made on the API
-        messagingService.sendContentUpdatedMessage(getTeamsQuery);
+        messagingService.sendOperationInfoMessage(getTeamsQuery);
 
         return teams;
     }
@@ -264,7 +267,7 @@ public class TeamService extends MembershipManagementService implements ITeamCom
         log.info("Updated team: {}", target);
 
         // Notify other client that an operation has been made on the API
-        messagingService.sendContentUpdatedMessage(updateTeamCommand);
+        messagingService.sendOperationInfoMessage(updateTeamCommand);
 
         // Return the saved instance
         return teamRepository.save(target);

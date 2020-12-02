@@ -9,7 +9,6 @@ import eu.telecomnancy.membershipmanagement.api.services.MembershipManagementSer
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UserAlreadyInATeamException;
 import eu.telecomnancy.membershipmanagement.api.services.notification.MessagingService;
-import javassist.compiler.ast.Member;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -128,7 +127,7 @@ public class UserService extends MembershipManagementService implements IUserCom
         log.info("Successfully retrieved user {}", user);
 
         // Notify other client that an operation has been made on the API
-        messagingService.sendContentUpdatedMessage(getUserQuery);
+        messagingService.sendOperationInfoMessage(getUserQuery);
 
         return user;
     }
@@ -150,7 +149,7 @@ public class UserService extends MembershipManagementService implements IUserCom
         log.info("Retrieved {} users", users.size());
 
         // Notify other client that an operation has been made on the API
-        messagingService.sendContentUpdatedMessage(getUsersQuery);
+        messagingService.sendOperationInfoMessage(getUsersQuery);
 
         return users;
     }
@@ -190,7 +189,7 @@ public class UserService extends MembershipManagementService implements IUserCom
         log.info("Patched user: {}", target);
 
         // Notify other client that an operation has been made on the API
-        messagingService.sendContentUpdatedMessage(patchUserCommand);
+        messagingService.sendOperationInfoMessage(patchUserCommand);
 
         // Return the saved instance
         return userRepository.save(target);
@@ -228,7 +227,7 @@ public class UserService extends MembershipManagementService implements IUserCom
         log.info("Updated user: {}", target);
 
         // Notify other client that an operation has been made on the API
-        messagingService.sendContentUpdatedMessage(updateUserCommand);
+        messagingService.sendOperationInfoMessage(updateUserCommand);
 
         // Return the saved instance
         return userRepository.save(target);
