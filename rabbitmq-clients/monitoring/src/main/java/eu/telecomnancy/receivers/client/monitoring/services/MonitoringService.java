@@ -48,7 +48,7 @@ public class MonitoringService {
         actionMap.put(TeamCounterService.DECREMENT_COUNT_OPERATION_NAME, teamCounterService::decrement);
         actionMap.put(TeamCounterService.INCREMENT_COUNT_OPERATION_NAME, teamCounterService::increment);
 
-        // User count operation
+        // User count operations
         actionMap.put(UserCounterService.DECREMENT_COUNT_OPERATION_NAME, userCounterService::decrement);
         actionMap.put(UserCounterService.INCREMENT_COUNT_OPERATION_NAME, userCounterService::increment);
     }
