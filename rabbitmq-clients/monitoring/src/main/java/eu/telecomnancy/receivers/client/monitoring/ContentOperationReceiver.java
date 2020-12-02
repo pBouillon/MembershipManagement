@@ -5,11 +5,12 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
 /**
- * Logging service, recording all the executed API operations
+ * Custom service listening to the RabbitMQ messages in order to keep track of the number of users and teams
+ * in tha API based on the received messages
  */
 @Log4j2
 @Service
-public class LogReceiver {
+public class ContentOperationReceiver {
 
     /**
      * Entry point to all received messages from the RabbitMQ queue
@@ -18,7 +19,7 @@ public class LogReceiver {
      */
     @RabbitListener(queues = "#{autoDeleteQueue.name}")
     public void RabbitListener(String dequeuedMessage) {
-        log.info(dequeuedMessage);
+        log.debug(dequeuedMessage);
     }
 
 }
