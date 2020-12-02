@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "amqp.topic.name",
+      "type": "java.lang.String",
+      "description": "RabbitMQ topic name used to dispatch notifications."
+    }
+  ] }
