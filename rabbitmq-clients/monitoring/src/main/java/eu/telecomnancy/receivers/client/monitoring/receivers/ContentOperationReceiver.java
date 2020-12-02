@@ -11,8 +11,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContentOperationReceiver {
 
+    /**
+     * Monitoring service to track the API resources count
+     */
     private final MonitoringService monitoringService;
 
+    /**
+     * Create the queue listener
+     *
+     * @param monitoringService Monitoring service to track the API resources count
+     */
     public ContentOperationReceiver(MonitoringService monitoringService) {
         this.monitoringService = monitoringService;
     }
