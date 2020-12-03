@@ -1,6 +1,8 @@
 package eu.telecomnancy.receivers.client.monitoring.receivers;
 
 import eu.telecomnancy.receivers.client.monitoring.services.MonitoringService;
+import eu.telecomnancy.receivers.client.monitoring.utils.ColorUtils;
+import eu.telecomnancy.receivers.client.monitoring.utils.Colors;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +38,7 @@ public class ContentOperationReceiver {
         monitoringService.alterCountFromOperation(dequeuedMessage);
 
         // Display the updated values
-        System.out.print("Current count:\t" + monitoringService.toString() + "\r");
+        System.out.print("\t" + monitoringService.toString() + "\r");
     }
 
 }
