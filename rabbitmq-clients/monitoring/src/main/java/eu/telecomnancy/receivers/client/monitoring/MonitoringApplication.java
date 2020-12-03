@@ -8,6 +8,11 @@ public class MonitoringApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MonitoringApplication.class, args);
+
+		// Print the monitoring context
+		System.out.println();
+		System.out.println("API Content monitoring:");
+		System.out.print("\tWaiting for an operation to occur\r");
 	}
 
 }
