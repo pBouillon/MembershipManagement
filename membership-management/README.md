@@ -2,9 +2,6 @@
 
 ## Overview
 
-This project is developped by **[Pierre Bouillon](https://www.linkedin.com/in/pierre-bouillon/)**
-and **[Victor Varnier](https://www.linkedin.com/in/victor-varnier/)**
-
 `MembershipManagement` is a RESTful web API to manage teams, users and their
 memberships. Made with **Java 15**, **Java Spring** and **Apache Derby**, a web
 interface is accessible through the **Swagger UI** (accessible by default on
