@@ -2,12 +2,15 @@
 
 ## Overview
 
+This project is developped by **[Pierre Bouillon](https://www.linkedin.com/in/pierre-bouillon/)**
+and **[Victor Varnier](https://www.linkedin.com/in/victor-varnier/)**
+
 `MembershipManagement` is a RESTful web API to manage teams, users and their
 memberships. Made with **Java 15**, **Java Spring** and **Apache Derby**, a web
 interface is accessible through the **Swagger UI** (accessible by default on
 http://localhost:8080/swagger-ui/#/ when the project is running)
 
-![Swagger UI](../docs/images/swagger-overview-v1.png)
+![Swagger UI](../docs/images/api/swagger-overview.png)
 
 ## Structure
 
@@ -15,7 +18,7 @@ http://localhost:8080/swagger-ui/#/ when the project is running)
 
 The overall architecture is the following:
 
-![architecture](../docs/images/architecture-overview-v1.jpg)
+![architecture](../docs/images/api/architecture-overview.jpg)
 
 ## Architecture principles and other tools
 
