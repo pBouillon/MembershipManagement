@@ -1,4 +1,4 @@
-# MembershipManagement web API
+# Membership Management project
 
 ![CI Status](https://gitlab.telecomnancy.univ-lorraine.fr/sdisapp2021/membership-management/badges/master/pipeline.svg)
 
@@ -6,13 +6,25 @@
 
 ## Overview
 
-<!-- TODO -->
+The `MembershipManagement` project provides a way to manage teams, users and
+their memberships.
+
+This project is split among three sub-projects:
+
+- The [web API](./membership-management), which exposes the managed resources
+  through a web REST API,
+- A [logging client](./rabbitmq-clients/logger), which is logging every
+  operation performed on the API,
+- A [monitoring client](./rabbitmq-clients/monitoring), which is displaying the
+  count, in real time, of the resources managed by the API.
 
 ## Structure
 
-<!-- TODO -->
+<!-- TODO: Swagger / RabbitMQ / etc. -->
 
-### CI and testing
+## Pipelines
+
+<!-- TODO: rework -->
 
 We also wanted to continuously check the integrity of our code and add an
 additional level of confidence when building features so that all merge request
