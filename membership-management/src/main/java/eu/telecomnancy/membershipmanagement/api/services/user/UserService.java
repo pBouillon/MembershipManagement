@@ -126,9 +126,6 @@ public class UserService extends MembershipManagementService implements IUserCom
 
         log.info("Successfully retrieved user {}", user);
 
-        // Notify other client that an operation has been made on the API
-        messagingService.sendOperationInfoMessage(getUserQuery);
-
         return user;
     }
 
@@ -147,9 +144,6 @@ public class UserService extends MembershipManagementService implements IUserCom
             : getUserByHasTeam(hasTeamFilter.get());
 
         log.info("Retrieved {} users", users.size());
-
-        // Notify other client that an operation has been made on the API
-        messagingService.sendOperationInfoMessage(getUsersQuery);
 
         return users;
     }
