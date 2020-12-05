@@ -1,4 +1,4 @@
-# MembershipManagement web API
+# Membership Management project
 
 ![CI Status](https://gitlab.telecomnancy.univ-lorraine.fr/sdisapp2021/membership-management/badges/master/pipeline.svg)
 
@@ -6,86 +6,47 @@
 
 ## Overview
 
-This project is developped by **[Pierre Bouillon](https://www.linkedin.com/in/pierre-bouillon/)**
+The `MembershipManagement` project provides a way to manage teams, users and
+their memberships.
+
+This project is developed by **[Pierre Bouillon](https://www.linkedin.com/in/pierre-bouillon/)**
 and **[Victor Varnier](https://www.linkedin.com/in/victor-varnier/)**
 
-`MembershipManagement` is a RESTful web API to manage teams, users and their
-memberships. Made with **Java 15**, **Java Spring** and **Apache Derby**, a web
-interface is accessible through the **Swagger UI** (accessible by default on
-http://localhost:8080/swagger-ui/#/ when the project is running)
+It is is split among three sub-projects:
 
-![Swagger UI](./docs/images/swagger-overview-v1.png)
+- The [web API](./membership-management), which exposes the managed resources
+  through a web REST API,
+- A [logging client](./rabbitmq-clients/logger), which is logging every
+  operation performed on the API,
+- A [monitoring client](./rabbitmq-clients/monitoring), which is displaying the
+  count, in real time, of the resources managed by the API.
 
 ## Structure
 
-> For the initial API documentation, please refer to [the wiki](https://gitlab.telecomnancy.univ-lorraine.fr/sdisapp2021/membership-management/-/wikis/home)
+The overall architecture and the projects are structured as defined by the
+following picture:
 
-The overall architecture is the following:
+![Structure](./docs/images/overview.png)
 
-![architecture](./docs/images/architecture-overview-v1.jpg)
+The API is managing its resources and can be reached using the generated Swagger
+UI (see [the API's documentation](./membership-management/README.md)).
 
-## Architecture principles and other tools
+Whenever an operation is performed on it, the API will send a message to the
+RabbitMQ broker on a specific topic. The logger and the monitoring client are
+both listening to the broker on dedicated queues.
 
-In order to help us to build a robust and efficient API, we created our
-project around some specific additional technologies.
+When receiving a message, the logging client will store a log of the operation
+performed both in the console and in a file. For the monitoring client, it will
+dynamically update the count of the users and the teams stored in the database
+of the API.
 
-### CQRS
+## Pipelines
 
-CQRS, or Command Query Responsibility Segregation, is a way to design
-a system in a way such that the read operations are completely
-separated from the write operations.  
+In order to continuously check the consistency and the correctness of our code,
+we set up a continuous integration process with GitLab CI which can be found
+[here](https://gitlab.telecomnancy.univ-lorraine.fr/sdisapp2021/membership-management/-/pipelines).
 
-We applied this principle to our controllers by splitting them between
-read- and write-only controllers. By doing so, each payload received
-is holding all the data needed to perform an operation, without any
-additional one which may be misused or provide too much information.
-
-This is resulting in several components with a specific
-closed scope that can only access and use the minimal amount
-of data it needs to operate and in an increased loose coupling
-(see the [Law of Demeter](https://en.wikipedia.org/wiki/Law_of_Demeter)).
-
-### DTO and Mapping
-
-To ease the manipulation of our entities across the various layers of the
-application, we used [MapStruct](https://mapstruct.org/).
-
-This tool help us map our commands and queries (from CQRS) to our domain
-entities when receiving a request; and from the entities to their associated
-DTO when providing and building the response.
-
-DTO are used in a way that allows us to independently evolve our domain from what the
-client is receiving, without coupling our persistence layer and the presentation
-layer.
-
-By doing so, each of our layer can be isolated and only have a single purpose
-that does not impact any other.
-
-## Code Quality
-
-Despite being quite simple, we wanted to ensure that our code met some of the
-quality standards widely used in many projects.
-
-### Logging
-
-First of all, this API is meant to be ran without supervision.
-
-To ensure that it's working and investigate issues without having to stop the
-whole application, we used [Log4j2](https://logging.apache.org/log4j/2.x/) to
-log the actions currently executed by the API.
-
-### CI and testing
-
-We also wanted to continuously check the integrity of our code and add an
-additional level of confidence when building features so that all merge request
-can seamlessly integrate in the code base.
-
-To achieve this goal, we set up a continuous integration process with GitLab CI
-which can be found [here](https://gitlab.telecomnancy.univ-lorraine.fr/sdisapp2021/membership-management/-/pipelines)
-
-This CI is building the code, checking the warnings and running both the unit
-and the integration tests. 
-
-The prior help us to check that all of our services are still valid; and
-the former are to check their integration with the embedded database and the
-controllers.
+The CI is building all the projects using Gradle and JRE 15, and then running
+the unit tests. Integration tests are available but should be run locally, with
+your own RabbitMQ instance up and running. A `docker-compose` file is available
+to run the development stack.
