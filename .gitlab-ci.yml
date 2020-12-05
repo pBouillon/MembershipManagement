@@ -53,7 +53,7 @@ build-monitoring-client:
       - build
       - .gradle
 
-test:
+unit-tests:
   stage: test
   script:
     - cd ./membership-management 
