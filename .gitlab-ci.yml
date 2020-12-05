@@ -13,7 +13,11 @@ variables:
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
-build:
+stages:
+ - build
+ - test
+
+build-api:
   stage: build
   script:
     - cd ./membership-management
@@ -25,7 +29,31 @@ build:
       - build
       - .gradle
 
-test:
+build-logging-client:
+  stage: build
+  script:
+    - cd ./rabbitmq-clients/logger
+    - gradle --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+
+build-monitoring-client:
+  stage: build
+  script:
+    - cd ./rabbitmq-clients/monitoring
+    - gradle --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+
+unit-tests:
   stage: test
   script:
     - cd ./membership-management 
