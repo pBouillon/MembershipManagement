@@ -197,9 +197,6 @@ public class TeamService extends MembershipManagementService implements ITeamCom
 
         log.info("Successfully retrieved team {}", team);
 
-        // Notify other client that an operation has been made on the API
-        messagingService.sendOperationInfoMessage(getTeamQuery);
-
         return team;
     }
 
@@ -222,9 +219,6 @@ public class TeamService extends MembershipManagementService implements ITeamCom
                 },
                 () -> log.warn("Unable to retrieve a team with id {}", teamId));
 
-        // Notify other client that an operation has been made on the API
-        messagingService.sendOperationInfoMessage(getTeamMembersQuery);
-
         return optionalTeam;
     }
 
@@ -243,9 +237,6 @@ public class TeamService extends MembershipManagementService implements ITeamCom
                 : teamRepository.findAll();
 
         log.info("Retrieved {} teams", teams.size());
-
-        // Notify other client that an operation has been made on the API
-        messagingService.sendOperationInfoMessage(getTeamsQuery);
 
         return teams;
     }
