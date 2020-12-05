@@ -23,7 +23,22 @@ It is is split among three sub-projects:
 
 ## Structure
 
-<!-- TODO: Swagger / RabbitMQ / etc. -->
+The overall architecture and the projects are structured as defined by the
+following picture:
+
+![Structure](./docs/images/overview.png)
+
+The API is managing its resources and can be reached using the generated Swagger
+UI (see [the API's documentation](./membership-management/README.md)).
+
+Whenever an operation is performed on it, the API will send a message to the
+RabbitMQ broker on a specific topic. The logger and the monitoring client are
+both listening to the broker on dedicated queues.
+
+When receiving a message, the logging client will store a log of the operation
+performed both in the console and in a file. For the monitoring client, it will
+dynamically update the count of the users and the teams stored in the database
+of the API.
 
 ## Pipelines
 
