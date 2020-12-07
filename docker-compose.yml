@@ -16,6 +16,21 @@ services:
     depends_on:
       - rabbitmq-container
 
+  logging-client-container:
+    build:
+      context: ./rabbitmq-clients/logger
+      dockerfile: Dockerfile
+    container_name: logging-client
+    networks: 
+      - backend
+    environment:
+      - spring_rabbitmq_host=rabbitmq-container
+    depends_on:
+      - rabbitmq-container
+    # Waiting for rabbitmq-container to be up and running
+    # See: https://docs.docker.com/compose/startup-order/
+    command: ["wait-for-it", "rabbitmq-container:5672", "--", "java", "-jar", "/logger.jar"]
+
   monitoring-client-container:
     build:
       context: ./rabbitmq-clients/monitoring
@@ -43,3 +58,4 @@ services:
 
 networks:
   backend:
+ 
