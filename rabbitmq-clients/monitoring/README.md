@@ -12,7 +12,7 @@ of the total number of users and teams in the console.
 Here is an example of the client running while operations are performed on the
 API:
 
-![Monitoring client demo](../../docs/images/monitoring/demo.gif)
+![Monitoring client demo](../../docs/images/monitoring/counters.png)
 
 > The client will wait for an operation to be performed before displaying the
 > count in real time
