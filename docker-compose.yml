@@ -6,6 +6,7 @@ services:
     build:
       context: ./membership-management
       dockerfile: Dockerfile
+    container_name: api
     networks:
       - backend
     ports:
@@ -15,9 +16,22 @@ services:
     depends_on:
       - rabbitmq-container
 
+  monitoring-client-container:
+    build:
+      context: ./rabbitmq-clients/monitoring
+      dockerfile: Dockerfile
+    container_name: monitoring-client
+    networks: 
+      - backend
+    environment:
+      - spring_rabbitmq_host=rabbitmq-container
+    depends_on:
+      - rabbitmq-container
+
   rabbitmq-container:
     image: rabbitmq:3-management-alpine
     hostname: rabbitmq-container
+    container_name: rabbitmq
     networks:
       - backend
     ports:
