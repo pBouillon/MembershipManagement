@@ -1,30 +1,28 @@
 version: '3.8'
 
 services:
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    hostname: rabbitmq
-    container_name: rabbitmq
+
+  api-container:
+    build:
+      context: ./membership-management
+      dockerfile: Dockerfile
     networks:
-      - app-tier
+      - backend
+    ports:
+      - 8080:8080
+    environment:
+      - spring_rabbitmq_host=rabbitmq-container
+    depends_on:
+      - rabbitmq-container
+
+  rabbitmq-container:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq-container
+    networks:
+      - backend
     ports:
       - 5672:5672
       - 15672:15672
 
-  api:
-    build:
-      context: ./membership-management
-      dockerfile: Dockerfile
-    image: api
-    container_name: api
-    networks:
-      - app-tier
-    ports:
-      - 8080:8080
-    environment:
-      - spring_rabbitmq_host=rabbitmq
-    depends_on:
-      - rabbitmq
-
 networks:
-  app-tier:
+  backend:
