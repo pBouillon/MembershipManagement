@@ -17,6 +17,87 @@ default_headers = {
 '''Set program's verbosity. True to display actions on execution'''
 is_verbose = False
 
+
+def add_member(user_id: int, team_id: int) -> None:
+    '''Add the a user to a team
+
+    :param user_id: id of the user to add in the team
+    :param team_id: id of the team in which the user will be added
+    '''
+    payload = {'memberToAddId': user_id}
+
+    requests.post(f'{base_url}/api/teams/{team_id}/members', json=payload,
+        headers=default_headers)
+
+    log(f'User of id {user_id} successfully added to the team of id {team_id}')
+
+
+def create_team() -> int:
+    '''Create a new team in the API
+
+    :return: The id of the team remotely created
+    :rtype: int
+    '''
+    payload = {'name': 'team name'}
+
+    log(f'Creating a new team from {payload}')
+
+    team_id = post_and_extract_id(f'{base_url}/api/teams', payload)
+
+    log(f'Team of id {team_id} successfully created')
+
+    return team_id
+
+
+def create_user() -> int:
+    '''Create a new user in the API
+
+    :return: The id of the user remotely created
+    :rtype: int
+    '''
+    payload = {
+        'age': 42,
+        'firstname': 'user firstname',
+        'name': 'user name'
+    }
+
+    log(f'Creating a new user from {payload}')
+
+    user_id = post_and_extract_id(f'{base_url}/api/users', payload)
+
+    log(f'User of id {user_id} successfully created')
+
+    return user_id
+
+
+def delete_member(team_id: int, member_id: int) -> None:
+    '''Delete a member from a team
+
+    :param team_id: id of the team in which the member should be removed
+    :param member_id: id of the user to be removed
+    '''
+    requests.delete(f'{base_url}/api/teams/{team_id}/members/{member_id}')
+    log(f'User of id {member_id} successfully removed from the team of id {team_id}')
+
+
+def delete_team(team_id: int) -> None:
+    '''Delete a team
+
+    :param team_id: id of the team to delete
+    '''
+    requests.delete(f'{base_url}/api/teams/{team_id}')
+    log(f'Delete the team of id {team_id}')
+
+
+def delete_user(user_id: int) -> None:
+    '''Delete a user
+
+    :param user_id: id of the user to delete
+    '''
+    requests.delete(f'{base_url}/api/users/{user_id}')
+    log(f'Delete the user of id {user_id}')
+
+
 @click.command()
 @click.option('--baseurl', '-b', default=base_url,
     help=f'Specify the base URL of the API (default is: {base_url})')
