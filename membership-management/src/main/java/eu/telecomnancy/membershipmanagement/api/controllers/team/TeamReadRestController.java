@@ -5,7 +5,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetT
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamsQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamMembersDto;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
@@ -13,8 +13,6 @@ import eu.telecomnancy.membershipmanagement.api.services.team.ITeamQueryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -67,10 +65,7 @@ public class TeamReadRestController extends TeamRestController {
     @GetMapping(path = "/{id}")
     @Operation(summary = "Retrieve an existing team by its id",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Team successfully retrieved",
-                            content = @Content(
-                                    schema = @Schema(implementation = TeamDto.class)
-                            )),
+                    @ApiResponse(responseCode = "200", description = "Team successfully retrieved"),
                     @ApiResponse(responseCode = "404", description = "Team not found")
             })
     public ResponseEntity<TeamDetailsDto> getTeam(
@@ -95,10 +90,7 @@ public class TeamReadRestController extends TeamRestController {
     @GetMapping(path = "/{id}/members")
     @Operation(summary = " Retrieve the team members by its id",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Members successfully retrieved",
-                            content = @Content(
-                                    schema = @Schema(implementation = TeamMembersDto.class)
-                            )),
+                    @ApiResponse(responseCode = "200", description = "Members successfully retrieved"),
                     @ApiResponse(responseCode = "404", description = "Team not found")
             })
     public ResponseEntity<?> getTeamMembers(

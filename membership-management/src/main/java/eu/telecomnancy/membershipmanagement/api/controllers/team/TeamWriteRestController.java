@@ -119,10 +119,7 @@ public class TeamWriteRestController extends TeamRestController {
     @PostMapping
     @Operation(summary = "Create a new team with no user",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Team successfully created",
-                            content = @Content(
-                                    schema = @Schema(implementation = TeamDto.class)
-                            )),
+                    @ApiResponse(responseCode = "201", description = "Team successfully created"),
                     @ApiResponse(responseCode = "400", description = "Malformed body")
             })
     public ResponseEntity<TeamDto> post(
@@ -152,10 +149,7 @@ public class TeamWriteRestController extends TeamRestController {
     @PostMapping("/{id}/members")
     @Operation(summary = "Create a new member in the team from an existing user",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "User successfully added",
-                            content = @Content(
-                                    schema = @Schema(implementation = TeamDto.class)
-                            )),
+                    @ApiResponse(responseCode = "201", description = "User successfully added"),
                     @ApiResponse(responseCode = "400", description = "Malformed body"),
                     @ApiResponse(responseCode = "404", description = "Team or user not found")
             })
@@ -189,29 +183,16 @@ public class TeamWriteRestController extends TeamRestController {
     @PutMapping("/{id}")
     @Operation(summary = "Replace the team with the specified identifier if it exists",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Team successfully updated",
-                            content = @Content(
-                                    schema = @Schema(implementation = TeamDto.class)
-                            )),
+                    @ApiResponse(responseCode = "200", description = "Team successfully updated"),
                     @ApiResponse(responseCode = "400", description = "Malformed body"),
                     @ApiResponse(responseCode = "404", description = "Team not found")
             })
-    public ResponseEntity<?> put(
+    public ResponseEntity<TeamDto> put(
             @ApiParam(value = "Id of the targeted team")
             @PathVariable long id,
             @ApiParam(value = "Payload from which the team details will be replaced")
             @Valid @RequestBody UpdateTeamCommand updateTeamCommand) {
-        // Retrieve the team
-        Team team;
-
-        try {
-            team = teamService.updateTeam(id, updateTeamCommand);
-        } catch (UnknownUserException ex) {
-            // Return HTTP 404 NOT FOUND if the team is not known by the system
-            return ResponseEntity.notFound().build();
-        }
-
-        // Return HTTP 200 OK if the team has been updated
+        Team team = teamService.updateTeam(id, updateTeamCommand);
         return ResponseEntity.ok(teamMapper.toDto(team));
     }
 
