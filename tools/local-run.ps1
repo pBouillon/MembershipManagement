@@ -13,10 +13,6 @@ start powershell `
   echo '`nStart the API' ; `
   & '$javaExecutablePath' -jar .\build\libs\api-0.0.1-SNAPSHOT.jar"
 cd ..
-# Start RabbitMQ container
-# TODO Serveur rabbitMQ du prof
-
-#docker-compose up -d rabbitmq-container
 
 # Generate and run the logging client project
 cd '.\rabbitmq-clients\logger'
