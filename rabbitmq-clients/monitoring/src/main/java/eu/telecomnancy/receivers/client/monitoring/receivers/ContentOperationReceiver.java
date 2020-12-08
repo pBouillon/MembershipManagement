@@ -3,6 +3,7 @@ package eu.telecomnancy.receivers.client.monitoring.receivers;
 import eu.telecomnancy.receivers.client.monitoring.services.MonitoringService;
 import eu.telecomnancy.receivers.client.monitoring.utils.ColorUtils;
 import eu.telecomnancy.receivers.client.monitoring.utils.Colors;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
  * Custom service listening to the RabbitMQ messages in order to keep track of the number of users and teams
  * in tha API based on the received messages
  */
+@Log4j2
 @Service
 public class ContentOperationReceiver {
 
@@ -37,8 +39,7 @@ public class ContentOperationReceiver {
         // Update the current count of each resources
         monitoringService.alterCountFromOperation(dequeuedMessage);
 
-        // Display the updated values
-        System.out.print("\t" + monitoringService.toString() + "\r");
+        log.info("Counts updated - {}", monitoringService);
     }
 
 }
