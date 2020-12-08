@@ -1,10 +1,19 @@
 import click
+import random
 import requests
 import time
 
 
 '''Web API base URL to be used when querying its endpoints'''
 base_url = 'http://localhost:8080'
+
+
+'''List of all the ids of the created teams'''
+created_teams_id = []
+
+
+'''List of all the ids of the created users'''
+created_users_id = []
 
 
 '''Default headers when querying the API'''
@@ -18,20 +27,6 @@ default_headers = {
 is_verbose = False
 
 
-def add_member(user_id: int, team_id: int) -> None:
-    '''Add the a user to a team
-
-    :param user_id: id of the user to add in the team
-    :param team_id: id of the team in which the user will be added
-    '''
-    payload = {'memberToAddId': user_id}
-
-    requests.post(f'{base_url}/api/teams/{team_id}/members', json=payload,
-        headers=default_headers)
-
-    log(f'User of id {user_id} successfully added to the team of id {team_id}')
-
-
 def create_team() -> int:
     '''Create a new team in the API
 
@@ -39,8 +34,6 @@ def create_team() -> int:
     :rtype: int
     '''
     payload = {'name': 'team name'}
-
-    log(f'Creating a new team from {payload}')
 
     team_id = post_and_extract_id(f'{base_url}/api/teams', payload)
 
@@ -61,8 +54,6 @@ def create_user() -> int:
         'name': 'user name'
     }
 
-    log(f'Creating a new user from {payload}')
-
     user_id = post_and_extract_id(f'{base_url}/api/users', payload)
 
     log(f'User of id {user_id} successfully created')
@@ -70,14 +61,28 @@ def create_user() -> int:
     return user_id
 
 
-def delete_member(team_id: int, member_id: int) -> None:
-    '''Delete a member from a team
-
-    :param team_id: id of the team in which the member should be removed
-    :param member_id: id of the user to be removed
+def delete_created_user():
+    '''Delete a user that the script has created
     '''
-    requests.delete(f'{base_url}/api/teams/{team_id}/members/{member_id}')
-    log(f'User of id {member_id} successfully removed from the team of id {team_id}')
+    if not created_users_id:
+        return 
+        
+    user_id = random.choice(created_users_id)
+    created_users_id.remove(user_id)
+
+    delete_user(user_id)
+
+
+def delete_created_team():
+    '''Delete a team that the script has created
+    '''
+    if not created_teams_id:
+        return 
+        
+    team_id = random.choice(created_teams_id)
+    created_teams_id.remove(team_id)
+
+    delete_team(team_id)
 
 
 def delete_team(team_id: int) -> None:
@@ -86,7 +91,7 @@ def delete_team(team_id: int) -> None:
     :param team_id: id of the team to delete
     '''
     requests.delete(f'{base_url}/api/teams/{team_id}')
-    log(f'Delete the team of id {team_id}')
+    log(f'User of id {team_id} successfully deleted')
 
 
 def delete_user(user_id: int) -> None:
@@ -95,36 +100,47 @@ def delete_user(user_id: int) -> None:
     :param user_id: id of the user to delete
     '''
     requests.delete(f'{base_url}/api/users/{user_id}')
-    log(f'Delete the user of id {user_id}')
+    log(f'User of id {user_id} successfully deleted')
 
 
 @click.command()
 @click.option('--baseurl', '-b', default=base_url,
     help=f'Specify the base URL of the API (default is: {base_url})')
-@click.option('--count', '-c', default=5,
-    help='Number of time to run the workflow, default is 5')
-@click.option('--halt', '-h', default=2,
-    help='Seconds to be waited before each run of the workflow, default is 3')
 @click.option('--verbose', '-v', is_flag=True,
     help='Set verbosity to True to display actions in the console on execution')
-def launch_requests(baseurl: str, count: int, halt: int, verbose: bool) -> None:
+def launch_requests(baseurl: str, verbose: bool) -> None:
     global base_url
     base_url = baseurl
 
     global is_verbose
     is_verbose = verbose
 
+    random.seed(time.time())
+
     log('Running the predefined workflow, press Ctrl + C to interrupt')
 
-    for index in range(count):
+    while True:
         try:
-            log(f'Running the workflow for the #{index + 1} time')
+            randomly_execute(
+                lambda: created_users_id.append(create_user()))
             
-            run_workflow()
-            
-            if index != count - 1:
-                log(f'Halting {halt} seconds')
-                time.sleep(halt)
+            time.sleep(0.5)
+
+            randomly_execute(
+                lambda: created_teams_id.append(create_team()))
+
+            time.sleep(0.5)
+
+            randomly_execute(
+                lambda: delete_created_user())
+
+            time.sleep(0.5)
+
+            randomly_execute(
+                lambda: delete_created_team())
+
+            time.sleep(0.5)
+
         except KeyboardInterrupt:
             log('Shutting down')
             exit(0)
@@ -155,27 +171,19 @@ def post_and_extract_id(url: str, payload: dict) -> int:
     return r.json()['id']
 
 
+def randomly_execute(action) -> None:
+    for _ in range(random.randint(0, 5)):
+        action()
+
+
 def run_workflow() -> None:
-    '''Run the predefined workflow
+    '''Randomly add teams, users, and may delete some
     '''
-    # Create a user
-    user_id = create_user()
+    randomly_execute(
+        lambda: created_users_id.append(create_user()))
 
-    # Create two teams
-    team1_id = create_team()
-    team2_id = create_team()
-
-    # Add and then remove the user from the first team
-    add_member(user_id, team1_id)
-    delete_member(team1_id, user_id)
-
-    # Add the user to the second team
-    add_member(user_id, team2_id)
-
-    # Delete the teams and the user
-    delete_team(team1_id)
-    delete_team(team2_id)
-    delete_user(user_id)
+    randomly_execute(
+        lambda: created_teams_id.append(create_team()))
 
 
 if __name__ == '__main__':
