@@ -1,5 +1,8 @@
 # API requests tool
 
+Custom script to be used to fire random requests to the API. The requests will
+create and/or delete teams and/or users.
+
 ## Installation
 
 In the `api-requests/` folder, run the following:
@@ -10,7 +13,7 @@ In the `api-requests/` folder, run the following:
 
 ## Usage
 
-Several options can be used to customize the way the workflow is executed. To
+Several options can be used to customize the way the requests are executed. To
 prompt all of them, use the `--help` option:
 
 ```console
@@ -18,21 +21,17 @@ prompt all of them, use the `--help` option:
 Usage: api-requests.py [OPTIONS]
 
 Options:
-  -b, --baseurl TEXT   Specify the base URL of the API (default is:
-                       http://localhost:8080)
+  -b, --baseurl TEXT  Base URL of the API (default is: http://localhost:8080)
+  -s, --sleep FLOAT   Seconds to wait before each action (default is: 1)     
+  -v, --verbose       Set verbosity to True to display actions in the console
+                      on execution
 
-  -c, --count INTEGER  Number of time to run the workflow, default is 5
-  -h, --halt INTEGER   Seconds to be waited before each run of the workflow,
-                       default is 3
-
-  -v, --verbose        Set verbosity to True to display actions in the console
-                       on execution
-
-  --help               Show this message and exit.
+  --help              Show this message and exit.
 ```
 
-For example, if you would like to run the workflow twice with a long pause, you may do:
+For example, if you would like to run the operations with a pause of 0.5 second
+between each call you may do:
 
 ```console
-~$ python api-requests.py --count 2 --halt 30
+~$ python api-requests.py --sleep 0.5
 ```
