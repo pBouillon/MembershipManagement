@@ -3,8 +3,6 @@ package eu.telecomnancy.receivers.client.monitoring.services;
 import eu.telecomnancy.receivers.client.monitoring.services.counters.Counter;
 import eu.telecomnancy.receivers.client.monitoring.services.counters.TeamCounterService;
 import eu.telecomnancy.receivers.client.monitoring.services.counters.UserCounterService;
-import eu.telecomnancy.receivers.client.monitoring.utils.ColorUtils;
-import eu.telecomnancy.receivers.client.monitoring.utils.Colors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,11 +69,9 @@ public class MonitoringService {
     @Override
     public String toString() {
         return "teams: "
-                + ColorUtils.getColoredString(
-                        String.valueOf(teamCounterService.getCount()), Colors.CYAN)
+                + teamCounterService.getCount()
                 + "\t|\tusers: "
-                + ColorUtils.getColoredString(
-                        String.valueOf(userCounterService.getCount()), Colors.CYAN);
+                + userCounterService.getCount();
     }
 
 }
