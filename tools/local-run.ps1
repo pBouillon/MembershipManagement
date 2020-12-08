@@ -3,7 +3,8 @@ $rootDirectory = (get-item $PSScriptRoot).parent.FullName
 Set-Location -Path $rootDirectory
 
 # Uncomment if several java jdks are coexisting
-# $javaExecutablePath = $env:JAVA_HOME + '\bin\java.exe'
+#$javaExecutablePath = $env:JAVA_HOME + '\bin\java.exe'
+$javaExecutablePath = 'java'
 
 # Generate and run the API project
 cd '.\membership-management'
@@ -12,7 +13,7 @@ start powershell `
  .\gradlew clean ; `
  .\gradlew build -x test ; `
   echo '`nStart the API' ; `
-  & 'java' -jar .\build\libs\api-0.0.1-SNAPSHOT.jar"
+  & '$javaExecutablePath' -jar .\build\libs\api-0.0.1-SNAPSHOT.jar"
 cd ..
 
 # Generate and run the logging client project
@@ -22,7 +23,7 @@ start powershell `
  .\gradlew clean ; `
  .\gradlew build -x test ; `
   echo '`nStart the logging client' ; `
-  & 'java' -jar .\build\libs\logger-0.0.1-SNAPSHOT.jar"
+  & '$javaExecutablePath' -jar .\build\libs\logger-0.0.1-SNAPSHOT.jar"
 cd ..\..
 
 # Generate and run the monitoring client project
@@ -32,5 +33,5 @@ start powershell `
  .\gradlew clean ; `
  .\gradlew build -x test ; `
   echo '`nStart the monitoring client' ; `
-  & 'java' -jar .\build\libs\monitoring-0.0.1-SNAPSHOT.jar"
+  & '$javaExecutablePath' -jar .\build\libs\monitoring-0.0.1-SNAPSHOT.jar"
 cd ..\..
