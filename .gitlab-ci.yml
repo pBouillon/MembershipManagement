@@ -17,6 +17,18 @@ stages:
  - build
  - test
 
+api-unit-tests:
+  stage: test
+  script:
+    - cd ./membership-management 
+    - gradle test --fail-fast --tests *ServiceTest
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
+
 build-api:
   stage: build
   script:
@@ -53,10 +65,10 @@ build-monitoring-client:
       - build
       - .gradle
 
-unit-tests:
+monitoring-unit-tests:
   stage: test
   script:
-    - cd ./membership-management 
+    - cd ./rabbitmq-clients/monitoring
     - gradle test --fail-fast --tests *ServiceTest
   cache:
     key: "$CI_COMMIT_REF_NAME"

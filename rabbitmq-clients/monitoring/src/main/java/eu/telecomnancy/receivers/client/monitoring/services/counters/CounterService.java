@@ -14,7 +14,7 @@ public abstract class CounterService implements Counter {
      * {@inheritDoc}
      */
     @Override
-    public final void decrement() {
+    public void decrement() {
         --count;
     }
 
@@ -22,7 +22,7 @@ public abstract class CounterService implements Counter {
      * {@inheritDoc}
      */
     @Override
-    public final int getCount() {
+    public int getCount() {
         return count;
     }
 
@@ -30,7 +30,7 @@ public abstract class CounterService implements Counter {
      * {@inheritDoc}
      */
     @Override
-    public final void increment() {
+    public void increment() {
         ++count;
     }
 
