@@ -9,6 +9,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserD
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
+import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamQueryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -93,15 +94,15 @@ public class TeamReadRestController extends TeamRestController {
                     @ApiResponse(responseCode = "200", description = "Members successfully retrieved"),
                     @ApiResponse(responseCode = "404", description = "Team not found")
             })
-    public ResponseEntity<?> getTeamMembers(
+    public ResponseEntity<List<UserDto>> getTeamMembers(
             @ApiParam(value = "Id of the team in which the members to retrieve are")
             @PathVariable long id) {
         GetTeamMembersQuery query = new GetTeamMembersQuery(id);
 
-        return teamService.getTeamMembers(query)
-                .map(team -> ResponseEntity.ok()
-                        .body(userMapper.toDtoList(team.getMembers())))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        List<User> members = teamService.getTeamMembers(query);
+
+        return ResponseEntity.ok()
+                        .body(userMapper.toDtoList(members));
     }
 
     /**
