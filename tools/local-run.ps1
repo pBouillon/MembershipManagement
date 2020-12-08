@@ -2,7 +2,7 @@
 $rootDirectory = (get-item $PSScriptRoot).parent.FullName
 Set-Location -Path $rootDirectory
 
-# Uncommented if several java jdks are coexisting
+# Uncomment if several java jdks are coexisting
 # $javaExecutablePath = $env:JAVA_HOME + '\bin\java.exe'
 
 # Generate and run the API project
