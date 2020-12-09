@@ -64,7 +64,7 @@ public class ChangeTeamNameWithAnInvalidOneTestCase extends IntegrationTest {
      * @throws URISyntaxException Throws exception when the URI is invalid
      */
     @Test
-    public void updateTheTeamWithAEmptyName() throws URISyntaxException {
+    public void updateTheTeamWithAnEmptyName() throws URISyntaxException {
         // Create the team
         CreateTeamCommand createTeamCommand = new CreateTeamCommand("ApprenTeam");
 
