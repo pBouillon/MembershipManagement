@@ -81,7 +81,6 @@ class DeleteAUserFromATeamTestCase extends IntegrationTest {
         assertEquals(member.getTeam().getId(), createdTeam.getId());
 
         // Remove the user from the team
-
         URI removeMembershipUri = getUrlForRoute("/api/teams/" + createdTeam.getId() + "/members/" + member.getId());
 
         restTemplate.delete(removeMembershipUri);
