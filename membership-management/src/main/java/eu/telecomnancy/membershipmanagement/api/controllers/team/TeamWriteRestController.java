@@ -122,7 +122,10 @@ public class TeamWriteRestController extends TeamRestController {
      */
     @PatchMapping("/{id}")
     @Operation(summary = "Rename an existing team",
-            description = "The creation date of a team is automatically handled and cannot be updated",
+            description = """
+                The creation date of a team is automatically handled and cannot be updated,
+                hence this endpoint being a PATCH and not a PUT
+            """,
             responses = {
                     @ApiResponse(responseCode = "200", description = "Team successfully updated"),
                     @ApiResponse(responseCode = "400", description = "Malformed body"),
