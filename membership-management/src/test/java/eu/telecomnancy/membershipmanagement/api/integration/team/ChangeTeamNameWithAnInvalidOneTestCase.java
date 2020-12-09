@@ -2,7 +2,7 @@ package eu.telecomnancy.membershipmanagement.api.integration.team;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamWriteRestController;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.PatchTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import eu.telecomnancy.membershipmanagement.api.integration.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.integration.utils.TestUtils;
@@ -48,14 +48,14 @@ public class ChangeTeamNameWithAnInvalidOneTestCase extends IntegrationTest {
         TeamDto created = extractPayload(createdResponse);
 
         // Change its name with a blank one
-        UpdateTeamCommand updateTeamCommand = new UpdateTeamCommand();
-        updateTeamCommand.setName(TestUtils.BLANK_STRING);
+        PatchTeamCommand patchTeamCommand = new PatchTeamCommand();
+        patchTeamCommand.setName(TestUtils.BLANK_STRING);
 
         URI updateUrl = getUrlForRoute("/api/teams/" + created.getId());
 
         Assertions.assertThrows(
                 HttpClientErrorException.BadRequest.class,
-                () -> restTemplate.put(updateUrl, updateTeamCommand));
+                () -> restTemplate.put(updateUrl, patchTeamCommand));
     }
 
     /**
@@ -77,14 +77,14 @@ public class ChangeTeamNameWithAnInvalidOneTestCase extends IntegrationTest {
         TeamDto created = extractPayload(createdResponse);
 
         // Change its name with an empty one
-        UpdateTeamCommand updateTeamCommand = new UpdateTeamCommand();
-        updateTeamCommand.setName(TestUtils.EMPTY_STRING);
+        PatchTeamCommand patchTeamCommand = new PatchTeamCommand();
+        patchTeamCommand.setName(TestUtils.EMPTY_STRING);
 
         URI updateUrl = getUrlForRoute("/api/teams/" + created.getId());
 
         Assertions.assertThrows(
                 HttpClientErrorException.BadRequest.class,
-                () -> restTemplate.put(updateUrl, updateTeamCommand));
+                () -> restTemplate.put(updateUrl, patchTeamCommand));
     }
 
     /**
@@ -106,14 +106,14 @@ public class ChangeTeamNameWithAnInvalidOneTestCase extends IntegrationTest {
         TeamDto created = extractPayload(createdResponse);
 
         // Change its name with a too long one
-        UpdateTeamCommand updateTeamCommand = new UpdateTeamCommand();
-        updateTeamCommand.setName(TestUtils.LONG_STRING);
+        PatchTeamCommand patchTeamCommand = new PatchTeamCommand();
+        patchTeamCommand.setName(TestUtils.LONG_STRING);
 
         URI updateUrl = getUrlForRoute("/api/teams/" + created.getId());
 
         Assertions.assertThrows(
                 HttpClientErrorException.BadRequest.class,
-                () -> restTemplate.put(updateUrl, updateTeamCommand));
+                () -> restTemplate.put(updateUrl, patchTeamCommand));
     }
 
 }

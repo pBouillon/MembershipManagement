@@ -234,20 +234,20 @@ public class TeamService extends MembershipManagementService implements ITeamCom
      * {@inheritDoc}
      */
     @Override
-    public Team updateTeam(long teamId, UpdateTeamCommand updateTeamCommand)
+    public Team patchTeam(long teamId, PatchTeamCommand patchTeamCommand)
             throws UnknownTeamException {
         // Retrieve the team to update
         Team target = retrieveTeamById(teamId);
 
         // Perform the update
-        log.info("Update the team {} to {}", target, updateTeamCommand);
+        log.info("Update the team {} to {}", target, patchTeamCommand);
 
-        mapper.updateFromCommand(updateTeamCommand, target);
+        mapper.updateFromCommand(patchTeamCommand, target);
 
         log.info("Updated team: {}", target);
 
         // Notify other client that an operation has been made on the API
-        messagingService.sendOperationInfoMessage(updateTeamCommand);
+        messagingService.sendOperationInfoMessage(patchTeamCommand);
 
         // Return the saved instance
         return teamRepository.save(target);

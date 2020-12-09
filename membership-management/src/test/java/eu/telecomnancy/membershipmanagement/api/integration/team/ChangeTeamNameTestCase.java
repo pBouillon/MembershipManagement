@@ -1,9 +1,9 @@
 package eu.telecomnancy.membershipmanagement.api.integration.team;
 
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.PatchTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.integration.IntegrationTest;
 import eu.telecomnancy.membershipmanagement.api.controllers.team.TeamWriteRestController;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
 import org.junit.jupiter.api.Test;
@@ -44,12 +44,12 @@ public class ChangeTeamNameTestCase extends IntegrationTest {
         TeamDto created = extractPayload(createdResponse);
 
         // Change its name
-        UpdateTeamCommand updateTeamCommand = new UpdateTeamCommand();
-        updateTeamCommand.setName(new Date().toString());
+        PatchTeamCommand patchTeamCommand = new PatchTeamCommand();
+        patchTeamCommand.setName(new Date().toString());
 
         URI updateUrl = getUrlForRoute("/api/teams/" + created.getId());
 
-        restTemplate.put(updateUrl, updateTeamCommand);
+        restTemplate.put(updateUrl, patchTeamCommand);
 
         // Retrieve the team and assert that the name changed
         URI teamUrl = getUrlForRoute("/api/teams/" + created.getId());
@@ -60,7 +60,7 @@ public class ChangeTeamNameTestCase extends IntegrationTest {
         assertEquals(updatedResponse.getStatusCode(), HttpStatus.OK);
 
         TeamDetailsDto updated = extractPayload(updatedResponse);
-        assertEquals(updated.getName(), updateTeamCommand.getName());
+        assertEquals(updated.getName(), patchTeamCommand.getName());
     }
 
 }

@@ -1,10 +1,9 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings;
 
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.CreateTeamCommand;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.PatchTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
-import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import org.mapstruct.*;
 
@@ -51,11 +50,11 @@ public interface TeamMapper {
     Team toTeam(CreateTeamCommand command);
 
     /**
-     * Replace the content of a {@link Team} by the values held by the {@link UpdateTeamCommand}
+     * Replace the content of a {@link Team} by the values held by the {@link PatchTeamCommand}
      *
      * @param command Payload holding the new values used to replace the existing ones
      * @param team Team to be replaced
      */
-    void updateFromCommand(UpdateTeamCommand command, @MappingTarget Team team);
+    void updateFromCommand(PatchTeamCommand command, @MappingTarget Team team);
 
 }
