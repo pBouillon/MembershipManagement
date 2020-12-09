@@ -22,10 +22,11 @@ Usage: api-requests.py [OPTIONS]
 
 Options:
   -b, --baseurl TEXT  Base URL of the API (default is: http://localhost:8080)
-  -s, --sleep FLOAT   Seconds to wait before each action (default is: 1)     
+  -s, --sleep FLOAT   Seconds to wait before each action (default is: 1)
   -v, --verbose       Set verbosity to True to display actions in the console
                       on execution
 
+  -w, --wait FLOAT    Seconds to be awaited before launching the requests
   --help              Show this message and exit.
 ```
 
