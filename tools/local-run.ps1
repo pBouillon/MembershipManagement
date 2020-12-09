@@ -35,3 +35,6 @@ start powershell `
   echo '`nStart the monitoring client' ; `
   & '$javaExecutablePath' -jar .\build\libs\monitoring-0.0.1-SNAPSHOT.jar"
 cd ..\..
+
+# Run the python script to test the API
+python .\tools\api-requests\api-requests.py -w 45 -v

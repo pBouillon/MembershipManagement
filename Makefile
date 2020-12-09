@@ -10,4 +10,4 @@ install:
 
 run:
 	powershell -File ./tools/local-run.ps1
-	python ./tools/api-requests/api-requests.py -w 45 -v
+
