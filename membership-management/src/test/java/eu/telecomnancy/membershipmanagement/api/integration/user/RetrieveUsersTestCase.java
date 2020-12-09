@@ -19,9 +19,6 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Route :
- *     /api/users
- *
  * Case :
  *     (Read-only operation)
  *     Test getting all users when multiple users had been created

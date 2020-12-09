@@ -23,12 +23,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Routes :
- *     /api/teams/
- *     /api/teams/:id/members
- *     /api/users/
- *     /api/users/:id
- *
  * Case :
  *     (Read & Write operations)
  *     Test that a user can't join a team twice

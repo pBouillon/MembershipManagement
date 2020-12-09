@@ -17,9 +17,6 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Route :
- *     /api/teams/:id
- *
  * Case :
  *     (Write-only operation)
  *     Test the team update

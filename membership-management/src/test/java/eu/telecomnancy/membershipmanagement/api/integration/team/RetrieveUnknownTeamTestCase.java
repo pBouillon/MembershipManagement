@@ -11,9 +11,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Route :
- *     /api/teams
- *
  * Case :
  *     (Read-only operation)
  *     Test when an id that does not correspond to an existing team is provided

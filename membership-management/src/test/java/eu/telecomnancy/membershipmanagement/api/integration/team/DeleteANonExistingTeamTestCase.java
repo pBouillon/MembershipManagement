@@ -11,9 +11,6 @@ import java.net.URISyntaxException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Route :
- *     /api/teams/:id
- *
  * Case :
  *     (Write-only operation)
  *     Test that the controller return the appropriate status code when deleting an unknown team

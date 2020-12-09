@@ -16,9 +16,6 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Route :
- *     /api/teams/:id
- *
  * Case :
  *     (Read & Write operation)
  *     Test that the controller successfully retrieve an existing team

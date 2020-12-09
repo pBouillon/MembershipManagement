@@ -24,12 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Routes :
- *     /api/teams/
- *     /api/teams/:id/members
- *     /api/users/
- *     /api/users/:id
- *
  * Case :
  *     (Read & Write operations)
  *     Test that a team can successfully have a new member

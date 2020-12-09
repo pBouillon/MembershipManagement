@@ -14,9 +14,6 @@ import java.net.URISyntaxException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Route :
- *     /api/users
- *
  * Case :
  *     (Write-only operation)
  *     Test the user creation
