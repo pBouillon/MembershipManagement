@@ -21,6 +21,67 @@ It is is split among three sub-projects:
 - A [monitoring client](./rabbitmq-clients/monitoring), which is displaying the
   count, in real time, of the resources managed by the API.
 
+## Installation
+
+There is several ways of running the project:
+
+### Dockerized with docker-compose
+
+You can deploy the whole application stack (RabbitMQ, the API and the two
+clients) using the provided `docker-compose.yml`.
+
+To do so, ensure that your docker daemon is running and then type the following:
+
+```console
+~$ docker-compose up -d --build
+```
+
+This will **build the images** and **run them in the background**.
+
+You can then reach the containers from the docker Desktop application or by
+seeing their logs using
+
+```console
+~$ docker logs CONTAINER_ID
+```
+
+As for the logging client, you can open a terminal in the container and navigate
+to the log file using the following command:
+
+```console
+~$ docker exec -it CONTAINER_ID bash
+```
+
+### Natively with powershell
+
+Under `tools/` you will find a PowerShell script that will run the whole stack
+and a script to test the API:
+
+```console
+~$ ./tools/local-run.ps1
+```
+
+The script will open three new terminals, with each one of them running a
+Spring application from the project (the API, the monitoring client and the
+logging client).
+
+You will then see the python script logging actions in the console, which
+correspond to the API calls it is performing.
+
+> More information about the Python script are available in
+> [its README](./tools/api-requests)
+
+### From the top-level folder with the Makefile
+
+If you have `make` installed, you can use the commands provided in the Makefile:
+
+- `make docker-run` will build and run the whole docker stack along with the
+  Python script to test the API
+- `make docker-stop` will gracefully stop and remove the docker stack
+- `make install` will install the needed dependencies of the project  
+  (especially the ones needed for the Python script)
+- `make run` will run the PowerShell script aforementioned;
+
 ## Structure
 
 The overall architecture and the projects are structured as defined by the
