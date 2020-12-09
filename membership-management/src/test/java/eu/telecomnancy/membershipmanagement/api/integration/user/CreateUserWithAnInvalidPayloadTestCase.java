@@ -14,9 +14,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Route :
- *     /api/users
- *
  * Case :
  *     (Write-only operation)
  *     Test the user creation

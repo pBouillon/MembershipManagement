@@ -13,9 +13,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Route :
- *     /api/teams
- *
  * Case :
  *     (Write-only operation)
  *     Test the team creation

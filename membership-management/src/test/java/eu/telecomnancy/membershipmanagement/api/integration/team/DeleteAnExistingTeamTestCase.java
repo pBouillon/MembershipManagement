@@ -17,9 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Route :
- *     /api/teams/:id
- *
  * Case :
  *     (Write-only operation)
  *     Test that the team does not exists anymore when deleted

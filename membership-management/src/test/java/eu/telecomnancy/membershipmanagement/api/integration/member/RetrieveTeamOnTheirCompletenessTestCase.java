@@ -27,11 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Routes :
- *     /api/teams/
- *     /api/teams/:id/members
- *     /api/users/
- *
  * Case :
  *     (Read & Write operations)
  *     Test that the team filtering based on their isComplete attribute is functional

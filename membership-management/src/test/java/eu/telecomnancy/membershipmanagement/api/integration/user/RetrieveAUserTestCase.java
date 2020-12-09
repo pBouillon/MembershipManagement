@@ -16,9 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
- * Route :
- *     /api/users/:id
- *
  * Case :
  *     (Read & Write operation)
  *     Test that the controller successfully retrieve an existing user

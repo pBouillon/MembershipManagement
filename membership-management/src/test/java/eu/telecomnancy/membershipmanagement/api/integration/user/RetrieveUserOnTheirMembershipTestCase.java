@@ -24,11 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Routes :
- *     /api/teams/
- *     /api/teams/:id/members
- *     /api/users/
- *
  * Case :
  *     (Read & Write operations)
  *     Test that the user filtering based on their hasTeam attribute is functional
