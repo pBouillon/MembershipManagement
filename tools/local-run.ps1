@@ -36,5 +36,6 @@ start powershell `
   & '$javaExecutablePath' -jar .\build\libs\monitoring-0.0.1-SNAPSHOT.jar"
 cd ..\..
 
-# Run the python script to test the API
+# Download the script dependencies and launch the script
+pip install -r .\tools\api-requests\requirements.txt 
 python .\tools\api-requests\api-requests.py -w 45 -v
