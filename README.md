@@ -27,6 +27,8 @@ There is several ways of running the project:
 
 ### Dockerized with docker-compose
 
+#### Run the Docker stack
+
 You can deploy the whole application stack (RabbitMQ, the API and the two
 clients) using the provided `docker-compose.yml`.
 
@@ -52,6 +54,17 @@ to the log file using the following command:
 ~$ docker exec -it CONTAINER_ID bash
 ```
 
+#### Run the API test script
+
+You can then run the Python script to test the projects:
+
+```console
+~$ python ./tools/api-requests/api-requests.py
+```
+
+> More information about the Python script are available in
+> [its README](./tools/api-requests)
+
 ### Natively with powershell
 
 Under `tools/` you will find a PowerShell script that will run the whole stack
@@ -60,6 +73,9 @@ and a script to test the API:
 ```console
 ~$ ./tools/local-run.ps1
 ```
+
+> If you chose to use this solution, you will have to specify the RabbitMQ
+> settings in the `application.properties` of each project
 
 The script will open three new terminals, with each one of them running a
 Spring application from the project (the API, the monitoring client and the
@@ -70,6 +86,10 @@ correspond to the API calls it is performing.
 
 > More information about the Python script are available in
 > [its README](./tools/api-requests)
+
+> If you are experiencing an issue with your Java path, you may want
+> to check the configuration at the top of
+> [the PowerShell script](./tools/local-run.ps1)
 
 ### From the top-level folder with the Makefile
 
