@@ -39,4 +39,3 @@ public class TeamDetailsDto {
     private List<UserDto> members;
 
 }
-
