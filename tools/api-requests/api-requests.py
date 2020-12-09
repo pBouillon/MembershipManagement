@@ -112,7 +112,9 @@ def delete_user(user_id: int) -> None:
     help='Seconds to wait before each action (default is: 1)')
 @click.option('--verbose', '-v', is_flag=True,
     help='Set verbosity to True to display actions in the console on execution')
-def launch_requests(baseurl: str, sleep: int, verbose: bool) -> None:
+@click.option('--wait', '-w', default=0.,
+    help='Seconds to be awaited before launching the requests')
+def launch_requests(baseurl: str, sleep: int, verbose: bool, wait: int) -> None:
     global base_url
     base_url = baseurl
 
@@ -120,6 +122,10 @@ def launch_requests(baseurl: str, sleep: int, verbose: bool) -> None:
     is_verbose = verbose
 
     random.seed(time.time())
+
+    if wait != 0:
+        log(f'Waiting {wait} seconds before launching the requests')
+        time.sleep(wait)
 
     log('Running the predefined workflow, press Ctrl + C to interrupt')
 
