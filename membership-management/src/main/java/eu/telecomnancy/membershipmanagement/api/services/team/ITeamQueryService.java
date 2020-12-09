@@ -4,6 +4,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetT
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamQuery;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.GetTeamsQuery;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
+import eu.telecomnancy.membershipmanagement.api.domain.User;
 import eu.telecomnancy.membershipmanagement.api.services.exceptions.team.UnknownTeamException;
 
 import java.util.List;
@@ -31,13 +32,13 @@ public interface ITeamQueryService {
             throws UnknownTeamException;
 
     /**
-     * Retrieve a team and its members by its id
+     * Given its id, retrieve the members of a team
      *
      * @param getTeamMembersQuery Payload from which retrieving the id of the queried team
-     * @return The team along with its members
+     * @return A list of all the users who are members of this team
      * @throws UnknownTeamException If the given id does not correspond to any stored {@link Team}
      */
-    Optional<Team> getTeamMembers(GetTeamMembersQuery getTeamMembersQuery)
+    List<User> getTeamMembers(GetTeamMembersQuery getTeamMembersQuery)
             throws UnknownTeamException;
 
     /**

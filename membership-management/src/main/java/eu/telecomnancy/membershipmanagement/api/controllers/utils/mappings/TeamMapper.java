@@ -4,6 +4,7 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.Crea
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.cqrs.team.UpdateTeamCommand;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDetailsDto;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team.TeamDto;
+import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
 import org.mapstruct.*;
 

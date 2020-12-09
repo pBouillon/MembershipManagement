@@ -89,10 +89,7 @@ public class UserReadRestController extends UserRestController {
     @GetMapping(path = "/{id}")
     @Operation(summary = "Retrieve an existing user by its id",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "User successfully retrieved",
-                            content = @Content(
-                                    schema = @Schema(implementation = UserDto.class)
-                            )),
+                    @ApiResponse(responseCode = "200", description = "User successfully retrieved"),
                     @ApiResponse(responseCode = "404", description = "User not found")
             })
     public ResponseEntity<UserDetailsDto> getUser(

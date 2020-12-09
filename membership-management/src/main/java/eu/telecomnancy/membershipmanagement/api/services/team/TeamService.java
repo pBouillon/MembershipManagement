@@ -173,21 +173,6 @@ public class TeamService extends MembershipManagementService implements ITeamCom
     }
 
     /**
-     * Try to retrieve a team by its id
-     *
-     * @param teamId Id of the team to check
-     * @throws UnknownTeamException If there is no team for the provided id
-     */
-    public Team retrieveTeamById(long teamId)
-            throws UnknownTeamException {
-        return teamRepository.findById(teamId)
-                .orElseThrow(() -> {
-                    log.error("Unknown team of id {}", teamId);
-                    return new UnknownTeamException(teamId);
-                });
-    }
-
-    /**
      * {@inheritDoc}
      * @return
      */
@@ -204,22 +189,11 @@ public class TeamService extends MembershipManagementService implements ITeamCom
      * {@inheritDoc}
      * @return
      */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    public Optional<Team> getTeamMembers(GetTeamMembersQuery getTeamMembersQuery)
+    public List<User> getTeamMembers(GetTeamMembersQuery getTeamMembersQuery)
             throws UnknownTeamException {
-        long teamId = getTeamMembersQuery.getId();
-        Optional<Team> optionalTeam = teamRepository.findById(teamId);
-
-        optionalTeam.ifPresentOrElse(
-                team -> {
-                    log.info("Retrieved team {} from id {}", team, teamId);
-                    // Trigger the lazy loading
-                    team.getMembers().size();
-                },
-                () -> log.warn("Unable to retrieve a team with id {}", teamId));
-
-        return optionalTeam;
+        Team team = retrieveTeamById(getTeamMembersQuery.getId());
+        return team.getMembers();
     }
 
     /**
@@ -239,6 +213,21 @@ public class TeamService extends MembershipManagementService implements ITeamCom
         log.info("Retrieved {} teams", teams.size());
 
         return teams;
+    }
+
+    /**
+     * Try to retrieve a team by its id
+     *
+     * @param teamId Id of the team to check
+     * @throws UnknownTeamException If there is no team for the provided id
+     */
+    public Team retrieveTeamById(long teamId)
+            throws UnknownTeamException {
+        return teamRepository.findById(teamId)
+                .orElseThrow(() -> {
+                    log.error("Unknown team of id {}", teamId);
+                    return new UnknownTeamException(teamId);
+                });
     }
 
     /**

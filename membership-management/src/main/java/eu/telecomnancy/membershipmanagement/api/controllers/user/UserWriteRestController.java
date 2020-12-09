@@ -94,14 +94,11 @@ public class UserWriteRestController extends UserRestController {
 
                     Missing fields will be ignored""",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "User successfully patched",
-                            content = @Content(
-                                    schema = @Schema(implementation = UserDto.class)
-                            )),
+                    @ApiResponse(responseCode = "200", description = "User successfully patched"),
                     @ApiResponse(responseCode = "400", description = "Malformed patch"),
                     @ApiResponse(responseCode = "404", description = "User not found")
             })
-    public ResponseEntity<?> patch(
+    public ResponseEntity<UserDto> patch(
             @ApiParam(value = "Id of the targeted user")
             @PathVariable long id,
             @ApiParam(value = "Fields to update")
@@ -128,10 +125,7 @@ public class UserWriteRestController extends UserRestController {
                     He also must have both his names between 2 and 50 characters.
                     """,
             responses = {
-                    @ApiResponse(responseCode = "201", description = "User successfully created",
-                            content = @Content(
-                                    schema = @Schema(implementation = UserDto.class)
-                            )),
+                    @ApiResponse(responseCode = "201", description = "User successfully created"),
                     @ApiResponse(responseCode = "400", description = "Malformed body")
             })
     public ResponseEntity<UserDto> post(
@@ -161,14 +155,11 @@ public class UserWriteRestController extends UserRestController {
     @PutMapping("/{id}")
     @Operation(summary = "Replace an existing user by its id",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "User successfully updated",
-                            content = @Content(
-                                    schema = @Schema(implementation = UserDto.class)
-                            )),
+                    @ApiResponse(responseCode = "200", description = "User successfully updated"),
                     @ApiResponse(responseCode = "400", description = "Malformed body"),
                     @ApiResponse(responseCode = "404", description = "User not found")
             })
-    public ResponseEntity<?> put(
+    public ResponseEntity<UserDto> put(
             @ApiParam(value = "Id of the targeted user")
             @PathVariable long id,
             @ApiParam(value = "Payload from which the user details will be replaced")
