@@ -1,5 +1,7 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team;
 
+import java.time.Instant;
+
 import lombok.Data;
 
 /**
@@ -7,6 +9,11 @@ import lombok.Data;
  */
 @Data
 public class TeamDto {
+
+    /**
+     * Creation date of the team, represented as UTC
+     */
+    private Instant creationDate;
 
     /**
      * Id of the team

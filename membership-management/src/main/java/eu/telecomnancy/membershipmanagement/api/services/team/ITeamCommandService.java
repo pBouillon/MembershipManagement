@@ -60,14 +60,14 @@ public interface ITeamCommandService {
             throws UnknownTeamException, UnknownUserException;
 
     /**
-     * Given his id, replace the details of an existing {@link Team}
+     * Given his id, rename an existing {@link Team}
      *
      * @param teamId Id of the targeted team
-     * @param command Payload holding the data to replace the existing ones
+     * @param command Payload holding the team's new name
      * @return The team with the updated values
      * @throws UnknownTeamException If the given id does not correspond to any stored {@link Team}
      */
-    Team updateTeam(long teamId, UpdateTeamCommand command)
+    Team patchTeam(long teamId, PatchTeamCommand command)
             throws UnknownTeamException;
 
 }

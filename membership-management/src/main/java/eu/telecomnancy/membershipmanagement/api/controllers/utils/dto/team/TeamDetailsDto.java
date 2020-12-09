@@ -1,17 +1,22 @@
 package eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.team;
 
+import java.time.Instant;
+
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserDto;
-import eu.telecomnancy.membershipmanagement.api.domain.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
 /**
  * User Data Transfer Object to be served and received by the API
  */
-@Getter @Setter
+@Data
 public class TeamDetailsDto {
+
+    /**
+     * Creation date of the team, represented as UTC
+     */
+    private Instant creationDate;
 
     /**
      * Id of the team
@@ -34,4 +39,3 @@ public class TeamDetailsDto {
     private List<UserDto> members;
 
 }
-

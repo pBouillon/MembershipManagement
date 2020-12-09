@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,13 @@ public class Team {
      * Maximum name length of the team accepted by the system
      */
     public static final int NAME_MIN_LENGTH = 3;
+
+    /**
+     * Creation date of the team, represented as UTC
+     *
+     * For more details related to the way its stored, see: https://stackoverflow.com/a/62307301/6152689
+     */
+    private Instant creationDate = Instant.now();
 
     /**
      * Team id used for the persistence

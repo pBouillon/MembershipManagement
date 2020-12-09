@@ -6,13 +6,10 @@ import eu.telecomnancy.membershipmanagement.api.controllers.utils.dto.user.UserD
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.TeamMapper;
 import eu.telecomnancy.membershipmanagement.api.controllers.utils.mappings.UserMapper;
 import eu.telecomnancy.membershipmanagement.api.domain.Team;
-import eu.telecomnancy.membershipmanagement.api.services.exceptions.user.UnknownUserException;
 import eu.telecomnancy.membershipmanagement.api.services.team.ITeamCommandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -109,6 +106,41 @@ public class TeamWriteRestController extends TeamRestController {
     }
 
     /**
+     * Endpoint for: PATCH /teams/:id
+     *
+     * Update a team, especially its name, while its creation date
+     * remains intact
+     *
+     * We shouldn't update the team's creation date.
+     * Therefore, according to the RFC 5789,this endpoint has to be PATCH:
+     * The existing HTTP PUT method only allows a complete replacement of a document. This proposal adds a new HTTP
+     * method, PATCH, to modify an existing HTTP resource.
+     *
+     * see: https://tools.ietf.org/html/rfc5789
+     *
+     * @return The JSON of the updated team as {@link TeamDto}
+     */
+    @PatchMapping("/{id}")
+    @Operation(summary = "Rename an existing team",
+            description = """
+                The creation date of a team is automatically handled and cannot be updated,
+                hence this endpoint being a PATCH and not a PUT
+            """,
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Team successfully updated"),
+                    @ApiResponse(responseCode = "400", description = "Malformed body"),
+                    @ApiResponse(responseCode = "404", description = "Team not found")
+            })
+    public ResponseEntity<TeamDto> patch(
+            @ApiParam(value = "Id of the targeted team")
+            @PathVariable long id,
+            @ApiParam(value = "Payload from which the team details will be replaced")
+            @Valid @RequestBody PatchTeamCommand patchTeamCommand) {
+        Team team = teamService.patchTeam(id, patchTeamCommand);
+        return ResponseEntity.ok(teamMapper.toDto(team));
+    }
+
+    /**
      * Endpoint for: POST /teams
      *
      * Create a new team with no member
@@ -171,29 +203,6 @@ public class TeamWriteRestController extends TeamRestController {
         // Return the result with its location
         return ResponseEntity.created(location)
                 .body(userMapper.toDtoList(team.getMembers()));
-    }
-
-    /**
-     * Endpoint for: PUT /teams/:id
-     *
-     * Replace the team with the specified identifier if it exists
-     *
-     * @return The JSON of the updated team as {@link TeamDto}
-     */
-    @PutMapping("/{id}")
-    @Operation(summary = "Replace the team with the specified identifier if it exists",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Team successfully updated"),
-                    @ApiResponse(responseCode = "400", description = "Malformed body"),
-                    @ApiResponse(responseCode = "404", description = "Team not found")
-            })
-    public ResponseEntity<TeamDto> put(
-            @ApiParam(value = "Id of the targeted team")
-            @PathVariable long id,
-            @ApiParam(value = "Payload from which the team details will be replaced")
-            @Valid @RequestBody UpdateTeamCommand updateTeamCommand) {
-        Team team = teamService.updateTeam(id, updateTeamCommand);
-        return ResponseEntity.ok(teamMapper.toDto(team));
     }
 
 }

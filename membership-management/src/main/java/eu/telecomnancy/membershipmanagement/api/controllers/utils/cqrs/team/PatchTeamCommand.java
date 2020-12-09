@@ -9,14 +9,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Command to replace a team
+ * Command to rename a team
  *
  * @see ITeamCommandService
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateTeamCommand implements Command {
+public class PatchTeamCommand implements Command {
 
     /**
      * Name of the team
